@@ -36,10 +36,9 @@ package se.konstruktor.as3ui.controls.button
 		public function BaseButton()
 		{
 			super();
-			graphics.beginFill(0x00FF00,1);
-			graphics.drawRect(0,0,100,24);
-			graphics.endFill();
-			
+//			graphics.beginFill(0x00FF00,1);
+//			graphics.drawRect(0,0,100,24);
+//			graphics.endFill();
 			initialize();
 		}
 		
