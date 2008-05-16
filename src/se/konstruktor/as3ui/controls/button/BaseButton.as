@@ -32,6 +32,7 @@ package se.konstruktor.as3ui.controls.button
 		internal var m_enabled					:	Boolean;
 		internal var m_isFocus					:	Boolean;
 		internal var m_toggled					:	Boolean;
+		internal var m_mouseIsOver				:	Boolean;
 		internal var m_state					:	String;
 		
 		public function BaseButton()
@@ -219,7 +220,8 @@ package se.konstruktor.as3ui.controls.button
 				if(m_isFocus)
 				{
 					m_isFocus = false;
-					state = ButtonState.RELEASED;
+					
+					state = m_mouseIsOver?ButtonState.OVER:ButtonState.RELEASED;
 					dispatchEvent(m_releaseEvent);
 				}
 				else
@@ -233,6 +235,7 @@ package se.konstruktor.as3ui.controls.button
 		{
 			if(m_enabled)
 			{
+				m_mouseIsOver = true;
 				if(!m_event.buttonDown) 
 				{
 					state = ButtonState.OVER
@@ -253,6 +256,7 @@ package se.konstruktor.as3ui.controls.button
 		{
 			if(m_enabled)
 			{
+				m_mouseIsOver = false;
 				if(!a_event.buttonDown)
 				{
 					state = ButtonState.RELEASED
