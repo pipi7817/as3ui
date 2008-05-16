@@ -4,18 +4,18 @@ package se.konstruktor.as3ui.controls.button
 	
 	public class ButtonEvent extends Event
 	{
-		public static const DISABLED				:	String = "disabled";
-		public static const DOUBLE_CLICK			:	String = "doubleClick";
-		public static const ENABLED					:	String = "enabled";
-		public static const PRESS					:	String = "press";
-		public static const TOGGLE					:	String = "toggle";
-		public static const RELEASE					:	String = "release";
-		public static const RELEASE_OUTSIDE			:	String = "releaseOutside";
-		public static const ROLL_OUT				:	String = "rollOut";
-		public static const ROLL_OUT_WHILE_DOWN		:	String = "rollOutWhileMouseDown";
-		public static const ROLL_OVER				:	String = "rollOver";
-		public static const ROLL_OVER_WHILE_DOWN	:	String = "rollOverWhileMouseDown";
-		public static const STATE					:	String = "state";
+		public static const DISABLED				:	String = "buttonDisabled";
+		public static const DOUBLE_CLICK			:	String = "buttonDoubleClick";
+		public static const ENABLED					:	String = "buttonEnabled";
+		public static const PRESS					:	String = "buttonPress";
+		public static const TOGGLE					:	String = "buttonToggle";
+		public static const RELEASE					:	String = "buttonRelease";
+		public static const RELEASE_OUTSIDE			:	String = "buttonReleaseOutside";
+		public static const ROLL_OUT				:	String = "buttonRollOut";
+		public static const ROLL_OUT_WHILE_DOWN		:	String = "buttonRollOutWhileMouseDown";
+		public static const ROLL_OVER				:	String = "buttonRollOver";
+		public static const ROLL_OVER_WHILE_DOWN	:	String = "buttonRollOverWhileMouseDown";
+		public static const CHANGE_STATE			:	String = "buttonChangeState";
 		
 		public function ButtonEvent(type:String,bubbles:Boolean = false,cancelable:Boolean = false)
 		{

@@ -157,7 +157,7 @@ package se.konstruktor.as3ui.controls.button
 		public function testToggledAndMouseEvent():void
 		{
 			m_instance.setToggled(true);
-			m_instance.addEventListener(ButtonEvent.STATE, resultFailStateEvent);
+			m_instance.addEventListener(ButtonEvent.CHANGE_STATE, resultFailStateEvent);
 			
 			m_instance.setToggled(true);
 			m_instance.addEventListener(ButtonEvent.TOGGLE, resultFailToggledEvent);
