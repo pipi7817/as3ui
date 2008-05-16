@@ -132,9 +132,98 @@ package se.konstruktor.as3ui.controls.button
 			assertEquals(ButtonEvent.RELEASE_OUTSIDE,event.type);
 			assertEquals(ButtonState.RELEASED, instance.m_state);
 			assertEquals(false, instance.m_isFocus);
-		
 		}
 
+		public function testSetToggled():void
+		{
+			assertEquals(false, m_instance.isToggled);
+
+			m_instance.setToggled(true);
+			assertEquals(true, m_instance.isToggled);
+			
+			m_instance.setToggled(false);
+			assertEquals(false, m_instance.isToggled);
+			
+		}
+
+		public function testToggledEvent():void
+		{
+			var handler:Function = addAsync(resultTestToggled, 1000);
+			var instance:BaseButton = m_instance;
+			instance.addEventListener(ButtonEvent.TOGGLE, handler);
+			instance.setToggled(true);
+		}
+
+		public function testToggledAndMouseEvent():void
+		{
+			m_instance.setToggled(true);
+			m_instance.addEventListener(ButtonEvent.STATE, resultFailStateEvent);
+			
+			m_instance.setToggled(true);
+			m_instance.addEventListener(ButtonEvent.TOGGLE, resultFailToggledEvent);
+			m_instance.setToggled(true);
+
+			m_instance.addEventListener(ButtonEvent.ROLL_OVER, resultTrigerOverEvent);
+			m_instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,m_instance,false,false,false,false,0));
+
+			m_instance.addEventListener(ButtonEvent.PRESS, resultTrigerPressEvent);
+			m_instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN,true,true,0,0,m_instance,false,false,false,true,0));
+			
+			m_instance.addEventListener(ButtonEvent.RELEASE, resultTrigerReleaseEvent);
+			m_instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP,true,true,0,0,m_instance,false,false,false,false,0));
+
+			m_instance.addEventListener(ButtonEvent.ROLL_OUT, resultTrigerOutEvent);
+			m_instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OUT,true,true,0,0,m_instance,false,false,false,false,0));
+		}
+
+		public function resultFailStateEvent(event:ButtonEvent):void
+		{
+			assertEquals("resultFailStateEvent should not be trigger", "false");
+		}
+		
+		public function resultFailToggledEvent(event:ButtonEvent):void
+		{
+			assertEquals("resultFailToggledEvent should not be trigger", "false");
+		}
+
+		public function resultTrigerOverEvent(event:ButtonEvent):void
+		{
+			var instance:BaseButton = event.target as BaseButton;
+			assertEquals(ButtonEvent.ROLL_OVER, event.type);
+			assertEquals(ButtonState.RELEASED, instance.m_state);
+			assertEquals(false, instance.m_isFocus);
+		}
+
+		public function resultTrigerPressEvent(event:ButtonEvent):void
+		{
+			var instance:BaseButton = event.target as BaseButton;
+			assertEquals(ButtonEvent.PRESS, event.type);
+			assertEquals(ButtonState.RELEASED, instance.m_state);
+			assertEquals(true, instance.m_isFocus);
+		}
+
+		public function resultTrigerReleaseEvent(event:ButtonEvent):void
+		{
+			var instance:BaseButton = event.target as BaseButton;
+			assertEquals(ButtonEvent.RELEASE, event.type);
+			assertEquals(ButtonState.RELEASED, instance.m_state);
+			assertEquals(false, instance.m_isFocus);
+		}
+
+		public function resultTrigerOutEvent(event:ButtonEvent):void
+		{
+			var instance:BaseButton = event.target as BaseButton;
+			assertEquals(ButtonEvent.ROLL_OUT, event.type);
+			assertEquals(ButtonState.RELEASED, instance.m_state);
+			assertEquals(false, instance.m_isFocus);
+		}
+
+		public function resultTestToggled(event:ButtonEvent):void
+		{
+			var instance:BaseButton = event.target as BaseButton;
+			assertEquals(ButtonEvent.TOGGLE,event.type);
+		}
+		
 
 	}
 }
