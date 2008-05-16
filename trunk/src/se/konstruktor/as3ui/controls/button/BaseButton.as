@@ -27,11 +27,12 @@ package se.konstruktor.as3ui.controls.button
 		private var m_enabledEvent				:   ButtonEvent;
 		private var m_disabledEvent				:   ButtonEvent;
 		private var m_stateEvent				:	ButtonEvent;
+		private var m_toggledEvent				:	ButtonEvent;
 		
 		internal var m_enabled					:	Boolean;
 		internal var m_isFocus					:	Boolean;
+		internal var m_toggled					:	Boolean;
 		internal var m_state					:	String;
-		
 		
 		public function BaseButton()
 		{
@@ -70,13 +71,29 @@ package se.konstruktor.as3ui.controls.button
 			}
 		}
 		
+		public function setToggled(a_toggled:Boolean):void
+		{
+			var oldToggled	:	Boolean	=	m_toggled;
+			m_toggled					=	a_toggled;
+			
+			if(oldToggled != a_toggled)
+			{
+				dispatchEvent(m_toggledEvent);
+			}			
+		}
+		
+		public function get isToggled():Boolean
+		{
+			return m_toggled;
+		}
+		
 		private function set state(a_state:String):void
 		{
 			var oldState 	: 	String	= m_state;
-			m_state 					= a_state;
 
-			if(oldState != a_state)
+			if(oldState != a_state && !m_toggled)
 			{
+				m_state = a_state;
 				dispatchEvent(m_stateEvent);
 			}
 		}
@@ -117,6 +134,7 @@ package se.konstruktor.as3ui.controls.button
 			m_enabledEvent				= 	new ButtonEvent(ButtonEvent.ENABLED,true,true);
 			m_disabledEvent				=	new ButtonEvent(ButtonEvent.DISABLED,true,true);
 			m_stateEvent				=	new ButtonEvent(ButtonEvent.STATE,true,true);
+			m_toggledEvent				= 	new ButtonEvent(ButtonEvent.TOGGLE,true,true);
 			
 			addButtonListeners();
 
@@ -273,6 +291,7 @@ package se.konstruktor.as3ui.controls.button
 			m_enabledEvent				= null;
 			m_disabledEvent				= null;
 			m_stateEvent				= null;
+			m_toggledEvent				= null;
 			
 			removeButtonListeners();
 		}

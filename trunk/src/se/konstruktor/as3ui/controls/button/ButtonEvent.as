@@ -8,6 +8,7 @@ package se.konstruktor.as3ui.controls.button
 		public static const DOUBLE_CLICK			:	String = "doubleClick";
 		public static const ENABLED					:	String = "enabled";
 		public static const PRESS					:	String = "press";
+		public static const TOGGLE					:	String = "toggle";
 		public static const RELEASE					:	String = "release";
 		public static const RELEASE_OUTSIDE			:	String = "releaseOutside";
 		public static const ROLL_OUT				:	String = "rollOut";
