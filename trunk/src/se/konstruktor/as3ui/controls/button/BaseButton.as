@@ -87,7 +87,12 @@ package se.konstruktor.as3ui.controls.button
 			return m_toggled;
 		}
 		
-		private function set state(a_state:String):void
+		protected function get state():String
+		{
+			return m_state;
+		}
+		
+		protected function set state(a_state:String):void
 		{
 			var oldState 	: 	String	= m_state;
 
@@ -133,7 +138,7 @@ package se.konstruktor.as3ui.controls.button
 			m_rollOverWhileDownEvent	=	new ButtonEvent(ButtonEvent.ROLL_OVER_WHILE_DOWN,true,true);
 			m_enabledEvent				= 	new ButtonEvent(ButtonEvent.ENABLED,true,true);
 			m_disabledEvent				=	new ButtonEvent(ButtonEvent.DISABLED,true,true);
-			m_stateEvent				=	new ButtonEvent(ButtonEvent.STATE,true,true);
+			m_stateEvent				=	new ButtonEvent(ButtonEvent.CHANGE_STATE,true,true);
 			m_toggledEvent				= 	new ButtonEvent(ButtonEvent.TOGGLE,true,true);
 			
 			addButtonListeners();
