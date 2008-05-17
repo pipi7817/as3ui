@@ -7,17 +7,15 @@ package
 	 * modifications will be lost!
 	 */
 
-	import asunit.framework.TestSuite;
-	import se.konstruktor.as3ui.controls.button.BaseButtonTest;
-	import se.konstruktor.as3ui.UIObjectTest;
+	import asunit.framework.TestSuite;<% test_case_classes.each do |test_case|  %>
+	import <%= test_case %>;<% end  %>
 
 	public class AllTests extends TestSuite
 	{
 
 		public function AllTests()
-		{
-			addTest(se.konstruktor.as3ui.controls.button.BaseButtonTest.suite());
-			addTest(se.konstruktor.as3ui.UIObjectTest.suite());
+		{<% test_case_classes.each do |test_case|  %>
+			addTest(<%= test_case %>.suite());<% end  %>
 		}
 
 	}
