@@ -214,7 +214,6 @@ package se.konstruktor.as3ui.controls.button
 		{
 			if(m_enabled)
 			{
-				
 				removeStageListener();
 				
 				if(m_isFocus)
@@ -226,6 +225,7 @@ package se.konstruktor.as3ui.controls.button
 				}
 				else
 				{
+					state = ButtonState.OVER
 					dispatchEvent(m_rollOverEvent);
 				}
 			}			
@@ -240,7 +240,6 @@ package se.konstruktor.as3ui.controls.button
 				{
 					state = ButtonState.OVER
 					dispatchEvent(m_rollOverEvent);
-					
 				}
 				else
 				{
@@ -257,9 +256,9 @@ package se.konstruktor.as3ui.controls.button
 			if(m_enabled)
 			{
 				m_mouseIsOver = false;
+				state = ButtonState.RELEASED
 				if(!a_event.buttonDown)
 				{
-					state = ButtonState.RELEASED
 					dispatchEvent(m_rollOutEvent);
 				}
 				else

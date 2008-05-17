@@ -9,7 +9,6 @@ package se.konstruktor.as3ui.controls.button
 	public class BaseButtonTest extends AsynchronousTestCase
 	{
 		private var m_instance:BaseButton;
-
 		public function BaseButtonTest(methodName:String=null)
 		{
 			super(methodName)
@@ -96,21 +95,40 @@ package se.konstruktor.as3ui.controls.button
 			assertEquals(false, instance.m_isFocus);
 		}
 
-		public function testMouseDownOverAndPressAndRelease():void
+		public function testOverAndMouseDownAndPressAndRelease():void
 		{
-			var handler:Function = addAsync(resultTestMouseDownOverAndPressAndRelease, 1000);
+			var handler:Function = addAsync(resultTestOverAndMouseDownAndPressAndRelease, 1000);
 			var instance:BaseButton = m_instance;
 
 			instance.addEventListener(ButtonEvent.RELEASE, handler);
-			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,instance,false,false,false,true,0));
+			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,instance,false,false,false,false,0));
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN,true,true,0,0,instance,false,false,false,true,0));
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP,true,true,0,0,instance,false,false,false,false,0));
 		}
 
-		public function resultTestMouseDownOverAndPressAndRelease(event:ButtonEvent):void
+		public function resultTestOverAndMouseDownAndPressAndRelease(event:ButtonEvent):void
 		{
 			var instance:BaseButton = event.target as BaseButton;
 			assertEquals(ButtonEvent.RELEASE, event.type);
+			assertEquals(ButtonState.OVER, instance.m_state);
+			assertEquals(false, instance.m_isFocus);
+		}
+
+		public function testMouseDownAndOverAndAndRelease():void
+		{
+			var handler:Function = addAsync(resultTestMouseDownAndOverAndAndRelease, 1000);
+			var instance:BaseButton = m_instance;
+
+			instance.addEventListener(ButtonEvent.ROLL_OVER, handler);
+//			instance.stage.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN,true,true,0,0,instance,false,false,false,true,0));
+			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,instance,false,false,false,true,0));
+			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP,true,true,0,0,instance,false,false,false,false,0));
+		}
+
+		public function resultTestMouseDownAndOverAndAndRelease(event:ButtonEvent):void
+		{
+			var instance:BaseButton = event.target as BaseButton;
+			assertEquals(ButtonEvent.ROLL_OVER, event.type);
 			assertEquals(ButtonState.OVER, instance.m_state);
 			assertEquals(false, instance.m_isFocus);
 		}

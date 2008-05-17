@@ -73,7 +73,7 @@ package
 			m_label.embedFonts = true;
 			m_label.antiAliasType = AntiAliasType.ADVANCED;
 			m_label.width = m_width;
-			
+			m_label.height = m_height;
 				
 		}
 		
