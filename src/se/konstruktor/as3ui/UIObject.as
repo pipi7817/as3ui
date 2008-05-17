@@ -1,11 +1,14 @@
-package se.konstruktor.as3ui.flash
+/**
+ * @author Alexander Aivars (alexander.aivars@gmail.com)
+ */
+package se.konstruktor.as3ui
 {
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	
-	import se.konstruktor.as3ui.flash.uisprite.UISpriteEvent;
+	import se.konstruktor.as3ui.events.UIEvent;
 
-	public class UISprite extends Sprite
+	public class UIObject extends Sprite
 	{
 		protected var m_maxWidth		:	Number;
 		protected var m_minWidth		:	Number;
@@ -16,7 +19,7 @@ package se.konstruktor.as3ui.flash
 		protected var m_xpos			:	Number;
 		protected var m_ypos			:	Number;
 		
-		public function UISprite()
+		public function UIObject()
 		{
 			super();
 		}
@@ -43,20 +46,20 @@ package se.konstruktor.as3ui.flash
 			
 			if(oldX != this.x || oldY != this.y)
 			{
-				dispatchEvent(new UISpriteEvent(UISpriteEvent.MOVE,true,true));
+				dispatchEvent(new UIEvent(UIEvent.MOVE,true,true));
 				moveComplete();
 			}
 		}
 
 		protected function moveComplete():void
 		{
-			dispatchEvent(new UISpriteEvent(UISpriteEvent.MOVE_COMPLETE,true,true));
+			dispatchEvent(new UIEvent(UIEvent.MOVE_COMPLETE,true,true));
 		}
 
 		public function show():void
 		{
 			
-			dispatchEvent(new UISpriteEvent(UISpriteEvent.SHOW,true,true));
+			dispatchEvent(new UIEvent(UIEvent.SHOW,true,true));
 			showComplete();	
 		}
 
@@ -65,7 +68,7 @@ package se.konstruktor.as3ui.flash
 			if(!visible)
 			{
 				visible = true;
-				dispatchEvent(new UISpriteEvent(UISpriteEvent.SHOW_COMPLETE,true,true));
+				dispatchEvent(new UIEvent(UIEvent.SHOW_COMPLETE,true,true));
 			}
 		}
 
@@ -73,7 +76,7 @@ package se.konstruktor.as3ui.flash
 		{
 			if(visible)
 			{
-				dispatchEvent(new UISpriteEvent(UISpriteEvent.HIDE,true,true));
+				dispatchEvent(new UIEvent(UIEvent.HIDE,true,true));
 				hideComplete();
 			}
 		}
@@ -81,7 +84,7 @@ package se.konstruktor.as3ui.flash
 		protected function hideComplete():void
 		{
 			visible = false;
-			dispatchEvent(new UISpriteEvent(UISpriteEvent.HIDE_COMPLETE,true,true));
+			dispatchEvent(new UIEvent(UIEvent.HIDE_COMPLETE,true,true));
 		}
 
 
@@ -155,7 +158,7 @@ package se.konstruktor.as3ui.flash
 			{
 				m_visibleWidth = newWidth;	
 				m_visibleHeight = newHeight;
-				dispatchEvent(new UISpriteEvent(UISpriteEvent.RESIZE,true,true));
+				dispatchEvent(new UIEvent(UIEvent.RESIZE,true,true));
 			}
 		}
 		
@@ -180,32 +183,25 @@ package se.konstruktor.as3ui.flash
 		{
 			return isNaN(m_visibleWidth)?super.width:m_visibleWidth;
 		}
-/*		
-		public function set center(a_center:Number):void
+
+		public function setCenter(a_x:Number, a_y:Number, a_pixelSnap:Boolean = false):void
 		{
-			
+			x = a_x - width/2;
+			y = a_y - height/2;
+
 		}
 
-		public function set left(a_left:Number):void
-		{
-			
-		}
 		
-		public function set right(a_right:Number):void
+		public function set right(a_x:Number):void
 		{
-			
+			x = a_x - width;
 		}
 
-		public function set top(a_top:Number):void
+		public function set bottom(a_y:Number):void
 		{
-			
+			y = a_y - height;			
 		}
 
-		public function set bottom(a_bottom:Number):void
-		{
-			
-		}
-*/		
 		// ToDo: add suport for scaled parents and rotated parents
 		public function set globalX(value:Number):void
 		{
