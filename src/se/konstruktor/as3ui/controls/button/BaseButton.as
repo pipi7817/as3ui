@@ -104,7 +104,7 @@ package se.konstruktor.as3ui.controls.button
 			}
 		}
 
-		protected function initialize():void
+		private function initialize():void
 		{
 			if(m_useHandCursor)
 			{
@@ -179,12 +179,18 @@ package se.konstruktor.as3ui.controls.button
 		
 		private function addStageListener():void
 		{
-			stage.addEventListener(MouseEvent.MOUSE_UP, stageMouseUpHandler,false,0,true);
+			if(stage)
+			{
+				stage.addEventListener(MouseEvent.MOUSE_UP, stageMouseUpHandler,false,0,true);
+			}
 		}
 
 		private function removeStageListener():void
 		{
-			stage.removeEventListener(MouseEvent.MOUSE_UP, stageMouseUpHandler);
+			if(stage)
+			{
+				stage.removeEventListener(MouseEvent.MOUSE_UP, stageMouseUpHandler);
+			}
 		}
 		
 		private function stageMouseUpHandler(a_event:MouseEvent):void
