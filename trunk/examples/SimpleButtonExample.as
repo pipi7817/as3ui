@@ -9,13 +9,13 @@ package
 	{
 		
 		
-		[Embed(source='/resources/png/button/control/ControlButtonYellow_up.png')]
+		[Embed(source='../src/resources/png/button/control/ControlButtonYellow_up.png')]
 		private var PNG_UP:Class;
 
-		[Embed(source='/resources/png/button/control/ControlButtonYellow_over.png')]
+		[Embed(source='../src/resources/png/button/control/ControlButtonYellow_over.png')]
 		private var PNG_OVER:Class;
 
-		[Embed(source='/resources/png/button/control/ControlButtonYellow_down.png')]
+		[Embed(source='../src/resources/png/button/control/ControlButtonYellow_down.png')]
 		private var PNG_DOWN:Class;
 
 		public function SimpleButtonExample()

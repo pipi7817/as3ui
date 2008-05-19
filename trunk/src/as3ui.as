@@ -1,9 +1,11 @@
 package {
+	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	
 	public class as3ui extends Sprite {
+
 		public function as3ui() {
 			trace("as3ui instantiated!");
 			

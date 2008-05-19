@@ -15,11 +15,11 @@ Sprout::ProjectModel.setup do |model|
   # model.bin_dir       = 'bin'
   # model.test_dir      = 'test'
   # model.doc_dir       = 'doc'
-  
-  model.asset_dir     = "#{model.bin_dir}/assets"
+  # model.example_dir   = 'examples'
+  model.asset_dir     = "#{model.bin_dir}/resources"
   model.language      = 'as3'
   model.output        = "#{model.bin_dir}/as3ui.swf"
-  model.test_output   = "#{model.bin_dir}/as3uiRunner.swf"
+  model.test_output   = "#{model.bin_dir}/as3uiTestRunner.swf"
 
 end
 
@@ -40,9 +40,10 @@ model = Sprout::ProjectModel.instance
 # gem search -r sprout-*library
 
 # library :asunit3
-library :corelib
-library :puremvc
+# library :corelib
+# library :puremvc
 library :asunit3
+# library :bytearray
 # library :asunit do |t|
 #  t.gem_name = 'sprout-asunit3-library'
 # end
@@ -73,7 +74,7 @@ flashplayer :test => model.test_output
 # to the compiler source or swc paths
 
 desc "Compile application"
-mxmlc model.output => [:corelib, :puremvc] do |t|
+mxmlc model.output => [] do |t|
 # Uncomment to use the Flex 3 SDK
   t.gem_name                  = 'sprout-flex3sdk-tool'
   t.warnings                  = true
@@ -81,8 +82,8 @@ mxmlc model.output => [:corelib, :puremvc] do |t|
   t.default_frame_rate        = 24
   t.default_size              = '600 400'
   t.input                     = "#{model.src_dir}/as3ui.as"
-  t.source_path               << model.asset_dir
-# t.source_path               << "#{model.lib_dir}/non-sprout-src-library"
+  t.source_path               << 'examples'
+  t.source_path               << "#{model.lib_dir}/bytearray"
 # t.library_path              << "#{model.lib_dir}/non-sprout.swc"
 end
 
@@ -90,7 +91,7 @@ end
 # Compile test harness using mxmlc
 
 desc "Compile test harness"
-mxmlc model.test_output => [:corelib, :puremvc, :asunit3] do |t|
+mxmlc model.test_output => [:asunit3] do |t|
 # Uncomment to use the Flex 3 SDK
   t.gem_name                  = 'sprout-flex3sdk-tool'
   t.warnings                  = true
@@ -98,10 +99,11 @@ mxmlc model.test_output => [:corelib, :puremvc, :asunit3] do |t|
   t.default_frame_rate        = 24
   t.verbose_stacktraces       = true
   t.default_size              = "800 450"
-  t.input                     = "#{model.src_dir}/as3uiRunner.as"
+  t.input                     = "#{model.src_dir}/as3uiTestRunner.as"
   t.source_path               << model.src_dir
   t.source_path               << model.test_dir
-  t.source_path               << model.asset_dir
+  t.source_path               << "#{model.lib_dir}/bytearray"
+#  t.source_path               << model.asset_dir
 end
 
 ############################################
