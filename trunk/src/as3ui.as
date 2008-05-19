@@ -13,8 +13,13 @@ package {
 			var baseButtonExample:BaseButtonExample = new BaseButtonExample();
 			baseButtonExample.x = 50;
 			baseButtonExample.y = 50;
-			
 			addChild(baseButtonExample);
+			
+			var simpleButtonExample:SimpleButtonExample = new SimpleButtonExample();
+			simpleButtonExample.x = 50;
+			simpleButtonExample.y = 100;
+			addChild(simpleButtonExample);
+			
 		}
 	}
 }

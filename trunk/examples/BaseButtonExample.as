@@ -2,7 +2,7 @@ package
 {
 	import flash.display.GradientType;
 	import flash.display.Shape;
-	import flash.events.Event;
+	import flash.display.SimpleButton;
 	import flash.geom.Matrix;
 	import flash.text.AntiAliasType;
 	import flash.text.TextField;
@@ -74,7 +74,6 @@ package
 			m_label.antiAliasType = AntiAliasType.ADVANCED;
 			m_label.width = m_width;
 			m_label.height = m_height;
-				
 		}
 		
 		private function setupStates():void 
