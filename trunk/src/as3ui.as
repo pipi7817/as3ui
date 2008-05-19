@@ -1,5 +1,4 @@
 package {
-	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -22,6 +21,11 @@ package {
 			simpleButtonExample.y = 100;
 			addChild(simpleButtonExample);
 			
+			var textButtonExample:TextButtonExample = new TextButtonExample();
+			textButtonExample.x = 50;
+			textButtonExample.y = 150;
+			addChild(textButtonExample);
+
 		}
 	}
 }

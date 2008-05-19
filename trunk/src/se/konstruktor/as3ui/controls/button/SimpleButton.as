@@ -35,7 +35,9 @@ package se.konstruktor.as3ui.controls.button
 			{
 				hitArea = m_hitArea as Sprite; 
 			}
-					
+			
+			mouseChildren = false;
+			
 			addEventListners();
 		}
 		
