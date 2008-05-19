@@ -83,7 +83,6 @@ mxmlc model.output => [] do |t|
   t.default_size              = '600 400'
   t.input                     = "#{model.src_dir}/as3ui.as"
   t.source_path               << 'examples'
-  t.source_path               << "#{model.lib_dir}/bytearray"
 # t.library_path              << "#{model.lib_dir}/non-sprout.swc"
 end
 
@@ -102,7 +101,6 @@ mxmlc model.test_output => [:asunit3] do |t|
   t.input                     = "#{model.src_dir}/as3uiTestRunner.as"
   t.source_path               << model.src_dir
   t.source_path               << model.test_dir
-  t.source_path               << "#{model.lib_dir}/bytearray"
 #  t.source_path               << model.asset_dir
 end
 
