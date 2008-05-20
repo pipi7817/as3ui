@@ -193,13 +193,13 @@ package se.konstruktor.as3ui.controls.button
 
 		public function testSetToggled():void
 		{
-			assertEquals(false, m_instance.isToggled);
+			assertEquals(false, m_instance.toggled);
 
-			m_instance.setToggled(true);
-			assertEquals(true, m_instance.isToggled);
+			m_instance.toggled = true;
+			assertEquals(true, m_instance.toggled);
 			
-			m_instance.setToggled(false);
-			assertEquals(false, m_instance.isToggled);
+			m_instance.toggled = false;
+			assertEquals(false, m_instance.toggled);
 			
 		}
 
@@ -208,17 +208,17 @@ package se.konstruktor.as3ui.controls.button
 			var handler:Function = addAsync(resultTestToggled, 1000);
 			var instance:BaseButton = m_instance;
 			instance.addEventListener(ButtonEvent.TOGGLE, handler);
-			instance.setToggled(true);
+			instance.toggled = true;
 		}
 
 		public function testToggledAndMouseEvent():void
 		{
-			m_instance.setToggled(true);
+			m_instance.toggled = true;
 			m_instance.addEventListener(ButtonEvent.CHANGE_STATE, resultFailStateEvent);
 			
-			m_instance.setToggled(true);
+			m_instance.toggled = true;
 			m_instance.addEventListener(ButtonEvent.TOGGLE, resultFailToggledEvent);
-			m_instance.setToggled(true);
+			m_instance.toggled = true;
 
 			m_instance.addEventListener(ButtonEvent.ROLL_OVER, resultTrigerOverEvent);
 			m_instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,m_instance,false,false,false,false,0));
@@ -281,6 +281,17 @@ package se.konstruktor.as3ui.controls.button
 			assertEquals(ButtonEvent.TOGGLE,event.type);
 		}
 		
+		public function testSetFocous():void
+		{
+			
+			assertEquals(false,m_instance.isFocus);
 
+			m_instance.setFocus(true);
+			assertEquals(true,m_instance.isFocus);
+
+			m_instance.setFocus(false);
+			assertEquals(false,m_instance.isFocus);
+
+		}
 	}
 }

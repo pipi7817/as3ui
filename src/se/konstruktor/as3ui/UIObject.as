@@ -26,7 +26,6 @@ package se.konstruktor.as3ui
 		
 		public function move(a_x:Number,a_y:Number, a_pixelSnap:Boolean = false):void
 		{
-
 			var oldX:Number = m_xpos;
 			var oldY:Number = m_ypos;
 			

@@ -9,8 +9,10 @@ package se.konstruktor.as3ui.controls.button
 	import flash.events.Event;
 	import flash.events.EventPhase;
 	import flash.events.MouseEvent;
-
-	public class BaseButton extends Sprite
+	
+	import se.konstruktor.as3ui.managers.IFocusObject;
+	
+	public class BaseButton extends Sprite implements IFocusObject
 	{
 
 		protected var m_useHandCursor			:	Boolean			=   true;
@@ -44,10 +46,6 @@ package se.konstruktor.as3ui.controls.button
 			initialize();
 		}
 		
-		public function getEnabled():Boolean
-		{
-			return m_enabled;
-		}
 		
 		public function setEnabled(a_enabled:Boolean):void
 		{
@@ -72,7 +70,12 @@ package se.konstruktor.as3ui.controls.button
 			}
 		}
 		
-		public function setToggled(a_toggled:Boolean):void
+		public function get isEnabled():Boolean
+		{
+			return m_enabled;
+		}
+				
+		public function set toggled(a_toggled:Boolean):void
 		{
 			var oldToggled	:	Boolean	=	m_toggled;
 			m_toggled					=	a_toggled;
@@ -83,11 +86,28 @@ package se.konstruktor.as3ui.controls.button
 			}			
 		}
 		
-		public function get isToggled():Boolean
+		public function get toggled():Boolean
 		{
 			return m_toggled;
 		}
 		
+		
+		public function setFocus(a_isFocus:Boolean = true):void
+		{
+			var oldFocus	:	Boolean	=	m_isFocus;
+			m_isFocus					=	a_isFocus;
+			
+			if(oldFocus != a_isFocus)
+			{
+//				dispatchEvent(m_focusEvent);
+			}
+		}
+		
+		public function get isFocus():Boolean
+		{
+			return m_isFocus;
+		}
+				
 		protected function get state():String
 		{
 			return m_state;
@@ -143,7 +163,27 @@ package se.konstruktor.as3ui.controls.button
 			m_toggledEvent				= 	new ButtonEvent(ButtonEvent.TOGGLE,true,true);
 			
 			addButtonListeners();
+			
+		}
 
+		private function finalize():void
+		{
+			removeStageListener();
+			
+			m_doubleClickEvent			= null;
+			m_releaseEvent				= null;
+			m_releaseOutsideEvent		= null;
+			m_pressEvent				= null;
+			m_rollOverEvent				= null;
+			m_rollOutEvent				= null;
+			m_rollOutWhileDownEvent		= null;
+			m_rollOverWhileDownEvent	= null;
+			m_enabledEvent				= null;
+			m_disabledEvent				= null;
+			m_stateEvent				= null;
+			m_toggledEvent				= null;
+			
+			removeButtonListeners();
 		}
 		
 		private function addButtonListeners():void
@@ -290,24 +330,6 @@ package se.konstruktor.as3ui.controls.button
 			finalize();
 		}
 		
-		protected function finalize():void
-		{
-			removeStageListener();
-			
-			m_doubleClickEvent			= null;
-			m_releaseEvent				= null;
-			m_releaseOutsideEvent		= null;
-			m_pressEvent				= null;
-			m_rollOverEvent				= null;
-			m_rollOutEvent				= null;
-			m_rollOutWhileDownEvent		= null;
-			m_rollOverWhileDownEvent	= null;
-			m_enabledEvent				= null;
-			m_disabledEvent				= null;
-			m_stateEvent				= null;
-			m_toggledEvent				= null;
-			
-			removeButtonListeners();
-		}
+
 	}
 }
