@@ -3,6 +3,8 @@ package {
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	
+	import se.konstruktor.as3ui.managers.FocusManager;
+	
 	public class as3ui extends Sprite {
 
 		public function as3ui() {
@@ -25,6 +27,8 @@ package {
 			textButtonExample.x = 50;
 			textButtonExample.y = 150;
 			addChild(textButtonExample);
+			
+			var fm:FocusManager = new FocusManager();
 
 		}
 	}
