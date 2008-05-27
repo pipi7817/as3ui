@@ -1,3 +1,8 @@
+/*
+* WARNING: Focus manager is under development dont use. 
+*/
+
+
 package se.konstruktor.as3ui.managers
 {
 	import flash.display.Stage;

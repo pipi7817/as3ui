@@ -5,14 +5,14 @@
  */
 package se.konstruktor.as3ui.controls.button
 {
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.EventPhase;
 	import flash.events.MouseEvent;
 	
+	import se.konstruktor.as3ui.UIObject;
 	import se.konstruktor.as3ui.managers.IFocusObject;
 	
-	public class BaseButton extends Sprite implements IFocusObject
+	public class BaseButton extends UIObject implements IFocusObject
 	{
 
 		protected var m_useHandCursor			:	Boolean			=   true;
