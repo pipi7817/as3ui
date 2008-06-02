@@ -303,7 +303,7 @@ package se.konstruktor.as3ui.controls.button
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN,true,true,0,0,instance,false,false,false,true,0));
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OUT,true,true,0,0,instance,false,false,false,true,0));
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,instance,false,false,false,true,0));
-			assertEquals(ButtonState.OVER,instance.m_state);
+			assertEquals(ButtonState.PRESSED,instance.m_state);
 		}
 		
 		public function resultTestPressAndOutAndOver(event:ButtonEvent):void
