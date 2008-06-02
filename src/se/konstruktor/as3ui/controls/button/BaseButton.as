@@ -291,6 +291,7 @@ package se.konstruktor.as3ui.controls.button
 				{
 					if(m_isFocus)
 					{
+						state = ButtonState.OVER
 						dispatchEvent(m_rollOverWhileDownEvent);
 					}
 				}

@@ -1,4 +1,4 @@
-package se.konstruktor.as3ui.controls.button
+package se.konstruktor.as3ui.controls.scrollbar
 {
 	import flash.events.Event;
 	

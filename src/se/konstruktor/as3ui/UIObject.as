@@ -201,6 +201,11 @@ package se.konstruktor.as3ui
 			y = a_y - height;			
 		}
 
+		public function get bottom():Number
+		{
+			return y + height;			
+		}
+
 		// ToDo: add suport for scaled parents and rotated parents
 		public function set globalX(value:Number):void
 		{

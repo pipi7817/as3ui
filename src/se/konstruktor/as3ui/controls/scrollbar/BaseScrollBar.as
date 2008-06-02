@@ -5,12 +5,12 @@
 package se.konstruktor.as3ui.controls.scrollbar
 {
 	import se.konstruktor.as3ui.UIObject;
-	import se.konstruktor.as3ui.controls.button.ScrollBarEvent;
 
 	public class BaseScrollBar extends UIObject
 	{
 		private var m_scroll				:	Number;
 		private var m_delta					:	Number;
+		
 
 		public function BaseScrollBar()
 		{
@@ -25,21 +25,18 @@ package se.konstruktor.as3ui.controls.scrollbar
 //			initializeEvents();
 		}
 
-		private function initializeEvents():void
-  		{
-			m_scrollEvent				= 	new ScrollBarEvent(ScrollBarEvent.SCROLL,true,true);
-		}
+
 						
 		public function set scroll(a_percent:Number):void
 		{
-			var oldScroll	:	Boolean	=	m_scroll;
+			var oldScroll	:	Number	=	m_scroll;
 			m_scroll					=	Math.min(1,Math.max(0,a_percent));
 			
-			if(oldScroll != m_scroll)
-			{
-				m_delta = oldScroll - m_scroll;
-				dispatchEvent(m_scrollEvent);
-			}
+//			if(oldScroll != m_scroll)
+//			{
+				m_delta = m_scroll - oldScroll;
+				dispatchEvent(new ScrollBarEvent(ScrollBarEvent.SCROLL,true,true));
+//			}
 		}
 	
 		public function get scroll():Number
@@ -54,7 +51,7 @@ package se.konstruktor.as3ui.controls.scrollbar
 
 		private function onScroll():void
 		{
-			dispatchEvent(m_scrollEvent);
+
 		}
 		
 	}
