@@ -16,7 +16,7 @@ package se.konstruktor.as3ui.controls.scrollbar
 		public static function suite():TestSuite
 		{
    			var ts:TestSuite = new TestSuite();
-	 		ts.addTest(new BaseScrollBarTest("testInstantiated"));
+	 		ts.addTest(new BaseScrollBarTest());
    			return ts;
    		}
 
@@ -39,5 +39,35 @@ package se.konstruktor.as3ui.controls.scrollbar
 			assertTrue("instance is BaseScrollBar", m_instance is BaseScrollBar);
 		}
 
+		public function testSetScroll():void
+		{
+			 
+			assertEquals(0, m_instance.scroll);
+			assertEquals(0, m_instance.delta);
+
+			m_instance.scroll = 0.1;
+
+			assertEquals(0.1, m_instance.scroll);
+			assertEquals(0.1, m_instance.delta);
+
+			m_instance.scroll = 0.2;
+
+			assertEquals(0.2, m_instance.scroll);
+			assertEquals(0.1, m_instance.delta);
+
+			m_instance.scroll = 0.5;
+			assertEquals(0.5, m_instance.scroll);
+			assertEquals(0.3, m_instance.delta);
+
+			m_instance.scroll = 0.3;
+			assertEquals(0.3, m_instance.scroll);
+			assertEquals(-0.2, m_instance.delta);
+
+			m_instance.scroll = 0.3;
+			assertEquals(0.3, m_instance.scroll);
+			assertEquals(0, m_instance.delta);
+
+		}
+		
 	}
 }

@@ -293,5 +293,27 @@ package se.konstruktor.as3ui.controls.button
 			assertEquals(false,m_instance.isFocus);
 
 		}
+
+		public function testPressAndOutAndOver():void
+		{
+			var handler:Function = addAsync(resultTestPressAndOutAndOver, 1000);
+			var instance:BaseButton = m_instance;
+			instance.addEventListener(ButtonEvent.ROLL_OVER_WHILE_DOWN, handler);
+
+			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN,true,true,0,0,instance,false,false,false,true,0));
+			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OUT,true,true,0,0,instance,false,false,false,true,0));
+			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,instance,false,false,false,true,0));
+			assertEquals(ButtonState.OVER,instance.m_state);
+			
+//			getContext().dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP,true,true,0,0,getContext(),false,false,false,false,0));
+
+		}
+
+		public function resultTestPressAndOutAndOver(event:ButtonEvent):void
+		{
+			var instance:BaseButton = event.target as BaseButton;
+			assertEquals(ButtonEvent.ROLL_OVER_WHILE_DOWN,event.type);
+		}
+
 	}
 }
