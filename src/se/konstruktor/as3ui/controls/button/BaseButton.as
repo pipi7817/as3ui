@@ -18,23 +18,23 @@ package se.konstruktor.as3ui.controls.button
 		protected var m_useHandCursor			:	Boolean			=   true;
 		protected var m_doubleClick				:	Boolean			=   false;
 
-		private var m_doubleClickEvent			:   ButtonEvent;
-		private var m_releaseEvent				:   ButtonEvent;
-		private var m_releaseOutsideEvent		:   ButtonEvent;
-		private var m_pressEvent				:   ButtonEvent;
-		private var m_rollOverEvent				:   ButtonEvent;
-		private var m_rollOutEvent				:   ButtonEvent;
-		private var m_rollOutWhileDownEvent		:   ButtonEvent;
-		private var m_rollOverWhileDownEvent	:   ButtonEvent;
-		private var m_enabledEvent				:   ButtonEvent;
-		private var m_disabledEvent				:   ButtonEvent;
-		private var m_stateEvent				:	ButtonEvent;
-		private var m_toggledEvent				:	ButtonEvent;
+		protected var m_doubleClickEvent		:   ButtonEvent;
+		protected var m_releaseEvent			:   ButtonEvent;
+		protected var m_releaseOutsideEvent		:   ButtonEvent;
+		protected var m_pressEvent				:   ButtonEvent;
+		protected var m_rollOverEvent			:   ButtonEvent;
+		protected var m_rollOutEvent			:   ButtonEvent;
+		protected var m_rollOutWhileDownEvent	:   ButtonEvent;
+		protected var m_rollOverWhileDownEvent	:   ButtonEvent;
+		protected var m_enabledEvent			:   ButtonEvent;
+		protected var m_disabledEvent			:   ButtonEvent;
+		protected var m_stateEvent				:	ButtonEvent;
+		protected var m_toggledEvent			:	ButtonEvent;
 		
+		internal var m_isMouseOver				:	Boolean;
 		internal var m_enabled					:	Boolean;
 		internal var m_isFocus					:	Boolean;
 		internal var m_toggled					:	Boolean;
-		internal var m_mouseIsOver				:	Boolean;
 		internal var m_state					:	String;
 		
 		public function BaseButton()
@@ -46,6 +46,10 @@ package se.konstruktor.as3ui.controls.button
 			initialize();
 		}
 		
+		protected function setMouseOver(a_value:Boolean):void
+		{
+			m_isMouseOver = a_value;
+		}	
 		
 		public function setEnabled(a_enabled:Boolean):void
 		{
@@ -266,7 +270,7 @@ package se.konstruktor.as3ui.controls.button
 				{
 					m_isFocus = false;
 					
-					state = m_mouseIsOver?ButtonState.OVER:ButtonState.RELEASED;
+					state = m_isMouseOver?ButtonState.OVER:ButtonState.RELEASED;
 					dispatchEvent(m_releaseEvent);
 				}
 				else
@@ -281,7 +285,7 @@ package se.konstruktor.as3ui.controls.button
 		{
 			if(m_enabled)
 			{
-				m_mouseIsOver = true;
+				m_isMouseOver = true;
 				if(!m_event.buttonDown) 
 				{
 					state = ButtonState.OVER
@@ -302,7 +306,7 @@ package se.konstruktor.as3ui.controls.button
 		{
 			if(m_enabled)
 			{
-				m_mouseIsOver = false;
+				m_isMouseOver = false;
 				state = ButtonState.RELEASED
 				if(!a_event.buttonDown)
 				{
