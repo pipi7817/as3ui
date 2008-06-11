@@ -4,7 +4,9 @@ package se.konstruktor.as3ui.controls.button
 	import asunit.framework.AsynchronousTestCase;
 	import asunit.framework.TestSuite;
 	
+	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Rectangle;
 
 	public class BaseButtonTest extends AsynchronousTestCase
 	{
@@ -180,6 +182,7 @@ package se.konstruktor.as3ui.controls.button
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OUT,true,true,0,0,instance,false,false,false,true,0));
 			getContext().dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP,true,true,0,0,getContext(),false,false,false,false,0));
 
+
 		}
 
 		public function resultTestPressAndOutAndRelease(event:ButtonEvent):void
@@ -318,6 +321,28 @@ package se.konstruktor.as3ui.controls.button
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,instance,false,false,false,true,0));
 			assertEquals(ButtonState.RELEASED,instance.m_state);
 		}
+		
+		public function testPressAndDragAndOutAndRelese():void
+		{
+			var handler:Function = addAsync(resultTestPressAndDragAndOutAndRelese, 1000);
+			var instance:BaseButton = m_instance;
+			instance.addEventListener(ButtonEvent.RELEASE_OUTSIDE, handler);
 
+			instance.startDrag(false,new Rectangle(0,0,100,0));
+			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN,true,true,0,0,instance,false,false,false,true,0));
+			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OUT,true,true,0,0,instance,false,false,false,true,0));
+			instance.stopDrag();
+			
+			getContext().dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP,true,true,0,0,getContext(),false,false,false,false,0));
+			
+			assertEquals(ButtonState.RELEASED,instance.m_state);
+		}
+
+		private function resultTestPressAndDragAndOutAndRelese(event:Event):void
+		{
+			var instance:BaseButton = event.target as BaseButton;
+			assertEquals(ButtonState.RELEASED,instance.m_state);
+
+		}
 	}
 }

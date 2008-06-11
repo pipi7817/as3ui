@@ -50,7 +50,12 @@ package se.konstruktor.as3ui.controls.button
 		{
 			m_isMouseOver = a_value;
 		}	
-		
+
+		public function get isMouseOver():Boolean
+		{
+			return m_isMouseOver;
+		}
+				
 		public function setEnabled(a_enabled:Boolean):void
 		{
 			var oldEnabled	:	Boolean	=	m_enabled;
