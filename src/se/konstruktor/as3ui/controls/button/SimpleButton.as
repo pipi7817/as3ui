@@ -46,7 +46,7 @@ package se.konstruktor.as3ui.controls.button
 			addEventListener(ButtonEvent.CHANGE_STATE,onChangeState);
 		}
 
-		private function onChangeState(event:ButtonEvent):void
+		protected function onChangeState(event:ButtonEvent):void
 		{
 			switch (state)
 			{
