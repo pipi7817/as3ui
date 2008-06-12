@@ -71,15 +71,15 @@ package se.konstruktor.as3ui.controls.button
 
 		private function resize():void
 		{
-			m_upState.width		= m_leftPadding + m_label.width + m_rightPadding;
-			m_overState.width	= m_leftPadding + m_label.width + m_rightPadding;
-			m_downState.width	= m_leftPadding + m_label.width + m_rightPadding;
-			m_hitArea.width		= m_leftPadding + m_label.width + m_rightPadding;
+			m_upState.width		= Math.round( m_leftPadding + m_label.width + m_rightPadding );
+			m_overState.width	= Math.round( m_leftPadding + m_label.width + m_rightPadding );
+			m_downState.width	= Math.round( m_leftPadding + m_label.width + m_rightPadding );
+			m_hitArea.width		= Math.round( m_leftPadding + m_label.width + m_rightPadding );
 
-			m_upState.height	= m_topPadding + m_label.height + m_bottomPadding;
-			m_overState.height	= m_topPadding + m_label.height + m_bottomPadding;
-			m_downState.height	= m_topPadding + m_label.height + m_bottomPadding;
-			m_hitArea.height	= m_topPadding + m_label.height + m_bottomPadding;
+			m_upState.height	= Math.round( m_topPadding + m_label.height + m_bottomPadding );
+			m_overState.height	= Math.round( m_topPadding + m_label.height + m_bottomPadding );
+			m_downState.height	= Math.round( m_topPadding + m_label.height + m_bottomPadding );
+			m_hitArea.height	= Math.round( m_topPadding + m_label.height + m_bottomPadding );
 
 			m_label.x = m_leftPadding;
 			m_label.y = m_topPadding;
