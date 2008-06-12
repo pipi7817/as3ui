@@ -20,7 +20,7 @@ package se.konstruktor.as3ui.controls.button
 		{
    			var ts:TestSuite = new TestSuite();
 	 		ts.addTest(new BaseButtonTest());
-//	 		ts.addTest(new BaseButtonTest("testInstantiated"));
+//	 		ts.addTest(new BaseButtonTest("testPressAndDisableAndRelese"));
    			return ts;
    		}
 
@@ -344,5 +344,23 @@ package se.konstruktor.as3ui.controls.button
 			assertEquals(ButtonState.RELEASED,instance.m_state);
 
 		}
+
+		public function testPressAndDisableAndRelese():void
+		{
+			m_instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,m_instance,false,false,false,false,0));
+			assertEquals(ButtonState.OVER,m_instance.m_state);
+			
+			m_instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN,true,true,0,0,m_instance,false,false,false,true,0));
+			assertEquals(ButtonState.PRESSED,m_instance.m_state);
+
+			m_instance.setEnabled(false);
+			assertEquals(ButtonState.DISABLED,m_instance.m_state);
+
+			m_instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP,true,true,0,0,m_instance,false,false,false,false,0));
+			assertEquals(ButtonState.DISABLED,m_instance.m_state);
+
+		}
+
+				
 	}
 }

@@ -40,9 +40,6 @@ package se.konstruktor.as3ui.controls.button
 		public function BaseButton()
 		{
 			super();
-//			graphics.beginFill(0x00FF00,1);
-//			graphics.drawRect(0,0,100,24);
-//			graphics.endFill();
 			initialize();
 		}
 		
@@ -58,6 +55,7 @@ package se.konstruktor.as3ui.controls.button
 				
 		public function setEnabled(a_enabled:Boolean):void
 		{
+
 			var oldEnabled	:	Boolean	=	m_enabled;
 			m_enabled					=	a_enabled;
 			mouseEnabled				=	a_enabled;
@@ -124,6 +122,7 @@ package se.konstruktor.as3ui.controls.button
 		
 		protected function set state(a_state:String):void
 		{
+
 			var oldState 	: 	String	= m_state;
 
 			if(oldState != a_state && !m_toggled)
@@ -145,7 +144,7 @@ package se.konstruktor.as3ui.controls.button
 			{
 				doubleClickEnabled = m_doubleClick;
 			}
-			
+
 			m_state = ButtonState.RELEASED;
 			
 			initializeEvents();
@@ -274,7 +273,6 @@ package se.konstruktor.as3ui.controls.button
 				if(m_isFocus)
 				{
 					m_isFocus = false;
-					
 					state = m_isMouseOver?ButtonState.OVER:ButtonState.RELEASED;
 					dispatchEvent(m_releaseEvent);
 				}
@@ -329,10 +327,15 @@ package se.konstruktor.as3ui.controls.button
 		
 		protected function releaseOutsideHandler():void
 		{
-			m_isFocus = false;
-			state = ButtonState.RELEASED;
+			if(m_enabled)
+			{
+				m_isFocus = false;
+				state = ButtonState.RELEASED;
+				dispatchEvent(m_releaseOutsideEvent);
+			}
+
 			removeStageListener();
-			dispatchEvent(m_releaseOutsideEvent);
+
 		}
 		
 		protected function removeButtonHandler(a_event:Event):void
