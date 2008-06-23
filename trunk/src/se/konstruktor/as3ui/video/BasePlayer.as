@@ -71,10 +71,6 @@ package se.konstruktor.as3ui.video
 			
 			m_recoverSeekTimer = new Timer(SEEK_INTERVAL,SEEK_INTERVAL_REPEAT);
 			m_recoverSeekTimer.addEventListener(TimerEvent.TIMER, recoverSeek);
-
-//			graphics.beginFill(0xFFF000,1);
-//			graphics.drawRect(-1,-1,a_width+2,a_height+2);
-//			graphics.endFill();
 			
 			m_video = new Video(a_width,a_height);
 			m_video.opaqueBackground = false;
@@ -186,7 +182,6 @@ package se.konstruktor.as3ui.video
 		}
 		
 		public function get playheadTime():Number {
-//			var nowTime:Number = (m_ns == null) ? m_currentPos : m_ns.time;
 			var nowTime:Number = (m_ns == null) ? 0 : m_ns.time;
 			if (m_metadata != null && m_metadata.audiodelay != undefined) {
 				nowTime -= m_metadata.audiodelay;
@@ -206,14 +201,16 @@ package se.konstruktor.as3ui.video
 					return;
 				}
 			}
+
 			if (m_state == VideoState.PAUSED || m_state == VideoState.STOPPED || m_ns == null) return;
+
 			_pause(true);
+
 			setState(VideoState.PAUSED);
 		}
 
 		public function seekPercent(percent:Number):void {
-			if ( isNaN(percent) || percent < 0 || percent > 1 ||
-			     isNaN(totalTime) || totalTime <= 0 )
+			if ( isNaN(percent) || percent < 0 || percent > 1 || isNaN(totalTime) || totalTime <= 0 )
 			{
 				throw new VideoError(VideoError.INVALID_SEEK);
 			}
@@ -319,7 +316,6 @@ package se.konstruktor.as3ui.video
 			}        	
 
 			m_delayedBufferingTimer.reset();
-
         }
         
         
@@ -347,153 +343,105 @@ package se.konstruktor.as3ui.video
 		
 		private function onAsyncError(event:Event):void
 		{
-			if(DEBUG) trace("onAsyncError");
+
 		}
 		
 		private function onConnection(event:Event):void
 		{
-			if(DEBUG) trace("======= onConnection ========");
+
 		}
         		
         private function onNetStatus(event:NetStatusEvent):void
         {
-           if(DEBUG) trace("======= onNetStatus ========");
-           if(DEBUG) trace(event.info.code);
-           /*
-			======= onNetStatus ========
-			NetStream.Play.Start
-			======= onMetaData ========
-			======= onNetStatus ========
-			NetStream.Buffer.Full
-			======= onNetStatus ========
-			NetStream.Buffer.Empty
-			======= onNetStatus ========
-			NetStream.Buffer.Full
-			======= onNetStatus ========
-			NetStream.Buffer.Flush
-			======= onNetStatus ========
-			NetStream.Buffer.Flush
-			======= onNetStatus ========
-			NetStream.Play.Stop
-			======= onNetStatus ========
-			NetStream.Buffer.Empty
-           */
+			if(DEBUG) trace("======= onNetStatus ========");
+			if(DEBUG) trace(event.info.code);
 			switch ( event.info.code )
 			{
-				case NetStatus.NETSTREAM_BUFFER_EMPTY:
-					m_bufferState = BUFFER_EMPTY;
-					if (m_state == VideoState.PLAYING) {
-						m_delayedBufferingTimer.reset();
-						m_delayedBufferingTimer.start();
-					}
-				break;
-				
-				case NetStatus.NETSTREAM_PLAY_STOP:
+			case NetStatus.NETSTREAM_BUFFER_EMPTY:
+				m_bufferState = BUFFER_EMPTY;
+				if (m_state == VideoState.PLAYING) {
 					m_delayedBufferingTimer.reset();
-					m_activeSeek = false;
-					m_recoverSeekTimer.reset();
-					setState(VideoState.STOPPED);
-				break;
-				
-				case NetStatus.NETSTREAM_BUFFER_FULL:
-				case NetStatus.NETSTREAM_BUFFER_FLUSH:
-					m_delayedBufferingTimer.reset();
-					m_bufferState = BUFFER_FULL;
-					if ((m_state == VideoState.LOADING && m_cachedState == VideoState.PLAYING) || m_state == VideoState.BUFFERING)
-					{
-						setState(VideoState.PLAYING);
-					} 
-					else if (m_cachedState == VideoState.BUFFERING)
-					{
-						m_cachedState = VideoState.PLAYING;
-					}
-				break;
-
-				case NetStatus.NETSTREAM_PLAY_START:
+					m_delayedBufferingTimer.start();
+				}
+			break;
+			
+			case NetStatus.NETSTREAM_PLAY_STOP:
+				m_delayedBufferingTimer.reset();
+				m_activeSeek = false;
+				m_recoverSeekTimer.reset();
+				setState(VideoState.STOPPED);
+			break;
+			
+			case NetStatus.NETSTREAM_BUFFER_FULL:
+			case NetStatus.NETSTREAM_BUFFER_FLUSH:
+				m_delayedBufferingTimer.reset();
+				m_bufferState = BUFFER_FULL;
+				if ((m_state == VideoState.LOADING && m_cachedState == VideoState.PLAYING) || m_state == VideoState.BUFFERING)
 				{
 					setState(VideoState.PLAYING);
+				} 
+				else if (m_cachedState == VideoState.BUFFERING)
+				{
+					m_cachedState = VideoState.PLAYING;
 				}
-				break;
-				
-				case NetStatus.NETSTREAM_SEEK_NOTIFY:
-					m_lastValidSeek = m_ns.time;
-					m_activeSeek = false;
-					m_recoverSeekTimer.reset();
-				break;
-				
-				case NetStatus.NETSTREAM_SEEK_INVALIDTIME:
-					if ( m_recoverSeekTimer.currentCount == 0 )
-					{
-						m_recoverSeekTimer.start();
-					}
-				break;
-								
-				
-				case NetStatus.NETSTREAM_PLAY_STREAMNOTFOUND:
-				case NetStatus.NETSTREAM_FAILED:
-				case NetStatus.NETSTREAM_PLAY_FAILED:	
-				case NetStatus.NETSTREAM_PLAY_FILESTRUCTUREINVALID:	
-				case NetStatus.NETSTREAM_PLAY_NOSUPPORTEDTRACKFOUND:
-					setState(VideoState.CONNECTION_ERROR);
-				break;
-				
-
+			break;
+			
+			case NetStatus.NETSTREAM_PLAY_START:
+			{
+				setState(VideoState.PLAYING);
+			}
+			break;
+			
+			case NetStatus.NETSTREAM_SEEK_NOTIFY:
+				m_lastValidSeek = m_ns.time;
+				m_activeSeek = false;
+				m_recoverSeekTimer.reset();
+			break;
+			
+			case NetStatus.NETSTREAM_SEEK_INVALIDTIME:
+				if ( m_recoverSeekTimer.currentCount == 0 )
+				{
+					m_recoverSeekTimer.start();
+				}
+			break;
+							
+			
+			case NetStatus.NETSTREAM_PLAY_STREAMNOTFOUND:
+			case NetStatus.NETSTREAM_FAILED:
+			case NetStatus.NETSTREAM_PLAY_FAILED:	
+			case NetStatus.NETSTREAM_PLAY_FILESTRUCTUREINVALID:	
+			case NetStatus.NETSTREAM_PLAY_NOSUPPORTEDTRACKFOUND:
+				setState(VideoState.CONNECTION_ERROR);
+			break;
 	        }
         }
 
         private function onMetaData(a_info:Object):void {
-        	if(DEBUG) trace("======= onMetaData ========");
-
 			if (m_metadata != null) return;
 			m_metadata = a_info;
 			if (isNaN(m_streamLength)) m_streamLength = m_metadata.duration;
-	
 			dispatchEvent(new MetadataEvent(MetadataEvent.METADATA_RECEIVED, false, false, m_metadata));
         }
  
         private function onCuePoint(a_info:Object):void {
-            if(DEBUG) trace("======= onCuePoint ========");
 			dispatchEvent(new MetadataEvent(MetadataEvent.CUE_POINT, false, false, a_info	));
         }		
         
         private function setState(a_state:String):void
         {
         	if (a_state == m_state) return;
-
 			m_cachedState = m_state;
-//			m_cachedPlayheadTime = playheadTime;
 			m_state = a_state;
-
-			if(DEBUG)
-			{
-            	trace("======= setState ========");
-				trace("state : " + m_state );
-				trace("cachedState : " + m_cachedState );
-				trace("playheadTime : " + playheadTime );
-			}
-
 			dispatchEvent(new VideoEvent(VideoEvent.STATE_CHANGE, false, false, m_state, playheadTime));
         }
         
         internal function closeNS(a_updateCurrentPos:Boolean=false):void {
 			if (m_ns != null) {
-				if(DEBUG)
-				{
-	            	trace("======= closeNS ========");
-				}
-
-
-//				if (a_updateCurrentPos) {
-//					doUpdateTime();
-//					_currentPos = _ns.time;
-//				}
 
 				// shut down all the timers
 				m_statusTimer.reset();
 				m_delayedBufferingTimer.reset();
 				m_recoverSeekTimer.reset();
-				
-				
 
 				// remove listeners from NetStream
 				m_ns.removeEventListener(NetStatusEvent.NET_STATUS,onNetStatus);
