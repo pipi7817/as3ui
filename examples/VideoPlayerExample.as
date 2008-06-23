@@ -41,7 +41,6 @@ package
 
 			m_player.addEventListener(VideoEvent.STATE_CHANGE,m_controlbar.onChangeState);
 			
-			m_player.play("http://www0.c00928.cdn.qbrick.com/00928/kluster/20080612/SOMMARTORPETLINDA2.flv");
 
 		}
 		

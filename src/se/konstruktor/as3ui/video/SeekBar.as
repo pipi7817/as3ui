@@ -5,7 +5,6 @@ package se.konstruktor.as3ui.video
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.filters.DropShadowFilter;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.AntiAliasType;
 	import flash.text.TextField;
@@ -16,44 +15,38 @@ package se.konstruktor.as3ui.video
 	
 	import se.konstruktor.as3ui.controls.scrollbar.ScrollBarEvent;
 	
-//	import se.svt.events.ScrollEvent;
-	
-//	public class SeekBarView extends Sprite implements IScrollBarView
 	public class SeekBar extends Sprite
 	{
-		private var _background:ScaleBitmap;
-		private var _backgroundMask:Shape;
+		private var m_background:ScaleBitmap;
+		private var m_backgroundMask:Shape;
 
 		// player seek position
-		private var _fullness:ScaleBitmap;
-		private var _fullnessMask:Shape;
-		private var _fullnessValue:Number = 0;
+		private var m_fullness:ScaleBitmap;
+		private var m_fullnessMask:Shape;
+		private var m_fullnessValue:Number = 0;
 
 		// load progress
-		private var _progress:ScaleBitmap;
-		private var _progressMask:Shape;
-		private var _progressValue:Number = 0;
+		private var m_progress:ScaleBitmap;
+		private var m_progressMask:Shape;
+		private var m_progressValue:Number = 0;
 
-		private var _handle:Sprite;
-		private var _handleBar:Sprite;
-		private var _handleBounds:Rectangle;
+		private var m_handle:Sprite;
+		private var m_handleBar:Sprite;
+		private var m_handleBounds:Rectangle;
 		
-		private var _currentTimeLabel:TextField;
-		private var _totalTimeLabel:TextField;
+		private var m_currentTime:TextField;
+		private var m_totalTime:TextField;
 		
-		
-		private var _seekArea:Sprite;
+		private var m_hitArea:Sprite;
 		
 		// handle position variables
-		private var _scrolling:Boolean;
-		private var _start:Point;
-		private var _previous:Point;
-		private var _current:Point;			
+		private var m_isScrolling:Boolean;
+		private var m_seekCache:Number;
+		private var m_seek:Number;			
 
-		
 		private static var PADDING:int = 38;
 		
-		private var _width:uint;
+		private var m_width:uint;
 		
 		// graphics 
 		[Embed(source='../src/resources/png/video/controlbar/Background.png')]
@@ -81,83 +74,111 @@ package se.konstruktor.as3ui.video
 
 		private function initalize(width:int):void
 		{
-			_background = new ScaleBitmap((new BACKGROUND_PNG() as Bitmap).bitmapData);
-			_progress = new ScaleBitmap((new PROGRESS_PNG() as Bitmap).bitmapData);
-			_fullness = new ScaleBitmap((new FULLNESS_PNG() as Bitmap).bitmapData);
+			m_background = new ScaleBitmap((new BACKGROUND_PNG() as Bitmap).bitmapData);
+			m_progress = new ScaleBitmap((new PROGRESS_PNG() as Bitmap).bitmapData);
+			m_fullness = new ScaleBitmap((new FULLNESS_PNG() as Bitmap).bitmapData);
 			
-			_background.scale9Grid = new Rectangle(45,0,110,_progress.height);
-			_fullness.scale9Grid = new Rectangle(45,0,110,_progress.height);
-			_progress.scale9Grid = new Rectangle(45,0,110,_progress.height);
+			m_background.scale9Grid = new Rectangle(45,0,110,m_progress.height);
+			m_fullness.scale9Grid = new Rectangle(45,0,110,m_progress.height);
+			m_progress.scale9Grid = new Rectangle(45,0,110,m_progress.height);
 			
 			
 			
-			_backgroundMask = new Shape();
-			_fullnessMask = new Shape();
-			_progressMask = new Shape();
+			m_backgroundMask = new Shape();
+			m_fullnessMask = new Shape();
+			m_progressMask = new Shape();
 
-			_handle = new Sprite();
-			_handle.addChild(new HANDLE_PNG());
-			_handleBar = new Sprite();
-			_handleBounds = new Rectangle();
+			m_handle = new Sprite();
+			m_handle.addChild(new HANDLE_PNG());
+			m_handleBar = new Sprite();
+			m_handleBounds = new Rectangle();
 
-			_seekArea = new Sprite();
+			m_hitArea = new Sprite();
 
-			_currentTimeLabel = new TextField();
-			_currentTimeLabel.defaultTextFormat = new TextFormat("Myriad Bold",11,0xFFFFFF,null,null,null,null,null,TextFormatAlign.RIGHT);
-			_currentTimeLabel.antiAliasType = AntiAliasType.ADVANCED;
-			_currentTimeLabel.width = 38;
-			_currentTimeLabel.height = 13;
-			_currentTimeLabel.embedFonts = true;
-			_currentTimeLabel.filters = [new DropShadowFilter(1,260,0,1,0,0,0.5)];
-			_currentTimeLabel.text = "00:00";
-			_currentTimeLabel.alpha = 0.3;
+			m_currentTime = new TextField();
+			m_currentTime.defaultTextFormat = new TextFormat("Myriad Bold",11,0xFFFFFF,null,null,null,null,null,TextFormatAlign.RIGHT);
+			m_currentTime.antiAliasType = AntiAliasType.ADVANCED;
+			m_currentTime.width = 38;
+			m_currentTime.height = 13;
+			m_currentTime.embedFonts = true;
+			m_currentTime.filters = [new DropShadowFilter(1,260,0,1,0,0,0.5)];
+			m_currentTime.text = "00:00";
+			m_currentTime.alpha = 0.3;
 
 
-			_totalTimeLabel = new TextField();
-			_totalTimeLabel.defaultTextFormat = new TextFormat("Myriad Bold",11,0xFFFFFF,null,null,null,null,null,TextFormatAlign.LEFT);
-			_totalTimeLabel.antiAliasType = AntiAliasType.ADVANCED;
-//			_totalTimeLabel.border = true;
-			_totalTimeLabel.width = 38;
-			_totalTimeLabel.height = 13;
-			_totalTimeLabel.embedFonts = true;
-			_totalTimeLabel.filters = [new DropShadowFilter(1,260,0,1,0,0,0.5)];
-			_totalTimeLabel.text = "00:00";
-			_totalTimeLabel.alpha = 0.3;
+			m_totalTime = new TextField();
+			m_totalTime.defaultTextFormat = new TextFormat("Myriad Bold",11,0xFFFFFF,null,null,null,null,null,TextFormatAlign.LEFT);
+			m_totalTime.antiAliasType = AntiAliasType.ADVANCED;
+			m_totalTime.width = 38;
+			m_totalTime.height = 13;
+			m_totalTime.embedFonts = true;
+			m_totalTime.filters = [new DropShadowFilter(1,260,0,1,0,0,0.5)];
+			m_totalTime.text = "00:00";
+			m_totalTime.alpha = 0.3;
 
-			_handleBar.addChild(_handle);
+			m_handleBar.addChild(m_handle);
 			
-			_fullness.mask = _fullnessMask;
-			_progress.mask = _progressMask;
-			_background.mask = _backgroundMask;
+			m_fullness.mask = m_fullnessMask;
+			m_progress.mask = m_progressMask;
+			m_background.mask = m_backgroundMask;
 			
-			addChild(_background);
-			addChild(_backgroundMask);
-			addChild(_progress);
-			addChild(_progressMask);
-			addChild(_fullness);
-			addChild(_fullnessMask);
-			addChild(_seekArea);
-			addChild(_handleBar);
-			addChild(_currentTimeLabel);
-			addChild(_totalTimeLabel);
+			addChild(m_background);
+			addChild(m_backgroundMask);
+			addChild(m_progress);
+			addChild(m_progressMask);
+			addChild(m_fullness);
+			addChild(m_fullnessMask);
+			addChild(m_hitArea);
+			addChild(m_handleBar);
+			addChild(m_currentTime);
+			addChild(m_totalTime);
 
 			this.width = width;	
-			_handle.addEventListener(MouseEvent.MOUSE_DOWN,onPressHandle);
-			
-			_seekArea.addEventListener(MouseEvent.MOUSE_DOWN,onPressSeekArea);
+			m_handle.addEventListener(MouseEvent.MOUSE_DOWN,onPressHandle);
+			m_hitArea.addEventListener(MouseEvent.MOUSE_DOWN,onPressSeekArea);
 			
 		}
-		
-		private function onPressSeekArea(event:MouseEvent):void
+
+		private function onPressHandle(event:MouseEvent):void
+		{
+			stage.addEventListener(MouseEvent.MOUSE_UP,onReleaseHandle);
+			stage.addEventListener(MouseEvent.MOUSE_MOVE,onMoveHandle);
+			m_handle.startDrag(false,m_handleBounds);
+			m_isScrolling = true;
+			m_seekCache = m_handle.x;
+			m_seek = m_seekCache;			
+		}
+
+		private function onMoveHandle(event:MouseEvent):void
 		{
 			var dist:Number;
-			var delta:Number;	
+					
+			m_isScrolling = true;
+			m_seekCache	= m_seek;
+			m_seek	= m_handle.x;
+		
+			if(m_seek != m_seekCache)
+			{
+				dist =  m_seek / range;
+				dispatchEvent(new ScrollBarEvent(ScrollBarEvent.SCROLL,true,true));
+			}	
+			event.updateAfterEvent();
+		}
+		
+		private function onReleaseHandle(event:MouseEvent):void
+		{
+			stage.removeEventListener(MouseEvent.MOUSE_UP,onReleaseHandle);
+			stage.removeEventListener(MouseEvent.MOUSE_MOVE,onMoveHandle);
+			m_handle.stopDrag();
+			m_isScrolling = false;
+			m_seekCache	= m_seek;
+			m_seek	= m_handle.x;
+		}	
 
-			dist =  event.localX / _seekArea.width;
-			delta = (event.localX - _handle.x) / range;
-			// Todo: change to scroll to
-//			dispatchEvent(new ScrollEvent(ScrollEvent.SCROLL_STOP,dist,delta));			
-
+		private function onPressSeekArea(event:MouseEvent):void
+		{
+			handle =  event.localX / m_hitArea.width;
+			dispatchEvent(new ScrollBarEvent(ScrollBarEvent.SCROLL,true,true));			
 		}
 		
 		private function formatTime(time:Number):String
@@ -173,32 +194,107 @@ package se.konstruktor.as3ui.video
 			return ret;		
 			 
 		}
+
+		private function updateMasks():void
+		{
+			var wProgress:Number = (m_progress.width-PADDING*2)*m_progressValue;
+			var wFullness:Number = (m_fullness.width-PADDING*2)*m_fullnessValue;
+			var wProgressDiff:Number = Math.max(0,wProgress-wFullness);
+			
+			var wTotal:Number = Math.max(wProgress,wFullness);
+			var h:Number = m_background.height
+			var xPos:Number = PADDING;
+			
+			m_backgroundMask.graphics.clear();
+			m_backgroundMask.graphics.beginFill(0xFF0000,1);
+			m_backgroundMask.graphics.drawRect(0,0,xPos,h);
+			m_backgroundMask.graphics.drawRect(xPos+wTotal,0,m_background.width-xPos-wTotal,h);
+			m_backgroundMask.graphics.endFill();			
+
+			m_fullnessMask.graphics.clear();
+			m_fullnessMask.graphics.beginFill(0x00FF00,1);
+			m_fullnessMask.graphics.drawRect(xPos,0,wFullness,h);
+			m_fullnessMask.graphics.endFill();			
+
+			m_progressMask.graphics.clear();
+			m_progressMask.graphics.beginFill(0x0000FF,1);
+			m_progressMask.graphics.drawRect(xPos+wFullness,0,wProgressDiff,h);
+			m_progressMask.graphics.endFill();			
+
+		}
+
+		private function get range():int
+		{
+			return m_width-PADDING*2-m_handle.width;
+		}
+
+		override public function set width(value:Number):void
+		{
+			
+			var handelValue:Number = m_handle.x / range; 
+
+			
+			m_width = Math.round(value);
+
+			m_background.width = m_width;
+			m_progress.width = m_width;
+			m_fullness.width = m_width;
+			
+			m_hitArea.x = PADDING;
+			m_hitArea.graphics.clear();
+			m_hitArea.graphics.beginFill(0x0000FF,0);
+			m_hitArea.graphics.drawRect(0,0,m_width-PADDING*2,12);
+			m_hitArea.y = Math.round( (m_fullness.height-m_hitArea.height)/2 ); 
+			
+			m_handleBar.x = PADDING;
+			m_handleBar.y = Math.round( (m_fullness.height-m_handle.height)/2 ) - 1; 
+			m_handleBounds.width = range;
+			
+			m_currentTime.y = Math.round( (m_fullness.height-m_currentTime.height -1)/2 );
+			m_totalTime.y = m_currentTime.y
+			m_totalTime.x = Math.round(m_width - m_totalTime.width);
+
+			fullness = m_fullnessValue;
+			progress = m_progressValue;
+			handle =  handelValue;
+
+		}
 		
+		override public function get width():Number
+		{
+			return  m_width;
+		}
+
+		public function set handle(percent:Number):void
+		{
+			m_handle.x = Math.round(range*percent);
+		}
+
+		public function get handle():Number
+		{
+			return m_handle.x/range;
+		}
+
 		public function set totalTime(time:Number):void
 		{
-			_totalTimeLabel.text = formatTime(time);
-			_totalTimeLabel.alpha = 1;
+			m_totalTime.text = formatTime(time);
+			m_totalTime.alpha = 1;
 		}
 		
 		public function set currentTime(time:Number):void
 		{
-			_currentTimeLabel.text = formatTime(time);
-			_currentTimeLabel.alpha = 1;
-		}
-
-		public function get fullness():Number
-		{
-			return _fullnessValue;
+			m_currentTime.text = formatTime(time);
+			m_currentTime.alpha = 1;
 		}
 
 		public function set fullness(value:Number):void
 		{
-			if(!_scrolling) 
+			if(!m_isScrolling) 
 			{
-				_fullnessValue = value;
+				m_fullnessValue = value;
 				handle = value;
 			} else {
-				_fullnessValue = _handle.x / range;
+				m_fullnessValue = m_handle.x / range;
 			}
 
 			updateMasks();
@@ -206,142 +302,9 @@ package se.konstruktor.as3ui.video
 		
 		public function set progress(value:Number):void
 		{
-			_progressValue = value;
+			m_progressValue = value;
 			
 			updateMasks();
-		}
-
-		private function updateMasks():void
-		{
-			var wProgress:Number = (_progress.width-PADDING*2)*_progressValue;
-			var wFullness:Number = (_fullness.width-PADDING*2)*_fullnessValue;
-			var wProgressDiff:Number = Math.max(0,wProgress-wFullness);
-			
-			var wTotal:Number = Math.max(wProgress,wFullness);
-			var h:Number = _background.height
-			var xPos:Number = PADDING;
-			
-			_backgroundMask.graphics.clear();
-			_backgroundMask.graphics.beginFill(0xFF0000,1);
-			_backgroundMask.graphics.drawRect(0,0,xPos,h);
-			_backgroundMask.graphics.drawRect(xPos+wTotal,0,_background.width-xPos-wTotal,h);
-			_backgroundMask.graphics.endFill();			
-
-			_fullnessMask.graphics.clear();
-			_fullnessMask.graphics.beginFill(0x00FF00,1);
-			_fullnessMask.graphics.drawRect(xPos,0,wFullness,h);
-			_fullnessMask.graphics.endFill();			
-
-			_progressMask.graphics.clear();
-			_progressMask.graphics.beginFill(0x0000FF,1);
-			_progressMask.graphics.drawRect(xPos+wFullness,0,wProgressDiff,h);
-			_progressMask.graphics.endFill();			
-
-		}
-
-		public function set handle(percent:Number):void
-		{
-			_handle.x = Math.round(range*percent);
-		}
-
-		public function get handle():Number
-		{
-			return _handle.x/range;
-		}
-
-		private function get range():int
-		{
-			return _width-PADDING*2-_handle.width;
-		}
-
-		private function onPressHandle(event:MouseEvent):void
-		{
-			var dist:Number;
-			var delta:Number;
-			
-			stage.addEventListener(MouseEvent.MOUSE_UP,onReleaseHandle);
-			stage.addEventListener(MouseEvent.MOUSE_MOVE,onMoveHandle);
-			_handle.startDrag(false,_handleBounds);
-
-			_scrolling = true;
-			_start = new Point(_handle.x,_handle.y);
-			_previous = _start;
-			_current = _start;			
-
-			dist =  _current.x / range;
-			delta = (_current.x - _start.x) / range;
-		}
-
-		private function onMoveHandle(event:MouseEvent):void
-		{
-			var dist:Number;
-			var delta:Number;	
-					
-			_scrolling = true;
-			_previous	= _current;
-			_current	= new Point(_handle.x,_handle.y);
-		
-			if(!_current.equals(_previous))
-			{
-				dist =  _current.x / range;
-				delta = (_current.x - _start.x) / range;
-				dispatchEvent(new ScrollBarEvent(ScrollBarEvent.SCROLL,true,true));			
-			}	
-			event.updateAfterEvent();
-		}
-		
-		private function onReleaseHandle(event:MouseEvent):void
-		{
-			stage.removeEventListener(MouseEvent.MOUSE_UP,onReleaseHandle);
-			stage.removeEventListener(MouseEvent.MOUSE_MOVE,onMoveHandle);
-
-			var dist:Number;
-			var delta:Number;	
-
-			_handle.stopDrag();
-			_scrolling = false;
-			_previous	= _current;
-			_current	= new Point(_handle.x,_handle.y);
-
-			dist =  _current.x / range;
-			delta = (_current.x - _start.x) / range;
-		}	
-
-		override public function set width(value:Number):void
-		{
-			
-			var handelValue:Number = _handle.x / range; 
-
-			
-			_width = Math.round(value);
-
-			_background.width = _width;
-			_progress.width = _width;
-			_fullness.width = _width;
-			
-			_seekArea.x = PADDING;
-			_seekArea.graphics.clear();
-			_seekArea.graphics.beginFill(0x0000FF,0);
-			_seekArea.graphics.drawRect(0,0,_width-PADDING*2,12);
-			_seekArea.y = Math.round( (_fullness.height-_seekArea.height)/2 ); 
-			
-			_handleBar.x = PADDING;
-			_handleBar.y = Math.round( (_fullness.height-_handle.height)/2 ) - 1; 
-			_handleBounds.width = range;
-			
-			_currentTimeLabel.y = Math.round( (_fullness.height-_currentTimeLabel.height -1)/2 );
-			_totalTimeLabel.y = _currentTimeLabel.y
-			_totalTimeLabel.x = Math.round(_width - _totalTimeLabel.width);
-
-			fullness = _fullnessValue;
-			progress = _progressValue;
-			handle =  handelValue;
-
-		}
-		
-		override public function get width():Number
-		{
-			return  _width;
 		}
 
 	}
