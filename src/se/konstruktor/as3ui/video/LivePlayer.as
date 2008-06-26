@@ -95,6 +95,25 @@ package se.konstruktor.as3ui.video
 			}
 			setState(VideoState.STOPPED);
 		}
+		
+		override public function close():void
+		{
+			if(m_rtmpNC != null)
+			{
+				m_rtmpNC.stop();
+				m_rtmpNC.close();
+				m_rtmpNC = null;
+			}
+			
+			if(m_akamaiNC != null)
+			{
+				m_akamaiNC.close();
+				m_akamaiNC = null;
+			}
+
+			super.close();
+				
+		}
 
 
 		private function connectRTMP():void
@@ -122,6 +141,7 @@ package se.konstruktor.as3ui.video
 		
 		private function verifyAkamaiLocation():void {
 			// Verify Geo Location
+			if(m_contentPath == null || m_contentPath == "") return;
 			var loader:URLLoader = new URLLoader(new URLRequest(m_contentPath));
 			loader.addEventListener(Event.COMPLETE, loadedAkamaiLocation);
 			loader.addEventListener(IOErrorEvent.IO_ERROR , handleIOError);
@@ -191,6 +211,10 @@ package se.konstruktor.as3ui.video
 					conn.play(conn.name);
 				break;			
 			}
+
+			// ToDo: this is a QD fix.
+			onNetStatus( new NetStatusEvent( NetStatusEvent.NET_STATUS, false, false,{code:NetStatus.NETCONNECTION_CONNECT_REJECTED}) );
+
 		}
 		
 		private function connectedHandler(e:AkamaiNotificationEvent):void {

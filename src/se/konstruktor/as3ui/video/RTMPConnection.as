@@ -67,9 +67,8 @@ package se.konstruktor.as3ui.video
 		
 		private function onNetStatus(event:NetStatusEvent):void
 		{
-			trace("============ onNetStatus ============");
-			trace(">>" + event.type );
-			trace(event.info.code);
+//			trace("============ onNetStatus ============");
+//			trace(event.info.code);
 			switch (event.info.code)
 			{
 				case NetStatus.NETCONNECTION_CONNECT_SUCCESS:

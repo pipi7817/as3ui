@@ -372,7 +372,10 @@ package se.konstruktor.as3ui.video
         protected function onNetStatus(event:NetStatusEvent):void
         {
 			if(DEBUG) trace("======= onNetStatus ========");
-			if(DEBUG) trace(event.info.code);
+			if(DEBUG) trace(" baseplayer: " + event.info.code);
+
+
+
 			switch ( event.info.code )
 			{
 			case NetStatus.NETSTREAM_BUFFER_EMPTY:
@@ -432,6 +435,10 @@ package se.konstruktor.as3ui.video
 				setState(VideoState.CONNECTION_ERROR);
 			break;
 	        }
+
+	        trace("<<<<<<<<<");
+	        dispatchEvent( new NetStatusEvent(NetStatusEvent.NET_STATUS,true,true,event.info) );
+	        
         }
 
         protected function onMetaData(a_info:Object):void {
