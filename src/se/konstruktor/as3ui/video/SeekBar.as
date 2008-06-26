@@ -13,9 +13,10 @@ package se.konstruktor.as3ui.video
 	
 	import org.bytearray.display.ScaleBitmap;
 	
+	import se.konstruktor.as3ui.UIObject;
 	import se.konstruktor.as3ui.controls.scrollbar.ScrollBarEvent;
 	
-	public class SeekBar extends Sprite
+	public class SeekBar extends UIObject
 	{
 		private var m_background:ScaleBitmap;
 		private var m_backgroundMask:Shape;
@@ -199,11 +200,15 @@ package se.konstruktor.as3ui.video
 		{
 			var wProgress:Number = (m_progress.width-PADDING*2)*m_progressValue;
 			var wFullness:Number = (m_fullness.width-PADDING*2)*m_fullnessValue;
+
+			if( isNaN(wProgress) )  wProgress = 0;
+			if( isNaN(wFullness) )  wFullness = 0;
+
 			var wProgressDiff:Number = Math.max(0,wProgress-wFullness);
-			
 			var wTotal:Number = Math.max(wProgress,wFullness);
 			var h:Number = m_background.height
 			var xPos:Number = PADDING;
+
 			
 			m_backgroundMask.graphics.clear();
 			m_backgroundMask.graphics.beginFill(0xFF0000,1);

@@ -13,20 +13,20 @@ package {
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			
-			var baseButtonExample:BaseButtonExample = new BaseButtonExample();
-			baseButtonExample.x = 50;
-			baseButtonExample.y = 50;
-			addChild(baseButtonExample);
-			
-			var simpleButtonExample:SimpleButtonExample = new SimpleButtonExample();
-			simpleButtonExample.x = 50;
-			simpleButtonExample.y = 100;
-			addChild(simpleButtonExample);
-			
-			var textButtonExample:TextButtonExample = new TextButtonExample();
-			textButtonExample.x = 50;
-			textButtonExample.y = 150;
-			addChild(textButtonExample);
+//			var baseButtonExample:BaseButtonExample = new BaseButtonExample();
+//			baseButtonExample.x = 50;
+//			baseButtonExample.y = 50;
+//			addChild(baseButtonExample);
+//			
+//			var simpleButtonExample:SimpleButtonExample = new SimpleButtonExample();
+//			simpleButtonExample.x = 50;
+//			simpleButtonExample.y = 100;
+//			addChild(simpleButtonExample);
+//			
+//			var textButtonExample:TextButtonExample = new TextButtonExample();
+//			textButtonExample.x = 50;
+//			textButtonExample.y = 150;
+//			addChild(textButtonExample);
 			
 			var vp:VideoPlayerExample = new VideoPlayerExample();
 			vp.x = 50;
