@@ -1,0 +1,354 @@
+package se.konstruktor.as3ui.video
+{
+	import fl.video.VideoError;
+	
+	import flash.events.EventDispatcher;
+	import flash.events.NetStatusEvent;
+	import flash.net.NetConnection;
+	import flash.net.NetStream;
+	import flash.net.ObjectEncoding;
+	import flash.utils.Timer;
+
+	public class RTMPConnection extends EventDispatcher
+	{
+		private var m_nc:NetConnection;
+		private var m_ns:NetStream;
+		
+		// Constants 			
+		protected static const PROGRESS_UPDATE_INTERVAL		:	uint	= 250;		
+		
+		// Settings
+		private var m_objectEncoding:uint = ObjectEncoding.AMF0;
+		private var m_proxyType:String = "best";
+		
+		// Timers
+		private var m_progressTimer:Timer;
+		
+		// Status
+		private var m_playingLiveStream:Boolean;
+		private var m_streamEstablished:Boolean;
+		private var m_connectionEstablished:Boolean;
+		private var m_isPaused:Boolean;
+		private var m_isPlaying:Boolean;
+		private var m_isLive:Boolean = false;
+		private var m_isProgressive:Boolean;
+
+		// Data
+		private var m_pendingLiveStreamName:String;
+		private var m_media:VideoMedia;
+		private var m_metaData:Object;
+		
+		public function RTMPConnection()
+		{
+			m_progressTimer = new Timer(PROGRESS_UPDATE_INTERVAL);
+		}
+		
+		private function setupConnection():void
+		{
+			if(m_nc == null)
+			{
+				m_nc = new NetConnection();
+				m_nc.objectEncoding = m_objectEncoding;
+				m_nc.proxyType = m_proxyType;
+				m_nc.client = this;
+				m_nc.addEventListener(NetStatusEvent.NET_STATUS, onNetStatus);		
+			}
+		}
+		
+		private function cleanConnection():void
+		{
+			if(m_nc != null)
+			{		
+				if( m_nc.connected ) m_nc.close();
+				m_ns.close();
+				m_isPaused = false;
+			}
+		}
+		
+		private function onNetStatus(event:NetStatusEvent):void
+		{
+			trace("============ onNetStatus ============");
+			trace(">>" + event.type );
+			trace(event.info.code);
+			switch (event.info.code)
+			{
+				case NetStatus.NETCONNECTION_CONNECT_SUCCESS:
+					m_connectionEstablished = true;
+					setupStream();
+				break;
+			}
+
+			dispatchEvent(event);
+		}
+		
+		private function setupStream():void
+		{
+			m_ns = new NetStream(m_nc);
+			m_ns.client = this;
+			m_streamEstablished = true;
+		}
+		
+		
+		private function getConnectString():String
+		{
+			if (m_media == null)
+			{
+				return "";
+			}
+			else 
+			{
+				return m_media.protocol + ((m_media.serverName == null) ? "" : "/" + m_media.serverName + ((m_media.portNumber == null) ? "" : (":" + m_media.portNumber)) + "/") + ((m_media.wrappedURL == null) ? "" : m_media.wrappedURL + "/") + m_media.appName;
+			}
+		}
+		
+		public function connect(a_url:String):void
+		{
+			m_media = parseURL(a_url);
+			cleanConnection();
+			setupConnection();
+			
+			m_nc.connect( getConnectString() );
+			
+		}
+
+		public function play(name:String):void {
+			if (m_streamEstablished)
+			{
+//				if (!m_progressTimer.running)
+//				{
+//					m_progressTimer.start();				
+//				}
+	
+				if (m_isLive)
+				{
+					if(m_isPaused)
+					{
+						m_ns.resume();
+					}
+					else
+					{
+						m_pendingLiveStreamName = name;
+						m_playingLiveStream = true;
+						m_ns.play(name,-1);
+					}
+				} else {
+					m_playingLiveStream = false;
+					if ( m_isPaused )
+					{
+						m_ns.resume();
+					}
+					else if (m_isProgressive) {
+						m_ns.play(name);
+					} else {
+						if(!m_isPlaying)
+						{
+							m_ns.play(name,0);
+							m_ns.resume();
+						}
+					}
+				}
+	
+				m_isPaused = false;
+				m_isPlaying = true;
+			} else {
+				// ERROR "Cannot play, pause, seek or resume since the stream is not defined";
+			}
+		}
+
+		public function pause():void {
+			if (m_streamEstablished) {
+				m_ns.pause();
+				m_isPaused = true;
+			} else {
+				// ERROR "Cannot play, pause, seek or resume since the stream is not defined";
+			}
+		}
+		
+		public function stop():void
+		{
+			if (m_streamEstablished) {
+				m_ns.pause();
+				m_isPaused = false;
+				m_isPlaying = false;
+				if(m_isLive)
+				{
+					m_isPaused = true;
+					m_isPlaying = false;
+				}
+
+			} else {
+				// ERROR "Cannot play, pause, seek or resume since the stream is not defined";
+			}
+		}
+		
+		// Getters / Setters
+		
+		public function get name():String
+		{
+			return m_media.streamName;
+		}
+		
+		public function get netStream():NetStream
+		{
+			return m_ns;
+		}
+		
+		public function get isLive():Boolean {
+			return m_isLive;
+		}
+
+		public function set isLive(a_isLive:Boolean):void {
+			m_isLive = a_isLive;
+		}
+
+
+		// Helpers
+		internal function parseURL(a_url:String):VideoMedia
+		{
+			var parseResults:VideoMedia = new VideoMedia();
+			
+			// get protocol
+			var startIndex:int = 0;
+			var endIndex:int = a_url.indexOf(":/", startIndex);
+			if (endIndex >= 0) {
+				endIndex += 2;
+				parseResults.protocol = a_url.slice(startIndex, endIndex).toLowerCase();
+				parseResults.isRelative = false;
+			} else {
+				parseResults.isRelative = true;
+			}
+			
+			if ( parseResults.protocol != null &&
+			     ( parseResults.protocol == "rtmp:/" ||
+			       parseResults.protocol == "rtmpt:/" ||
+			       parseResults.protocol == "rtmps:/" ||
+			       parseResults.protocol == "rtmpe:/" ||
+			       parseResults.protocol == "rtmpte:/" ) )
+			{
+				parseResults.isRTMP = true;
+				
+				startIndex = endIndex;
+
+				if (a_url.charAt(startIndex) == '/') {
+					startIndex++;
+					// get server (and maybe port)
+					var colonIndex:int = a_url.indexOf(":", startIndex);
+					var slashIndex:int = a_url.indexOf("/", startIndex);
+					if (slashIndex < 0) {
+						if (colonIndex < 0) {
+							parseResults.serverName = a_url.slice(startIndex);
+						} else {
+							endIndex = colonIndex;
+							parseResults.portNumber = a_url.slice(startIndex, endIndex);
+							startIndex = endIndex + 1;
+							parseResults.serverName = a_url.slice(startIndex);
+						}
+						return parseResults;
+					}
+					if (colonIndex >= 0 && colonIndex < slashIndex) {
+						endIndex = colonIndex;
+						parseResults.serverName = a_url.slice(startIndex, endIndex);
+						startIndex = endIndex + 1;
+						endIndex = slashIndex;
+						parseResults.portNumber = a_url.slice(startIndex, endIndex);
+					} else {
+						endIndex = slashIndex;
+						parseResults.serverName = a_url.slice(startIndex, endIndex);
+					}
+					startIndex = endIndex + 1;
+				}
+
+				// handle wrapped RTMP servers bit recursively, if it is there
+				if (a_url.charAt(startIndex) == '?') {
+					var subURL:String = a_url.slice(startIndex + 1);
+					var subParseResults:VideoMedia = parseURL(subURL);
+					if (subParseResults.protocol == null || !subParseResults.isRTMP) {
+						throw new VideoError(VideoError.INVALID_SOURCE, a_url);
+					}
+					parseResults.wrappedURL = "?";
+					parseResults.wrappedURL += subParseResults.protocol;
+					if (subParseResults.serverName != null) {
+						parseResults.wrappedURL += "/";
+						parseResults.wrappedURL +=  subParseResults.serverName;
+					}
+					if (subParseResults.portNumber != null) {
+						parseResults.wrappedURL += ":" + subParseResults.portNumber;
+					}
+					if (subParseResults.wrappedURL != null) {
+						parseResults.wrappedURL += "/";
+						parseResults.wrappedURL +=  subParseResults.wrappedURL;
+					}
+					parseResults.appName = subParseResults.appName;
+					parseResults.streamName = subParseResults.streamName;
+					return parseResults;
+				}
+				
+				// get application name
+				endIndex = a_url.indexOf("/", startIndex);
+				if (endIndex < 0) {
+					parseResults.appName = a_url.slice(startIndex);
+					return parseResults;
+				}
+				parseResults.appName = a_url.slice(startIndex, endIndex);
+				startIndex = endIndex + 1;
+
+				// check for instance name to be added to application name
+				endIndex = a_url.indexOf("/", startIndex);
+				if (endIndex < 0) {
+					parseResults.streamName = a_url.slice(startIndex);
+					// strip off .flv if included
+					if (parseResults.streamName.slice(-4).toLowerCase() == ".flv") {
+						parseResults.streamName = parseResults.streamName.slice(0, -4);
+					}
+					return parseResults;
+				}
+				parseResults.appName += "/";
+				parseResults.appName += a_url.slice(startIndex, endIndex);
+				startIndex = endIndex + 1;
+					
+				// get flv name
+				parseResults.streamName = a_url.slice(startIndex);
+				// strip off .flv if included
+				if (parseResults.streamName.slice(-4).toLowerCase() == ".flv") {
+					parseResults.streamName = parseResults.streamName.slice(0, -4);
+				}
+				
+			} else {
+				// is http, just return the full url received as streamName
+				parseResults.isRTMP = false;
+				parseResults.streamName = a_url;
+			}
+			return parseResults;
+		}		
+		
+		// TODO: ADD functionality
+		public function onBWDone(... args):void
+		{
+			return;
+		}
+		
+		public function close(... args):void
+		{
+			return;
+		}
+
+		public function onBWCheck(... args):void
+		{
+			return;		
+		}
+		
+		public function onMetaData(a_info:Object):void
+		{
+			m_metaData = a_info;
+        }
+ 
+        public function onCuePoint(a_info:Object):void {
+			return;
+        }
+        
+        public function onPlayStatus(... args):void
+        {
+        	return;
+        }
+	}
+}

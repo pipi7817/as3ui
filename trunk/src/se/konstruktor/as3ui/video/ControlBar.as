@@ -27,9 +27,13 @@ package se.konstruktor.as3ui.video
 		[Embed(source='../src/resources/png/video/controlbar/Button.png')]
 		private var BUTTON_PNG:Class;
 
+		[Embed(source='../src/resources/png/video/controlbar/Fullscreen.png')]
+		private var FULLSCREEN_PNG:Class;
+
 		private var m_play:Button;
 		private var m_stop:Button;
 		private var m_pause:Button;
+		private var m_fullscreen:Button;
 		
 		public function ControlBar()
 		{
@@ -38,13 +42,16 @@ package se.konstruktor.as3ui.video
 			m_play= new Button(new BUTTON_PNG(), new PLAY_PNG());
 			m_pause = new Button(new BUTTON_PNG(), new PAUSE_PNG());
 			m_stop = new Button(new BUTTON_PNG(), new STOP_PNG());
+			m_fullscreen = new Button(new BUTTON_PNG(), new FULLSCREEN_PNG());
 
 			m_pause.x = m_play.x + m_play.width;
 			m_stop.x = m_pause.x + m_pause.width;
+			m_fullscreen.x = m_stop.x + m_stop.width;
 			
 			addChild(m_play);
 			addChild(m_pause);
 			addChild(m_stop);
+			addChild(m_fullscreen);
 			
 			
 			addEventListener(ButtonEvent.PRESS,onPressButton);
@@ -64,6 +71,10 @@ package se.konstruktor.as3ui.video
 				
 				case m_pause:
 					dispatchEvent(new Event("pause",true,true) );
+				break;
+
+				case m_fullscreen:
+					dispatchEvent(new Event("fullscreen",true,true) );
 				break;
 			}
 		}

@@ -9,6 +9,7 @@ package se.konstruktor.as3ui.video
 	import flash.events.NetStatusEvent;
 	import flash.events.ProgressEvent;
 	import flash.events.TimerEvent;
+	import flash.media.SoundTransform;
 	import flash.media.Video;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
@@ -20,42 +21,42 @@ package se.konstruktor.as3ui.video
 	{
 		
 		// Constants 
-		private static const STATUS_UPDATE_INTERVAL		:	uint	= 250;
-		private static const DELAYED_BUFFERING_INTERVAL	:	uint	= 200;
-		private static const DEBUG						:	Boolean	= true;
-		private static const SEEK_INTERVAL				:	uint	= 250;
-		private static const SEEK_INTERVAL_REPEAT		:	uint	= 4;
+		protected static const STATUS_UPDATE_INTERVAL		:	uint	= 250;
+		protected static const DELAYED_BUFFERING_INTERVAL	:	uint	= 200;
+		protected static const DEBUG						:	Boolean	= true;
+		protected static const SEEK_INTERVAL				:	uint	= 250;
+		protected static const SEEK_INTERVAL_REPEAT			:	uint	= 4;
 		
-		private static const BUFFER_EMPTY				:	String	= "bufferEmpty";
-		private static const BUFFER_FULL				:	String	= "bufferFull";
-		private static const BUFFER_FLUSH				:	String	= "bufferFlush";		
+		protected static const BUFFER_EMPTY				:	String	= "bufferEmpty";
+		protected static const BUFFER_FULL				:	String	= "bufferFull";
+		protected static const BUFFER_FLUSH				:	String	= "bufferFlush";		
 
 		// Network
-		private var m_nc:NetConnection;
-		private var m_ns:NetStream;
+		protected var m_nc:NetConnection;
+		protected var m_ns:NetStream;
 		
 		// Timers
-		private var m_statusTimer:Timer;
-		private var m_delayedBufferingTimer:Timer;
-		private var m_recoverSeekTimer:Timer;
+		protected var m_statusTimer:Timer;
+		protected var m_delayedBufferingTimer:Timer;
+		protected var m_recoverSeekTimer:Timer;
 		
 		// States
-		private var m_state:String = VideoState.DISCONNECTED;
-		private var m_cachedState:String = m_state;
-		private var m_bufferState:String;
+		protected var m_state:String = VideoState.DISCONNECTED;
+		protected var m_cachedState:String = m_state;
+		protected var m_bufferState:String;
 		
 		// Stored data
-		private var m_streamLength:Number;
-		private var m_contentPath:String;
-		private var m_metadata:Object;
-		private var m_lastValidSeek:Number;
-		private var m_activeSeek:Boolean;
+		protected var m_streamLength:Number;
+		protected var m_contentPath:String;
+		protected var m_metadata:Object;
+		protected var m_lastValidSeek:Number;
+		protected var m_activeSeek:Boolean;
 
 		// Settings
-		private var m_autoSize:Boolean = false;
+		protected var m_autoSize:Boolean = false;
 
 		// Components
-		private var m_video:Video;
+		protected var m_video:Video;
 		
 
 		public function BasePlayer(a_width:Number, a_height:Number)
@@ -73,13 +74,20 @@ package se.konstruktor.as3ui.video
 			m_recoverSeekTimer.addEventListener(TimerEvent.TIMER, recoverSeek);
 			
 			m_video = new Video(a_width,a_height);
-			m_video.opaqueBackground = false;
+			m_video.opaqueBackground = true;
 
 			m_contentPath = "";
 			m_lastValidSeek = 0;
 
-			setSize();
+			super.setSize();
 			addChild(m_video);
+		}
+		
+		override public function setSize(a_width:Number=NaN, a_height:Number=NaN, a_pixelSnap:Boolean=false):void
+		{
+			m_video.width = a_width;
+			m_video.height = a_height;
+			super.setSize(a_width,a_height,true);
 		}
 
 		public function play(a_url:String = null):void
@@ -189,6 +197,16 @@ package se.konstruktor.as3ui.video
 			}
 			return nowTime;
         }
+        
+		public function get volume():Number {
+			return soundTransform.volume;
+        }
+
+		public function set volume(a_volume:Number):void {
+			var st:SoundTransform = soundTransform;
+			st.volume = a_volume;
+			soundTransform = st;
+		}
         
 		public function pause():void
 		{
@@ -302,7 +320,7 @@ package se.konstruktor.as3ui.video
 			m_ns = new NetStream(m_nc);
 			m_ns.client = {onMetaData:onMetaData,onCuePoint:onCuePoint};
 			m_ns.bufferTime = 1.0;
-			m_ns.addEventListener(NetStatusEvent.NET_STATUS,onNetStatus)
+			m_ns.addEventListener(NetStatusEvent.NET_STATUS,onNetStatus);
 			m_video.attachNetStream(m_ns);
         }
         
@@ -351,7 +369,7 @@ package se.konstruktor.as3ui.video
 
 		}
         		
-        private function onNetStatus(event:NetStatusEvent):void
+        protected function onNetStatus(event:NetStatusEvent):void
         {
 			if(DEBUG) trace("======= onNetStatus ========");
 			if(DEBUG) trace(event.info.code);
@@ -416,18 +434,18 @@ package se.konstruktor.as3ui.video
 	        }
         }
 
-        private function onMetaData(a_info:Object):void {
+        protected function onMetaData(a_info:Object):void {
 			if (m_metadata != null) return;
 			m_metadata = a_info;
 			if (isNaN(m_streamLength)) m_streamLength = m_metadata.duration;
 			dispatchEvent(new MetadataEvent(MetadataEvent.METADATA_RECEIVED, false, false, m_metadata));
         }
  
-        private function onCuePoint(a_info:Object):void {
+        protected function onCuePoint(a_info:Object):void {
 			dispatchEvent(new MetadataEvent(MetadataEvent.CUE_POINT, false, false, a_info	));
         }		
         
-        private function setState(a_state:String):void
+        protected function setState(a_state:String):void
         {
         	if (a_state == m_state) return;
 			m_cachedState = m_state;
