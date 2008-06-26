@@ -32,7 +32,6 @@ package se.konstruktor.as3ui.video
 		private var m_host:String;
 		private var m_file:String;
 		private var m_auth:String;
-		private var m_requestedURL:String;
 		
 		
 		// Connections 
@@ -53,7 +52,7 @@ package se.konstruktor.as3ui.video
 		
 		override public function play(a_url:String=null):void
 		{
-			m_requestedURL = a_url;
+			m_contentPath = a_url;
 			
 			
 			if( m_isAkamai ) 
@@ -104,7 +103,7 @@ package se.konstruktor.as3ui.video
 			{
 				m_rtmpNC = new RTMPConnection();
 				m_rtmpNC.isLive = m_isLive;
-				m_rtmpNC.connect(m_requestedURL);
+				m_rtmpNC.connect(m_contentPath);
 				m_rtmpNC.addEventListener(NetStatusEvent.NET_STATUS,rtmpConnectedHandler);
 			} 
 			else 
@@ -123,7 +122,7 @@ package se.konstruktor.as3ui.video
 		
 		private function verifyAkamaiLocation():void {
 			// Verify Geo Location
-			var loader:URLLoader = new URLLoader(new URLRequest(m_requestedURL));
+			var loader:URLLoader = new URLLoader(new URLRequest(m_contentPath));
 			loader.addEventListener(Event.COMPLETE, loadedAkamaiLocation);
 			loader.addEventListener(IOErrorEvent.IO_ERROR , handleIOError);
 			loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR ,handleSecurityError);
