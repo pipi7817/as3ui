@@ -219,6 +219,11 @@ package se.konstruktor.as3ui.video
 		{
 			m_isAkamai = a_value;
 		}
+		
+		public function set isLive(a_value:Boolean):void
+		{
+			m_isLive = a_value;
+		}
 
 
 		// Catches the netstream status events
