@@ -24,7 +24,7 @@ package {
 			addTest(se.konstruktor.as3ui.managers.FocusManagerTest.suite());
 			addTest(se.konstruktor.as3ui.UIObjectTest.suite());
 			addTest(se.konstruktor.as3ui.utils.stage.TopLevelTest.suite());
-			addTest(se.konstruktor.as3ui.video.BasePlayerTest.suite());
+//			addTest(se.konstruktor.as3ui.video.BasePlayerTest.suite());
 		}
 	}
 }

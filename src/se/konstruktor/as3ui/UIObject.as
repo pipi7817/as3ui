@@ -64,11 +64,11 @@ package se.konstruktor.as3ui
 
 		protected function showComplete():void
 		{
-			if(!visible)
-			{
+//			if(!visible)
+//			{
 				visible = true;
 				dispatchEvent(new UIEvent(UIEvent.SHOW_COMPLETE,true,true));
-			}
+//			}
 		}
 
 		public function hide():void
