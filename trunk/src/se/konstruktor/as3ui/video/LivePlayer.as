@@ -163,7 +163,7 @@ package se.konstruktor.as3ui.video
 					// ToDo: this is a QD fix.
 					onNetStatus( new NetStatusEvent( NetStatusEvent.NET_STATUS, false, false,{code:NetStatus.NETCONNECTION_CONNECT_REJECTED}) );
 				} else {
-					trace("Auth params: "+ xml.authParams);
+//					trace("Auth params: "+ xml.authParams);
 					trace("Congratulations - you are allowed to watch this stream!");
 					m_host = xml.hostname+"/"+xml.appName;
 					m_file = xml.streamName;
@@ -191,7 +191,7 @@ package se.konstruktor.as3ui.video
 	//			ak.addEventListener(AkamaiNotificationEvent.SUBSCRIBE_ATTEMPT,subscribeAttemptHandler);
 	//			ak.addEventListener(AkamaiStatusEvent.NETSTREAM,netStreamStatusHandler);
 	//			ak.addEventListener(AkamaiErrorEvent.ERROR,onError);
-				trace("Connection to: "+m_host);
+//				trace("Connection to: "+m_host);
 				m_akamaiNC.connect(m_host);
 			}
 			else
@@ -218,7 +218,7 @@ package se.konstruktor.as3ui.video
 		}
 		
 		private function connectedHandler(e:AkamaiNotificationEvent):void {
-			trace("connectedHandler");
+
 			var conn:AkamaiConnection = e.target as AkamaiConnection;
 			attachNetStream(conn.netStream);
 			conn.play(m_file);
@@ -251,7 +251,7 @@ package se.konstruktor.as3ui.video
 
 		// Catches the netstream status events
 		private function netStreamStatusHandler(e:AkamaiStatusEvent):void {
-			trace(e.info.code);
+	
 		}
 		
 
