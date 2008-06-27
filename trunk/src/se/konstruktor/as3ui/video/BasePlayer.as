@@ -210,7 +210,10 @@ package se.konstruktor.as3ui.video
 
 			if(m_ns != null)
 			{
-				m_ns.soundTransform = new SoundTransform(a_volume); //a_volume;
+				if(m_ns.soundTransform.volume != a_volume)
+				{
+					m_ns.soundTransform = new SoundTransform(a_volume); //a_volume;
+				}
 			}
 			
 		}
