@@ -23,7 +23,7 @@ package se.konstruktor.as3ui.video
 		// Constants 
 		protected static const STATUS_UPDATE_INTERVAL		:	uint	= 250;
 		protected static const DELAYED_BUFFERING_INTERVAL	:	uint	= 200;
-		protected static const DEBUG						:	Boolean	= true;
+		protected static const DEBUG						:	Boolean	= false;
 		protected static const SEEK_INTERVAL				:	uint	= 250;
 		protected static const SEEK_INTERVAL_REPEAT			:	uint	= 4;
 		
@@ -199,13 +199,20 @@ package se.konstruktor.as3ui.video
         }
         
 		public function get volume():Number {
-			return soundTransform.volume;
+			if(m_ns != null)
+			{
+				return m_ns.soundTransform.volume;
+			}			
+			return 0;
         }
 
 		public function set volume(a_volume:Number):void {
-			var st:SoundTransform = soundTransform;
-			st.volume = a_volume;
-			soundTransform = st;
+
+			if(m_ns != null)
+			{
+				m_ns.soundTransform = new SoundTransform(a_volume); //a_volume;
+			}
+			
 		}
         
 		public function pause():void
@@ -435,8 +442,6 @@ package se.konstruktor.as3ui.video
 				setState(VideoState.CONNECTION_ERROR);
 			break;
 	        }
-
-	        trace("<<<<<<<<<");
 	        dispatchEvent( new NetStatusEvent(NetStatusEvent.NET_STATUS,true,true,event.info) );
 	        
         }
