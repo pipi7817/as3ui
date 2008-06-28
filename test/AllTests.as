@@ -14,6 +14,7 @@ package {
 	import se.konstruktor.as3ui.UIObjectTest;
 	import se.konstruktor.as3ui.utils.stage.TopLevelTest;
 	import se.konstruktor.as3ui.video.BasePlayerTest;
+	import se.konstruktor.as3ui.video.VideoURLTest;
 
 	public class AllTests extends TestSuite {
 
@@ -25,6 +26,7 @@ package {
 			addTest(se.konstruktor.as3ui.UIObjectTest.suite());
 			addTest(se.konstruktor.as3ui.utils.stage.TopLevelTest.suite());
 //			addTest(se.konstruktor.as3ui.video.BasePlayerTest.suite());
+			addTest(se.konstruktor.as3ui.video.VideoURLTest.suite());
 		}
 	}
 }
