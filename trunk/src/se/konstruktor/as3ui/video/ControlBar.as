@@ -7,6 +7,7 @@ package se.konstruktor.as3ui.video
 	
 	import se.konstruktor.as3ui.UIObject;
 	import se.konstruktor.as3ui.controls.button.ButtonEvent;
+	import se.konstruktor.as3ui.video.controlbar.Button;
 
 	public class ControlBar extends UIObject
 	{

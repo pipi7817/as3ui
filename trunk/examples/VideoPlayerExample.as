@@ -11,7 +11,7 @@ package
 	import se.konstruktor.as3ui.controls.scrollbar.ScrollBarEvent;
 	import se.konstruktor.as3ui.video.ControlBar;
 	import se.konstruktor.as3ui.video.LivePlayer;
-	import se.konstruktor.as3ui.video.SeekBar;
+	import se.konstruktor.as3ui.video.controlbar.SeekBar;
 
 	public class VideoPlayerExample extends Sprite
 	{
@@ -78,12 +78,15 @@ package
 //				m_rtmpNC.connect("rtmp://fl0.c00451.cdn.qbrick.com/00451/20080619Spel_s");
 //				m_rtmpNC.connect("rtmp://fl0.c00928.cdn.qbrick.com/00928/enc3low");
 // 				http://akastreaming.svtiwebb.se/vp/sesvt/se/sesvt_live.xml?gjmf=SESVT_LIVE_1@s2204
-				m_player.isAkamai = true;
+
+//				m_player.isAkamai = true;
 //				m_player.play("http://akastreaming.svtiwebb.se/vp/sesvt/se/sesvt_live.xml?gjmf=SESVT_LIVE_1@s2204");
-				m_player.play("http://ebustreaming.fr.edgesuite.net/akamai/flash/event.xml?gjmf=flash/filename");
+//				m_player.play("http://ebustreaming.fr.edgesuite.net/akamai/flash/event.xml?gjmf=flash/filename");
 
 //				m_player.isAkamai = false;
-////				m_player.play("rtmp://fl0.c00928.cdn.qbrick.com/00928/enc3low");
+				m_player.isLive= false;
+//				m_player.play("rtmp://fl0.c00928.cdn.qbrick.com/00928/enc3low");
+				m_player.play("rtmp://fl0.c00451.cdn.qbrick.com/00451/20080610iphoneNYNY_s");
 //				m_player.play("rtmp://fl0.c00928.cdn.qbrick.com/00000/denied");
 			}
 			else 

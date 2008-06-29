@@ -1,4 +1,5 @@
-package {
+package
+{
 	/**
 	 * This file has been automatically created using
 	 * #!/usr/bin/ruby script/generate suite
@@ -14,19 +15,22 @@ package {
 	import se.konstruktor.as3ui.UIObjectTest;
 	import se.konstruktor.as3ui.utils.stage.TopLevelTest;
 	import se.konstruktor.as3ui.video.BasePlayerTest;
-	import se.konstruktor.as3ui.video.VideoURLTest;
+	import se.konstruktor.as3ui.video.MediaTest;
 
-	public class AllTests extends TestSuite {
+	public class AllTests extends TestSuite
+	{
 
-		public function AllTests() {
+		public function AllTests()
+		{
 			addTest(se.konstruktor.as3ui.controls.button.BaseButtonTest.suite());
 			addTest(se.konstruktor.as3ui.controls.button.SimpleButtonTest.suite());
 			addTest(se.konstruktor.as3ui.controls.scrollbar.BaseScrollBarTest.suite());
 			addTest(se.konstruktor.as3ui.managers.FocusManagerTest.suite());
 			addTest(se.konstruktor.as3ui.UIObjectTest.suite());
 			addTest(se.konstruktor.as3ui.utils.stage.TopLevelTest.suite());
-//			addTest(se.konstruktor.as3ui.video.BasePlayerTest.suite());
-			addTest(se.konstruktor.as3ui.video.VideoURLTest.suite());
+			addTest(se.konstruktor.as3ui.video.BasePlayerTest.suite());
+			addTest(se.konstruktor.as3ui.video.MediaTest.suite());
 		}
+
 	}
 }

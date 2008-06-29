@@ -16,6 +16,7 @@ package se.konstruktor.as3ui.video
 	import flash.utils.Timer;
 	
 	import se.konstruktor.as3ui.UIObject;
+	import se.konstruktor.as3ui.net.NetStatus;
 
 	public class BasePlayer extends UIObject
 	{
