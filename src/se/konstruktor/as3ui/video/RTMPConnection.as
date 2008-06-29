@@ -96,6 +96,7 @@ package se.konstruktor.as3ui.video
 		
 		public function connect(a_url:String):void
 		{
+			m_media = new Media();
 			m_media.parseURL(a_url);
 			cleanConnection();
 			setupConnection();
