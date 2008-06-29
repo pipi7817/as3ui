@@ -3,6 +3,8 @@ package {
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	
+	import se.konstruktor.as3ui.controls.input.BaseInput;
+	
 //	import se.konstruktor.as3ui.managers.FocusManager;
 	
 	public class as3ui extends Sprite {
@@ -28,6 +30,12 @@ package {
 //			textButtonExample.y = 150;
 //			addChild(textButtonExample);
 			
+			
+			var input:BaseInput = new BaseInput();
+			input.x = 50;
+			input.y = 50;
+			addChild(input);
+						
 			var vp:VideoPlayerExample = new VideoPlayerExample();
 			vp.x = 50;
 			vp.y = 200;
