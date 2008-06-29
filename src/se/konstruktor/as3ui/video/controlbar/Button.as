@@ -1,4 +1,4 @@
-package se.konstruktor.as3ui.video
+package se.konstruktor.as3ui.video.controlbar
 {
 	import flash.display.BlendMode;
 	import flash.display.DisplayObject;

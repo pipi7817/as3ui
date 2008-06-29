@@ -16,6 +16,8 @@ package se.konstruktor.as3ui.video
 	import flash.net.URLRequest;
 	import flash.utils.Timer;
 	
+	import se.konstruktor.as3ui.net.NetStatus;
+	
 	public class LivePlayer extends BasePlayer
 	{
 		

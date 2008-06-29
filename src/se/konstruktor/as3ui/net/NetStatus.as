@@ -1,4 +1,4 @@
-package se.konstruktor.as3ui.video
+package se.konstruktor.as3ui.net
 {
 	final public class NetStatus
 	{
