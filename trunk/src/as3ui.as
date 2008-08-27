@@ -2,8 +2,11 @@ package {
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
+	import flash.text.TextField;
 	
+	import se.konstruktor.as3ui.controls.form.FormInput;
 	import se.konstruktor.as3ui.controls.input.BaseInput;
+	import se.konstruktor.as3ui.controls.input.RoundTextInput;
 	
 //	import se.konstruktor.as3ui.managers.FocusManager;
 	
@@ -14,6 +17,7 @@ package {
 			
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
+			stage.stageFocusRect = false;
 			
 //			var baseButtonExample:BaseButtonExample = new BaseButtonExample();
 //			baseButtonExample.x = 50;
@@ -31,15 +35,21 @@ package {
 //			addChild(textButtonExample);
 			
 			
-			var input:BaseInput = new BaseInput();
+			var input:RoundTextInput = new RoundTextInput()
 			input.x = 50;
 			input.y = 50;
 			addChild(input);
-						
-			var vp:VideoPlayerExample = new VideoPlayerExample();
-			vp.x = 50;
-			vp.y = 200;
-			addChild(vp);
+//						
+//			var vp:VideoPlayerExample = new VideoPlayerExample();
+//			vp.x = 50;
+//			vp.y = 200;
+//			addChild(vp);
+
+			var ti:FormInput = new FormInput(new RoundTextInput(),"",true);
+			ti.x = 50;
+			ti.y = 100;
+			addChild(ti);
+
 
 //			var fm:FocusManager = new FocusManager();
 

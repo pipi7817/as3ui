@@ -13,22 +13,22 @@ package se.konstruktor.as3ui.video
 	{
 		
 		// graphics 
-		[Embed(source='../src/resources/png/video/controlbar/Play.png')]
+		[Embed(source='/resources/png/video/controlbar/Play.png')]
 		private var PLAY_PNG:Class;
 
-		[Embed(source='../src/resources/png/video/controlbar/Pause.png')]
+		[Embed(source='/resources/png/video/controlbar/Pause.png')]
 		private var PAUSE_PNG:Class;
 
-		[Embed(source='../src/resources/png/video/controlbar/Stop.png')]
+		[Embed(source='/resources/png/video/controlbar/Stop.png')]
 		private var STOP_PNG:Class;
 
-		[Embed(source='../src/resources/png/video/controlbar/Volume.png')]
+		[Embed(source='/resources/png/video/controlbar/Volume.png')]
 		private var VOLUME_PNG:Class;
 		
-		[Embed(source='../src/resources/png/video/controlbar/Button.png')]
+		[Embed(source='/resources/png/video/controlbar/Button.png')]
 		private var BUTTON_PNG:Class;
 
-		[Embed(source='../src/resources/png/video/controlbar/Fullscreen.png')]
+		[Embed(source='/resources/png/video/controlbar/Fullscreen.png')]
 		private var FULLSCREEN_PNG:Class;
 
 		private var m_play:Button;

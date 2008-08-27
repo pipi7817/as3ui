@@ -50,20 +50,20 @@ package se.konstruktor.as3ui.video.controlbar
 		private var m_width:uint;
 		
 		// graphics 
-		[Embed(source='../src/resources/png/video/controlbar/Background.png')]
+		[Embed(source='/resources/png/video/controlbar/Background.png')]
 		private var BACKGROUND_PNG:Class;
 
-		[Embed(source='../src/resources/png/video/controlbar/Fullness.png')]
+		[Embed(source='/resources/png/video/controlbar/Fullness.png')]
 		private var FULLNESS_PNG:Class;
 
-		[Embed(source='../src/resources/png/video/controlbar/Progress.png')]
+		[Embed(source='/resources/png/video/controlbar/Progress.png')]
 		private var PROGRESS_PNG:Class;
 
-		[Embed(source='../src/resources/png/video/controlbar/Handle.png')]
+		[Embed(source='/resources/png/video/controlbar/Handle.png')]
 		private var HANDLE_PNG:Class;
 
 		// Type assets
-		[Embed(source="../src/resources/swf/font/MyriadBold_Time.swf", fontName="Myriad Bold" )]
+		[Embed(source="/resources/swf/font/MyriadBold_Time.swf", fontName="Myriad Bold" )]
 		private var FONT:Class;
 
 		
