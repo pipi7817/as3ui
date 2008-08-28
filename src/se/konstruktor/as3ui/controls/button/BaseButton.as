@@ -36,6 +36,8 @@ package se.konstruktor.as3ui.controls.button
 		internal var m_isFocus					:	Boolean;
 		internal var m_toggled					:	Boolean;
 		internal var m_state					:	String;
+
+		internal var m_isToggleButton			:	Boolean;
 		
 		public function BaseButton()
 		{
@@ -124,7 +126,6 @@ package se.konstruktor.as3ui.controls.button
 		{
 
 			var oldState 	: 	String	= m_state;
-
 			if(oldState != a_state && !m_toggled)
 			{
 				m_state = a_state;
@@ -250,11 +251,16 @@ package se.konstruktor.as3ui.controls.button
 		protected function pressHandler(a_event:MouseEvent):void
 		{
 			if(m_enabled)
-			{
+			{				
 				m_isFocus = true;
 				state = ButtonState.PRESSED;
 				addStageListener();
 				dispatchEvent(m_pressEvent);
+			}
+
+			if(m_isToggleButton)
+			{
+				toggled = !toggled;
 			}
 		}
 
