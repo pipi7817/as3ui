@@ -17,6 +17,7 @@ package se.konstruktor.as3ui.controls.button
 
 		protected var m_useHandCursor			:	Boolean			=   true;
 		protected var m_doubleClick				:	Boolean			=   false;
+		protected var m_isToggleButton			:	Boolean;
 
 		protected var m_doubleClickEvent		:   ButtonEvent;
 		protected var m_releaseEvent			:   ButtonEvent;
@@ -36,8 +37,6 @@ package se.konstruktor.as3ui.controls.button
 		internal var m_isFocus					:	Boolean;
 		internal var m_toggled					:	Boolean;
 		internal var m_state					:	String;
-
-		internal var m_isToggleButton			:	Boolean;
 		
 		public function BaseButton()
 		{
