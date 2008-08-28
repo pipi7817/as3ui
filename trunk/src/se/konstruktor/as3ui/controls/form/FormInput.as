@@ -119,12 +119,12 @@ package se.konstruktor.as3ui.controls.form {
 		
 		public function set value(a_value:String) : void
 		{
-			m_value = a_value;
+			m_input.value = a_value;
 		}
 		
 		public function get value() : String 
 		{
-			return m_value;
+			return m_input.value;
 		}
 	}
 }

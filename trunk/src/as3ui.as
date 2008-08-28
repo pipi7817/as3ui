@@ -19,10 +19,10 @@ package {
 			stage.align = StageAlign.TOP_LEFT;
 			stage.stageFocusRect = false;
 			
-//			var baseButtonExample:BaseButtonExample = new BaseButtonExample();
-//			baseButtonExample.x = 50;
-//			baseButtonExample.y = 50;
-//			addChild(baseButtonExample);
+			var baseButtonExample:BaseButtonExample = new BaseButtonExample();
+			baseButtonExample.x = 50;
+			baseButtonExample.y = 150;
+			addChild(baseButtonExample);
 //			
 //			var simpleButtonExample:SimpleButtonExample = new SimpleButtonExample();
 //			simpleButtonExample.x = 50;
