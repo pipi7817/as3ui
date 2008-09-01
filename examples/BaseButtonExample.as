@@ -1,17 +1,16 @@
 package
 {
+	import as3ui.controls.button.BaseButton;
+	import as3ui.controls.button.ButtonEvent;
+	import as3ui.controls.button.ButtonState;
+	
 	import flash.display.GradientType;
 	import flash.display.Shape;
-	import flash.display.SimpleButton;
 	import flash.geom.Matrix;
 	import flash.text.AntiAliasType;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
-	
-	import se.konstruktor.as3ui.controls.button.BaseButton;
-	import se.konstruktor.as3ui.controls.button.ButtonEvent;
-	import se.konstruktor.as3ui.controls.button.ButtonState;
 
 	public class BaseButtonExample extends BaseButton
 	{

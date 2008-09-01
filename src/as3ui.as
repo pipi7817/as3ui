@@ -4,11 +4,11 @@ package {
 	import flash.display.StageScaleMode;
 	import flash.text.TextField;
 	
-	import se.konstruktor.as3ui.controls.form.FormInput;
-	import se.konstruktor.as3ui.controls.input.BaseInput;
-	import se.konstruktor.as3ui.controls.input.RoundTextInput;
+	import as3ui.controls.form.FormInput;
+	import as3ui.controls.input.BaseInput;
+	import as3ui.controls.input.RoundTextInput;
 	
-//	import se.konstruktor.as3ui.managers.FocusManager;
+//	import as3ui.managers.FocusManager;
 	
 	public class as3ui extends Sprite {
 
