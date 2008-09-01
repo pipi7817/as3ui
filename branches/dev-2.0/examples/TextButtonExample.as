@@ -11,7 +11,7 @@ package
 	
 	import org.bytearray.display.ScaleBitmap;
 	
-	import se.konstruktor.as3ui.controls.button.TextButton;
+	import as3ui.controls.button.TextButton;
 	
 	public class TextButtonExample extends Sprite
 	{

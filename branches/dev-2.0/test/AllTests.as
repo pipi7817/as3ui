@@ -7,30 +7,30 @@ package {
 	 */
 
 	import asunit.framework.TestSuite;
-	import se.konstruktor.as3ui.controls.button.BaseButtonTest;
-	import se.konstruktor.as3ui.controls.button.SimpleButtonTest;
-	import se.konstruktor.as3ui.controls.form.FormInputTest;
-	import se.konstruktor.as3ui.controls.input.BaseInputTest;
-	import se.konstruktor.as3ui.controls.scrollbar.BaseScrollBarTest;
-	import se.konstruktor.as3ui.managers.FocusManagerTest;
-	import se.konstruktor.as3ui.UIObjectTest;
-	import se.konstruktor.as3ui.utils.stage.TopLevelTest;
-	import se.konstruktor.as3ui.video.BasePlayerTest;
-	import se.konstruktor.as3ui.video.MediaTest;
+	import as3ui.controls.button.BaseButtonTest;
+	import as3ui.controls.button.SimpleButtonTest;
+	import as3ui.controls.form.FormInputTest;
+	import as3ui.controls.input.BaseInputTest;
+	import as3ui.controls.scrollbar.BaseScrollBarTest;
+	import as3ui.managers.FocusManagerTest;
+	import as3ui.UIObjectTest;
+	import as3ui.utils.stage.TopLevelTest;
+	import as3ui.video.BasePlayerTest;
+	import as3ui.video.MediaTest;
 
 	public class AllTests extends TestSuite {
 
 		public function AllTests() {
-//			addTest(se.konstruktor.as3ui.controls.button.BaseButtonTest.suite());
-//			addTest(se.konstruktor.as3ui.controls.button.SimpleButtonTest.suite());
-			addTest(se.konstruktor.as3ui.controls.form.FormInputTest.suite());
-//			addTest(se.konstruktor.as3ui.controls.input.BaseInputTest.suite());
-//			addTest(se.konstruktor.as3ui.controls.scrollbar.BaseScrollBarTest.suite());
-//			addTest(se.konstruktor.as3ui.managers.FocusManagerTest.suite());
-//			addTest(se.konstruktor.as3ui.UIObjectTest.suite());
-//			addTest(se.konstruktor.as3ui.utils.stage.TopLevelTest.suite());
-//			addTest(se.konstruktor.as3ui.video.BasePlayerTest.suite());
-//			addTest(se.konstruktor.as3ui.video.MediaTest.suite());
+			addTest(as3ui.controls.button.BaseButtonTest.suite());
+			addTest(as3ui.controls.button.SimpleButtonTest.suite());
+			addTest(as3ui.controls.form.FormInputTest.suite());
+//			addTest(as3ui.controls.input.BaseInputTest.suite());
+			addTest(as3ui.controls.scrollbar.BaseScrollBarTest.suite());
+			addTest(as3ui.managers.FocusManagerTest.suite());
+			addTest(as3ui.UIObjectTest.suite());
+			addTest(as3ui.utils.stage.TopLevelTest.suite());
+//			addTest(as3ui.video.BasePlayerTest.suite());
+//			addTest(as3ui.video.MediaTest.suite());
 		}
 	}
 }

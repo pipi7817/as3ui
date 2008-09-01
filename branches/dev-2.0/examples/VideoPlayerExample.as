@@ -8,10 +8,10 @@ package
 	import flash.events.Event;
 	import flash.events.ProgressEvent;
 	
-	import se.konstruktor.as3ui.controls.scrollbar.ScrollBarEvent;
-	import se.konstruktor.as3ui.video.ControlBar;
-	import se.konstruktor.as3ui.video.LivePlayer;
-	import se.konstruktor.as3ui.video.controlbar.SeekBar;
+	import as3ui.controls.scrollbar.ScrollBarEvent;
+	import as3ui.video.ControlBar;
+	import as3ui.video.LivePlayer;
+	import as3ui.video.controlbar.SeekBar;
 
 	public class VideoPlayerExample extends Sprite
 	{
