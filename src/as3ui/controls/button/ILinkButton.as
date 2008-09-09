@@ -1,7 +1,6 @@
 package as3ui.controls.button
 {
-	import absoluthelmut.model.vo.link.Link;
-	
+	import as3ui.controls.model.vo.Link;
 	public interface ILinkButton
 	{
 		function get data():Link
