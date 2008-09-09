@@ -3,10 +3,11 @@
  */
 package as3ui
 {
+	import as3ui.events.UIEvent;
+	import as3ui.uiobject.Float;
+	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
-	
-	import as3ui.events.UIEvent;
 
 	public class UIObject extends Sprite
 	{
@@ -18,6 +19,8 @@ package as3ui
 		protected var m_visibleWidth	:	Number;
 		protected var m_xpos			:	Number;
 		protected var m_ypos			:	Number;
+		
+		public var float				:	String = Float.NONE;
 		
 		public function UIObject()
 		{
