@@ -43,13 +43,13 @@ package as3ui.utils.stage
 
 		public function testSetStageGetStage():void
 		{
-			var instance:TopLevel = TopLevel.getInstance();
+
 			var stage:Stage = getContext().stage;
 			
-			assertEquals(null, instance.stage);
+			assertEquals(null, TopLevel.stage);
 
-			instance.stage = stage;
-			assertEquals(stage, instance.stage);
+			TopLevel.stage = stage;
+			assertEquals(stage, TopLevel.stage);
 
 		}
 
