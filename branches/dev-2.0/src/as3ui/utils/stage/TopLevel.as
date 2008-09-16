@@ -36,14 +36,14 @@ package as3ui.utils.stage
         /**
         * @param stage_ Main document stage [example: myRootDocument.stage]
         */
-        public function set stage(a_stage:Stage):void
+        static public function set stage(a_stage:Stage):void
         {
-            m_stage = a_stage;
+            m_instance.m_stage = a_stage;
         }
         
-        public function get stage():Stage
+        static public function get stage():Stage
         {
-            if(m_stage!=null) return m_stage;
+            if(m_instance.m_stage!=null) return m_instance.m_stage;
             else return null;
         }
         		
