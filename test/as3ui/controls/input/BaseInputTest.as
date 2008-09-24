@@ -19,7 +19,7 @@ package as3ui.controls.input {
 
 		override protected function setUp():void {
 			super.setUp();
-			m_instance = new BaseInput();
+//			m_instance = new BaseInput();
 			// addChild(m_instance);
 		}
 
