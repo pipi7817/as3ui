@@ -6,10 +6,10 @@ package as3ui.controls.model.vo
 		private var m_label:String;
 		private var m_url:String;
 		private var m_id:String;
+		private var m_logid:String;
 		
-		public function Link( a_label:String, a_url:String, a_target:String = null, a_id:String = null)
+		public function Link( a_label:String, a_url:String, a_target:String = null, a_id:String = null, a_logid:String = "")
 		{
-			
 			if(a_target != null) 
 			{
 				m_target = a_target;
@@ -26,6 +26,7 @@ package as3ui.controls.model.vo
 			
 			m_label = a_label;
 			m_url = a_url;
+			m_logid = a_logid;
 			
 		}
 		
@@ -47,6 +48,11 @@ package as3ui.controls.model.vo
 		public function get id():String
 		{
 			return m_id;
+		}
+
+		public function get logid():String
+		{
+			return m_logid;
 		}
 	}
 }
