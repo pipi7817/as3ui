@@ -14,6 +14,7 @@ package
 	import as3ui.controls.input.BaseInputTest;
 	import as3ui.controls.scrollbar.BaseScrollBarTest;
 	import as3ui.managers.FocusManagerTest;
+	import as3ui.managers.soundmanager.TriggerTest;
 	import as3ui.managers.SoundManagerTest;
 	import as3ui.UIObjectTest;
 	import as3ui.utils.stage.TopLevelTest;
@@ -31,6 +32,7 @@ package
 //			addTest(as3ui.controls.input.BaseInputTest.suite());
 //			addTest(as3ui.controls.scrollbar.BaseScrollBarTest.suite());
 //			addTest(as3ui.managers.FocusManagerTest.suite());
+//			addTest(as3ui.managers.soundmanager.TriggerTest.suite());
 			addTest(as3ui.managers.SoundManagerTest.suite());
 //			addTest(as3ui.UIObjectTest.suite());
 //			addTest(as3ui.utils.stage.TopLevelTest.suite());

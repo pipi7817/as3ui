@@ -1,30 +1,59 @@
 package as3ui.managers
 {
+	import as3ui.managers.soundmanager.Trigger;
+	
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.media.SoundChannel;
 	import flash.utils.Dictionary;
 	
 	public class SoundManager extends EventDispatcher
 	{
 		internal var m_root:DisplayObject;
 		private var m_data:XML;
-		private var m_active:Dictionary;
-		private var m_playing:Boolean;
+		private var m_triggers:Dictionary;
+		
+		private var m_channel:Dictionary;
+		private var m_sound:Dictionary;
+		private var m_loaded:Boolean;
+		
 		public function SoundManager(a_root:DisplayObject)
 		{
-			m_active = new Dictionary(true);
+			m_channel = new Dictionary(true);
+			m_sound = new Dictionary(true);
 			m_root = a_root;
-			m_root.addEventListener("PlayTestSound1",onTrigger);
 		}
 		
 		public function loadConfig( a_xml:XML ) : void
 		{
+			
+			trace("loadConfig");
 			m_data = a_xml;
+			m_loaded = true;
 		
 			addEventListners();
-			
+			loadTriggers();
 		}
+		
+		private function loadTriggers() : void
+		{
+			if(m_triggers == null)
+			{
+				m_triggers = new Dictionary();
+			}
+			
+			for each ( var item:XML in m_data..action)
+			{
+				if( m_triggers[item.linkage.toString()] == null)
+				{
+					var trigger:Trigger =  new Trigger(item.linkage.toString());
+					trigger.volume = parseFloat(item.volume);
+					m_triggers[item.linkage.toString()] = trigger;
+				}
+			}			
+		}
+		
 		
 		private function addEventListners() : void
 		{
@@ -35,19 +64,76 @@ package as3ui.managers
 			}
 		}
 		
+		private function removeEventListners() : void
+		{
+			if(!m_loaded) return;
+			var triggers:Array = getTriggerList();
+			for ( var i:int; i < triggers.length; i++)
+			{
+				m_root.removeEventListener(triggers[i],onTrigger);
+			}
+		}
+		
+		internal function destroy() : void
+		{
+			removeEventListners();
+		}
+			
 		private function onTrigger(a_event:Event) : void
 		{
-			m_playing = true;
+			var action:XML =  getAction(a_event.type) as XML;
+			var trigger:Trigger;
+			
+			switch( action.attribute("type").toString() )
+			{
+				case "PLAY" :
+					trigger = m_triggers[action.linkage.toString()];
+					trigger.play();
+				break;
+				
+				case "STOP" :
+					trigger = m_triggers[action.linkage.toString()];
+					trigger.stop();
+				break;
+			}		
 		}
-		
-		internal function getAction(a_id:String) : Object
+//		
+		internal function getAction(a_trigger:String) : Object
 		{
-			return m_data..action.(attribute("trigger") == a_id );
+			return m_data..action.(attribute("trigger") == a_trigger )[0];
 		}
 		
+		internal function playSound(a_trigger:String) : SoundChannel
+		{
+			return new SoundChannel();
+//			var sound:Sound = getSound(a_trigger);
+//			var channel:SoundChannel = sound.play(0)
+//			channel.addEventListener(Event.SOUND_COMPLETE,onSoundComplete);
+//			m_channel[a_trigger] = channel; 
+//			m_sound[a_trigger] = sound;
+//			return m_channel[a_trigger];
+		}
+		
+//		internal function onSoundComplete(a_event:Event) : void
+//		{
+//			a_event.target.removeEventListener(Event.SOUND_COMPLETE,onSoundComplete);
+//		}
+//		
+//		internal function getActiveChannel(a_trigger:String) : SoundChannel
+//		{
+//			return m_channel[a_trigger];
+//		}
+//		
+//		internal function getActiveSound(a_trigger:String) : Sound
+//		{
+//			return m_triggers[a_trigger];
+//		}
+//		
 		public function getTriggerList() : Array
 		{
 			var triggers:Array = [];
+
+			if(m_data == null ) return [];			
 			for each ( var item:XML in m_data..action)
 			{
 				triggers.push(item.attribute("trigger").toString());
@@ -56,11 +142,8 @@ package as3ui.managers
 			return triggers;
 		}
 		
-		public function get isPlaying() : Boolean
-		{
-			return m_playing;
-		}
-				
+		
+		
 
 	}
 }
