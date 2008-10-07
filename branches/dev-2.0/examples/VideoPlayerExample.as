@@ -84,9 +84,9 @@ package
 //				m_player.play("http://ebustreaming.fr.edgesuite.net/akamai/flash/event.xml?gjmf=flash/filename");
 
 //				m_player.isAkamai = false;
-				m_player.isLive= false;
+//				m_player.isLive= false;
 //				m_player.play("rtmp://fl0.c00928.cdn.qbrick.com/00928/enc3low");
-				m_player.play("rtmp://fl0.c00451.cdn.qbrick.com/00451/20080610iphoneNYNY_s");
+//				m_player.play("rtmp://fl0.c00451.cdn.qbrick.com/00451/20080610iphoneNYNY_s");
 //				m_player.play("rtmp://fl0.c00928.cdn.qbrick.com/00000/denied");
 			}
 			else 

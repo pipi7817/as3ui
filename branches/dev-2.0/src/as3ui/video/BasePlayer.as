@@ -1,5 +1,8 @@
 package as3ui.video
 {
+	import as3ui.UIObject;
+	import as3ui.net.NetStatus;
+	
 	import fl.video.MetadataEvent;
 	import fl.video.VideoError;
 	import fl.video.VideoEvent;
@@ -14,9 +17,6 @@ package as3ui.video
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
 	import flash.utils.Timer;
-	
-	import as3ui.UIObject;
-	import as3ui.net.NetStatus;
 
 	public class BasePlayer extends UIObject
 	{
@@ -55,7 +55,8 @@ package as3ui.video
 
 		// Settings
 		protected var m_autoSize:Boolean = false;
-
+		protected var m_bufferTime:Number = 1.0;
+		
 		// Components
 		protected var m_video:Video;
 		
@@ -112,7 +113,8 @@ package as3ui.video
 				{
 					createStream();
 				}
-	
+				
+				setState(VideoState.LOADING);
 				m_ns.play(source)			
 
 			}
@@ -218,6 +220,16 @@ package as3ui.video
 			}
 			
 		}
+        
+        public function get bufferTime() : Number
+        {
+        	return m_bufferTime;
+        }
+        
+        public function set bufferTime(a_value:Number) : void
+        {
+        	m_bufferTime = a_value;
+        }
         
 		public function pause():void
 		{
@@ -327,10 +339,9 @@ package as3ui.video
         private function createStream():void
         {
         	m_lastValidSeek = 0; 
-        	
 			m_ns = new NetStream(m_nc);
 			m_ns.client = {onMetaData:onMetaData,onCuePoint:onCuePoint};
-			m_ns.bufferTime = 1.0;
+			m_ns.bufferTime = m_bufferTime;
 			m_ns.addEventListener(NetStatusEvent.NET_STATUS,onNetStatus);
 			m_video.attachNetStream(m_ns);
         }
@@ -398,16 +409,24 @@ package as3ui.video
 			break;
 			
 			case NetStatus.NETSTREAM_PLAY_STOP:
+				var tot:int = Math.floor(totalTime);
+				var cur:int = Math.floor(playheadTime);
+				
 				m_delayedBufferingTimer.reset();
 				m_activeSeek = false;
 				m_recoverSeekTimer.reset();
 				setState(VideoState.STOPPED);
+				if(tot == cur)
+				{
+					dispatchEvent(new VideoEvent(VideoEvent.COMPLETE,true,true) );
+				}
 			break;
 			
 			case NetStatus.NETSTREAM_BUFFER_FULL:
 			case NetStatus.NETSTREAM_BUFFER_FLUSH:
 				m_delayedBufferingTimer.reset();
 				m_bufferState = BUFFER_FULL;
+				
 				if ((m_state == VideoState.LOADING && m_cachedState == VideoState.PLAYING) || m_state == VideoState.BUFFERING)
 				{
 					setState(VideoState.PLAYING);
@@ -416,11 +435,18 @@ package as3ui.video
 				{
 					m_cachedState = VideoState.PLAYING;
 				}
+				else if ( m_state == VideoState.LOADING && m_cachedState == VideoState.DISCONNECTED )
+				{
+					setState(VideoState.PLAYING);	
+				}
 			break;
 			
 			case NetStatus.NETSTREAM_PLAY_START:
 			{
-				setState(VideoState.PLAYING);
+				if( m_state != VideoState.LOADING) // Still loading firstbuffer
+				{
+					setState(VideoState.PLAYING);
+				}
 			}
 			break;
 			

@@ -1,12 +1,12 @@
 package {
+	import as3ui.video.BasePlayer;
+	
+	import fl.video.VideoEvent;
+	
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
-	import flash.text.TextField;
-	
-	import as3ui.controls.form.FormInput;
-	import as3ui.controls.input.BaseInput;
-	import as3ui.controls.input.RoundTextInput;
+	import flash.events.Event;
 	
 //	import as3ui.managers.FocusManager;
 	
@@ -35,25 +35,42 @@ package {
 //			addChild(textButtonExample);
 			
 			
-			var input:RoundTextInput = new RoundTextInput()
-			input.x = 50;
-			input.y = 50;
-			addChild(input);
+//			var input:RoundTextInput = new RoundTextInput()
+//			input.x = 50;
+//			input.y = 50;
+//			addChild(input);
 //						
 //			var vp:VideoPlayerExample = new VideoPlayerExample();
 //			vp.x = 50;
 //			vp.y = 200;
 //			addChild(vp);
 
-			var ti:FormInput = new FormInput(new RoundTextInput(),"",true);
-			ti.x = 50;
-			ti.y = 100;
-			addChild(ti);
+//			var ti:FormInput = new FormInput(new RoundTextInput(),"",true);
+//			ti.x = 50;
+//			ti.y = 100;
+//			addChild(ti);
 
 
 //			var fm:FocusManager = new FocusManager();
 
+			var player:BasePlayer = new BasePlayer(300,200);
+			addChild(player);
+			player.addEventListener(VideoEvent.STATE_CHANGE,changeState);
+			player.addEventListener(VideoEvent.COMPLETE,loop);
 
+
+			player.play("http://fujisan.acne.se/axe/stage/video/login_loop.flv"); 
+
+		}
+		
+		private function changeState(e:Event) : void
+		{
+			trace( "==>" + (e.target as BasePlayer).state );
+		}
+		
+		private function loop(e:Event) : void
+		{
+			(e.target as BasePlayer).play();
 		}
 
 	}
