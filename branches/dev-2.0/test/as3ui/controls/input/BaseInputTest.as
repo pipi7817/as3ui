@@ -13,7 +13,7 @@ package as3ui.controls.input {
 		public static function suite():TestSuite {
   			
    			var ts:TestSuite = new TestSuite();
-	 		ts.addTest(new BaseInputTest("testInstantiated"));
+//	 		ts.addTest(new BaseInputTest("testInstantiated"));
    			return ts;
    		}
 

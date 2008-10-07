@@ -1,13 +1,13 @@
 package as3ui
 {
 
+	import as3ui.events.UIEvent;
+	
 	import asunit.framework.TestCase;
 	import asunit.framework.TestSuite;
 	
 	import flash.display.Sprite;
 	import flash.display.Stage;
-	
-	import as3ui.events.UIEvent;
 
 	public class UIObjectTest extends TestCase
 	{
@@ -514,6 +514,47 @@ package as3ui
 		public function resultFailTestSizeEvent(event:UIEvent):void
 		{
 			assertEquals("resultFailTestSizeEvent should not be trigger", "false");
+		}
+		
+		public function testAutoSize() : void
+		{
+			var instance:UIObject = new AutoSizeUIObject();
+			var holder:UIObject = new UIObject();
+
+
+			assertFalse("instance is not listening on resize of holder",holder.hasEventListener(UIEvent.RESIZE));
+
+
+			holder.addChild(instance);
+			assertTrue("instance is UIObject", instance is UIObject);
+			assertTrue("instance is a child of holder", holder.contains(instance));
+			assertTrue("instance is listening on resize of holder",holder.hasEventListener(UIEvent.RESIZE));
+
+
+			holder.removeChild(instance);
+			assertFalse("instance is not listening on resize of holder",holder.hasEventListener(UIEvent.RESIZE));
+
+			holder.addChild(instance);
+			holder.setSize(1,2);
+			assertTrue("instance is listening on resize of holder",holder.hasEventListener(UIEvent.RESIZE));
+			assertEquals("1",instance.width)
+			assertEquals("2",instance.height)
+
+			holder.setSize(20,30);
+			assertEquals("20",instance.width)
+			assertEquals("30",instance.height)
+
+			holder.setSize(0,0);
+			assertEquals("0",instance.width)
+			assertEquals("0",instance.height)
+
+			holder.removeChild(instance);
+			assertFalse("instance is not listening on resize of holder",holder.hasEventListener(UIEvent.RESIZE));
+
+			holder.setSize(10,20);
+			assertEquals("0",instance.width)
+			assertEquals("0",instance.height)
+				
 		}
 
 	}

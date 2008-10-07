@@ -8,6 +8,7 @@ package as3ui
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import flash.events.Event;
 
 	public class UIObject extends Sprite
 	{
@@ -19,12 +20,30 @@ package as3ui
 		protected var m_visibleWidth	:	Number;
 		protected var m_xpos			:	Number;
 		protected var m_ypos			:	Number;
+		protected var m_autosize		:	Boolean;
 		
 		public var float				:	String = Float.NONE;
 		
 		public function UIObject()
 		{
+			if(m_autosize)
+			{
+				addEventListener(Event.ADDED,onAdded);
+				addEventListener(Event.REMOVED,onRemoved);
+			}
 			super();
+		}
+
+		private function onAdded( a_event:Event ):void
+		{
+			if(a_event.target != this) return;
+			parent.addEventListener(UIEvent.RESIZE,parentResize);
+		}
+		
+		private function onRemoved( a_event:Event ):void
+		{
+			if(a_event.target != this) return;
+			parent.removeEventListener(UIEvent.RESIZE,parentResize);
 		}
 		
 		public function move(a_x:Number,a_y:Number, a_pixelSnap:Boolean = false):void
@@ -56,6 +75,15 @@ package as3ui
 		protected function moveComplete():void
 		{
 			dispatchEvent(new UIEvent(UIEvent.MOVE_COMPLETE,true,true));
+		}
+
+
+		protected function parentResize( a_event:Event = null):void
+		{
+			if( width != parent.width || height != parent.height )
+			{
+				setSize(parent.width,parent.height);
+			}
 		}
 
 		public function show():void
@@ -208,6 +236,7 @@ package as3ui
 		{
 			return y + height;			
 		}
+		
 
 		// ToDo: add suport for scaled parents and rotated parents
 		public function set globalX(value:Number):void
