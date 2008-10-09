@@ -35,7 +35,7 @@ package as3ui.managers
 			m_data = <actions>
 						<action type="SHOW" trigger="ShowText1">
 							<text><![CDATA[Lorem ipsum dolor sit amet, consectetuer adipiscing elit.]]></text>
-							<timeout>2000</timeout>
+							<timeout>1000</timeout>
 							<delay>250</delay>
 						</action>
 						<action type="SHOW" trigger="ShowText2">
@@ -86,7 +86,7 @@ package as3ui.managers
 
 		public function testTriggerHide() : void
 		{
-			var handler:Function = addAsync(handleTriggerHide, 1000);
+			var handler:Function = addAsync(handleTriggerHide, 2000);
 			m_instance.addEventListener(SubtitleEvent.HIDE,handler);
 			context.dispatchEvent( new Event("ShowText1",true,true) );
 		}

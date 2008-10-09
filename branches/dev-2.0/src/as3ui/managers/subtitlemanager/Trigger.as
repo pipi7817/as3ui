@@ -12,12 +12,14 @@ package as3ui.managers.subtitlemanager
 		private var m_text:String;
 		private var m_delay:Timer;
 		private var m_timout:Timer;
+		private var m_playing:Boolean;
+		private var m_active:Boolean; 
 		
-		public function Trigger(a_text:String,a_delayTime:Number = 0, m_timeoutTime:Number = 0 )
+		public function Trigger(a_text:String,a_delayTime:Number = 0, a_timeoutTime:Number = 0 )
 		{
 			m_text =  a_text;
 			m_delayTime = a_delayTime;
-			m_timeoutTime = m_timeoutTime;
+			m_timeoutTime = a_timeoutTime;
 		}
 		
 		public function get text():String
@@ -41,20 +43,42 @@ package as3ui.managers.subtitlemanager
 		public function reset(a_event:Event = null) : void
 		{
 			removeListners();
-			m_delay = null;
-			m_timout = null;
+			
+			if(m_delay != null)
+			{
+				m_delay.stop();				
+				m_delay = null;
+			}
+			
+			if(m_timout != null)
+			{
+				m_timout.stop();				
+				m_timout = null;
+			}
+			
+			if(!m_playing) 
+			{
+				m_active = false;
+			}
+			
+			m_playing = false;
 		}
 		
 		private function onTimeoutComplete(a_event:Event = null) : void
 		{
 			reset();
+			m_active = false;
 			dispatchEvent(new Event(Event.DEACTIVATE));
 		}
 		
 		private function onDelayComplete(a_event:Event = null) : void
 		{
-			dispatchEvent(new Event(Event.ACTIVATE));
-
+			if(!m_active)
+			{
+				m_active = true;
+				dispatchEvent(new Event(Event.ACTIVATE));
+			}
+			
 			if(m_timeoutTime>0)
 			{
 				m_timout = new Timer(m_timeoutTime,1);
@@ -71,6 +95,13 @@ package as3ui.managers.subtitlemanager
 
 		public function play() : void
 		{
+			if(m_playing)
+			{
+				reset();	
+			}
+			
+			m_playing = true;
+			
 			if(m_delayTime>0)
 			{
 				m_delay = new Timer(m_delayTime,1);
