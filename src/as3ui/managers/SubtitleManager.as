@@ -52,7 +52,7 @@ package as3ui.managers
 					removeEventListners();
 				}
 				
-				m_instance.m_root = a_root;
+				m_root = a_root;
 			}
 		}
 
@@ -94,7 +94,15 @@ package as3ui.managers
 				trigger.removeEventListener(Event.DEACTIVATE, onDeactivateShowTrigger);
 			}			
 		}
-
+		
+		private function removeTriggerHideListners() : void
+		{
+			for each ( var trigger:Trigger in m_triggers ) 
+			{
+				trigger.removeEventListener(Event.DEACTIVATE, onDeactivateShowTrigger);
+			}			
+		}
+		
 		private function loadTriggers() : void
 		{
 			if(m_triggers == null)
@@ -143,6 +151,7 @@ package as3ui.managers
 			{
 				case "SHOW" :
 					trigger = m_triggers[action.attribute("trigger").toString()];
+					removeTriggerHideListners();
 					trigger.addEventListener(Event.ACTIVATE, onActivateShowTrigger);
 					trigger.addEventListener(Event.DEACTIVATE, onDeactivateShowTrigger);
 					trigger.play();

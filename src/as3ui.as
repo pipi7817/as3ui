@@ -1,16 +1,14 @@
 package {
+	import as3ui.UIObject;
 	import as3ui.video.BasePlayer;
 	
-	import fl.video.VideoEvent;
-	
-	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	
 //	import as3ui.managers.FocusManager;
 	
-	public class as3ui extends Sprite {
+	public class as3ui extends UIObject {
 
 		public function as3ui() {
 			trace("as3ui instantiated!");
@@ -19,10 +17,10 @@ package {
 			stage.align = StageAlign.TOP_LEFT;
 			stage.stageFocusRect = false;
 			
-			var baseButtonExample:BaseButtonExample = new BaseButtonExample();
-			baseButtonExample.x = 50;
-			baseButtonExample.y = 150;
-			addChild(baseButtonExample);
+//			var baseButtonExample:BaseButtonExample = new BaseButtonExample();
+//			baseButtonExample.x = 50;
+//			baseButtonExample.y = 150;
+//			addChild(baseButtonExample);
 //			
 //			var simpleButtonExample:SimpleButtonExample = new SimpleButtonExample();
 //			simpleButtonExample.x = 50;
@@ -50,16 +48,12 @@ package {
 //			ti.y = 100;
 //			addChild(ti);
 
-
+			var st:SubtitleExample = new SubtitleExample();
+			st.y = 100;
+			addChild(st);
+			
 //			var fm:FocusManager = new FocusManager();
 
-			var player:BasePlayer = new BasePlayer(300,200);
-			addChild(player);
-			player.addEventListener(VideoEvent.STATE_CHANGE,changeState);
-			player.addEventListener(VideoEvent.COMPLETE,loop);
-
-
-			player.play("http://fujisan.acne.se/axe/stage/video/login_loop.flv"); 
 
 		}
 		
