@@ -112,11 +112,6 @@ package
 			SubtitleManager.instance.addEventListener(SubtitleEvent.HIDE,onHide);	
 
 			setSize(600,200);
-
-			graphics.clear();
-			graphics.beginFill(0x333333);
-			graphics.drawRect(0,100,width,height-100);
-			graphics.endFill();	
 			
 		}
 		
