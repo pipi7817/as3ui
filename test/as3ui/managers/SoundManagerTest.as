@@ -1,7 +1,7 @@
 package as3ui.managers
 {
 
-	import as3ui.events.SoundEvent;
+	import as3ui.managers.soundmanager.events.SoundEvent;
 	import as3ui.utils.EmbeddedSwfLoader;
 	
 	import asunit.framework.AsynchronousTestCase;
@@ -12,8 +12,6 @@ package as3ui.managers
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
 	import flash.events.SecurityErrorEvent;
-	import flash.media.Sound;
-	import flash.media.SoundChannel;
 
 	public class SoundManagerTest extends AsynchronousTestCase
 	{

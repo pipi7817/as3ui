@@ -1,110 +1,70 @@
 package as3ui.managers
 {
-	import as3ui.managers.soundmanager.Trigger;
+
+	import as3ui.managers.subtitlemanager.Trigger;
+	import as3ui.managers.subtitlemanager.events.SubtitleEvent;
 	
-	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.media.SoundChannel;
+	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
 	
 	public class SubtitleManager extends EventDispatcher
 	{
-		internal var m_root:DisplayObject;
-		private var m_data:XML;
-		private var m_triggers:Dictionary;
+		private static const m_instance:SubtitleManager = new SubtitleManager(SingeltonLock);
 		
-		private var m_channel:Dictionary;
-		private var m_sound:Dictionary;
-		private var m_loaded:Boolean;
+		internal var m_root:IEventDispatcher;
+		internal var m_data:XML;
+		internal var m_triggers:Dictionary;
+		internal var m_loaded:Boolean;
 		
-		public function SubtitleManager(a_root:DisplayObject)
+		public function SubtitleManager(lock:Class)
 		{
-			m_channel = new Dictionary(true);
-			m_sound = new Dictionary(true);
-			m_root = a_root;
-		}
-		
-		public function loadConfig( a_xml:XML ) : void
-		{
-			
-			trace("loadConfig");
-			m_data = a_xml;
-			m_loaded = true;
-		
-			addEventListners();
-			loadTriggers();
-		}
-		
-		private function loadTriggers() : void
-		{
-			if(m_triggers == null)
+			if (lock != SingeltonLock)
 			{
-				m_triggers = new Dictionary();
+				throw new Error("SubtitleManager can only be accessed through SubtitleManager.instance.");
 			}
-			
-			for each ( var item:XML in m_data..action)
+		}
+		
+		static public function get instance():SubtitleManager
+		{
+			return m_instance;			
+		}
+		
+		static public function loadConfig( a_xml:XML ) : void
+		{
+			with(m_instance)
 			{
-				if( m_triggers[item.linkage.toString()] == null)
+				reset();
+				m_data = a_xml;
+				m_loaded = true;
+				addEventListners();
+				loadTriggers();
+			}
+		}
+		
+		static public function setContext( a_root:IEventDispatcher) : void
+		{
+			with( m_instance ) 
+			{
+				if(m_root != null)
 				{
-					var trigger:Trigger =  new Trigger(item.linkage.toString());
-					trigger.volume = parseFloat(item.volume);
-					m_triggers[item.linkage.toString()] = trigger;
+					removeEventListners();
 				}
-			}			
-		}
-		
-		
-		private function addEventListners() : void
-		{
-			var triggers:Array = getTriggerList();
-			for ( var i:int; i < triggers.length; i++)
-			{
-				m_root.addEventListener(triggers[i],onTrigger);
-			}
-		}
-		
-		private function removeEventListners() : void
-		{
-			if(!m_loaded) return;
-			var triggers:Array = getTriggerList();
-			for ( var i:int; i < triggers.length; i++)
-			{
-				m_root.removeEventListener(triggers[i],onTrigger);
-			}
-		}
-		
-		internal function destroy() : void
-		{
-			removeEventListners();
-		}
-			
-		private function onTrigger(a_event:Event) : void
-		{
-			var action:XML =  getAction(a_event.type) as XML;
-			var trigger:Trigger;
-			
-			switch( action.attribute("type").toString() )
-			{
-				case "PLAY" :
-					trigger = m_triggers[action.linkage.toString()];
-					trigger.play();
-				break;
 				
-				case "STOP" :
-					trigger = m_triggers[action.linkage.toString()];
-					trigger.stop();
-				break;
-			}		
+				m_instance.m_root = a_root;
+			}
 		}
 
-		internal function getAction(a_trigger:String) : Object
+		public function destroy() : void
 		{
-			return m_data..action.(attribute("trigger") == a_trigger )[0];
+			reset();
+			m_data = null;
+			m_root = null;
+			m_loaded = false;
 		}
-		
-
-		public function getTriggerList() : Array
+				
+		internal function getTriggerList() : Array
 		{
 			var triggers:Array = [];
 
@@ -117,8 +77,118 @@ package as3ui.managers
 			return triggers;
 		}
 		
+		private function reset() : void
+		{
+			removeEventListners();
+			removeTriggerListners();
+			m_triggers = null;
+		}
+
+		private function removeTriggerListners() : void
+		{
+			for each ( var trigger:Trigger in m_triggers ) 
+			{
+				trigger.reset();
+				trigger.removeEventListener(Event.ACTIVATE, onActivateShowTrigger);
+				trigger.removeEventListener(Event.ACTIVATE, onActivateClearTrigger);
+				trigger.removeEventListener(Event.DEACTIVATE, onDeactivateShowTrigger);
+			}			
+		}
+
+		private function loadTriggers() : void
+		{
+			if(m_triggers == null)
+			{
+				m_triggers = new Dictionary();
+			}
+			for each ( var item:XML in m_data..action)
+			{
+				if( m_triggers[item.attribute("trigger")] == null)
+				{
+					var trigger:Trigger =  new Trigger(item.text.toString(),parseFloat(item.delay.toString()),parseFloat(item.timeout.toString()));
+					m_triggers[item.attribute("trigger").toString()] = trigger;
+				}
+			}			
+		}
 		
+		
+		private function addEventListners() : void
+		{
+			if(m_root == null) return;
+
+			var triggers:Array = getTriggerList();
+			for ( var i:int; i < triggers.length; i++)
+			{
+				m_root.addEventListener(triggers[i].toString(),onTrigger);
+			}
+		}
+		
+		private function removeEventListners() : void
+		{
+			if(m_root == null) return;
+			
+			var triggers:Array = getTriggerList();
+			for ( var i:int; i < triggers.length; i++)
+			{
+				m_root.removeEventListener(triggers[i].toString(),onTrigger);
+			}
+		}
+			
+		private function onTrigger(a_event:Event) : void
+		{
+			var action:XML =  getAction(a_event.type) as XML;
+			var trigger:Trigger;
+			
+			switch( action.attribute("type").toString() )
+			{
+				case "SHOW" :
+					trigger = m_triggers[action.attribute("trigger").toString()];
+					trigger.addEventListener(Event.ACTIVATE, onActivateShowTrigger);
+					trigger.addEventListener(Event.DEACTIVATE, onDeactivateShowTrigger);
+					trigger.play();
+				break;
+
+				case "CLEAR" :
+					trigger = m_triggers[action.attribute("trigger").toString()];
+					trigger.addEventListener(Event.ACTIVATE, onActivateClearTrigger);
+					trigger.play();
+				break;
+								
+				case "HIDE" :
+					trigger = m_triggers[action.attribute("trigger").toString()];
+					trigger.addEventListener(Event.ACTIVATE, onActivateClearTrigger);
+					trigger.play();
+				break;
+			}		
+		}
+		
+		private function onActivateClearTrigger( a_event:Event ) :  void
+		{
+			removeTriggerListners();
+			dispatchEvent( new SubtitleEvent(SubtitleEvent.SHOW,""));
+		}
+		
+		private function onActivateShowTrigger( a_event:Event ) :  void
+		{
+			dispatchEvent( new SubtitleEvent(SubtitleEvent.SHOW,(a_event.target as Trigger).text ));
+		}
+
+		private function onDeactivateShowTrigger( a_event:Event ) :  void
+		{
+			dispatchEvent( new SubtitleEvent(SubtitleEvent.HIDE));
+		}
+
+		internal function getAction(a_trigger:String) : Object
+		{
+			return m_data..action.(attribute("trigger") == a_trigger )[0];
+		}
 		
 
+
+		
 	}
+}
+
+internal class SingeltonLock 
+{
 }

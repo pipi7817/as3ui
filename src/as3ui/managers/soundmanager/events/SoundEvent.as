@@ -1,4 +1,4 @@
-package as3ui.events
+package as3ui.managers.soundmanager.events
 {
 	import flash.events.Event;
 	import flash.media.SoundChannel;
