@@ -409,14 +409,16 @@ package as3ui.video
 			break;
 			
 			case NetStatus.NETSTREAM_PLAY_STOP:
+			
+				// ToDo: proper complete check 
 				var tot:int = Math.floor(totalTime);
-				var cur:int = Math.floor(playheadTime);
+				var cur:int = Math.ceil(playheadTime);
 				
 				m_delayedBufferingTimer.reset();
 				m_activeSeek = false;
 				m_recoverSeekTimer.reset();
 				setState(VideoState.STOPPED);
-				if(tot == cur)
+				if(cur >= tot)
 				{
 					dispatchEvent(new VideoEvent(VideoEvent.COMPLETE,true,true) );
 				}
