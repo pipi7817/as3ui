@@ -69,7 +69,7 @@ package as3ui.controls.button
 			addEventListener(ButtonEvent.CHANGE_STATE,onChangeState);
 		}
 
-		private function resize():void
+		protected function resize():void
 		{
 			m_upState.width		= Math.round( m_leftPadding + m_label.width + m_rightPadding );
 			m_overState.width	= Math.round( m_leftPadding + m_label.width + m_rightPadding );
