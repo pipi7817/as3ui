@@ -77,11 +77,10 @@ package as3ui.video
 			
 			m_video = new Video(a_width,a_height);
 			m_video.opaqueBackground = true;
-
 			m_contentPath = "";
 			m_lastValidSeek = 0;
 
-			super.setSize();
+			setSize(a_width,a_height);
 			addChild(m_video);
 		}
 		
@@ -155,6 +154,13 @@ package as3ui.video
 			dispatchEvent(new VideoEvent(VideoEvent.CLOSE, false, false, state, playheadTime));
 		}
 		
+		public function clear():void
+		{
+			if(m_video != null)
+			{
+				m_video.clear();
+			}
+		}
 		
 		public function get sourceWidth():Number
 		{
