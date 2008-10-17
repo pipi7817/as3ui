@@ -3,6 +3,7 @@ package as3ui.managers
 
 	import as3ui.managers.subtitlemanager.Trigger;
 	import as3ui.managers.subtitlemanager.events.SubtitleEvent;
+	import as3ui.managers.subtitlemanager.events.TriggerEvent;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -89,17 +90,9 @@ package as3ui.managers
 			for each ( var trigger:Trigger in m_triggers ) 
 			{
 				trigger.reset();
-				trigger.removeEventListener(Event.ACTIVATE, onActivateShowTrigger);
-				trigger.removeEventListener(Event.ACTIVATE, onActivateClearTrigger);
-				trigger.removeEventListener(Event.DEACTIVATE, onDeactivateShowTrigger);
-			}			
-		}
-		
-		private function removeTriggerHideListners() : void
-		{
-			for each ( var trigger:Trigger in m_triggers ) 
-			{
-				trigger.removeEventListener(Event.DEACTIVATE, onDeactivateShowTrigger);
+				trigger.removeEventListener(TriggerEvent.ACTIVATE, onTriggerActivate);
+				trigger.removeEventListener(TriggerEvent.UPDATE, onTriggerUpdate);
+				trigger.removeEventListener(TriggerEvent.DEACTIVATE, onTriggerDeactivate);
 			}			
 		}
 		
@@ -113,7 +106,7 @@ package as3ui.managers
 			{
 				if( m_triggers[item.attribute("trigger")] == null)
 				{
-					var trigger:Trigger =  new Trigger(item.text.toString(),parseFloat(item.delay.toString()),parseFloat(item.timeout.toString()));
+					var trigger:Trigger =  new Trigger(item);
 					m_triggers[item.attribute("trigger").toString()] = trigger;
 				}
 			}			
@@ -150,41 +143,42 @@ package as3ui.managers
 			switch( action.attribute("type").toString() )
 			{
 				case "SHOW" :
+					removeTriggerListners();
 					trigger = m_triggers[action.attribute("trigger").toString()];
-					removeTriggerHideListners();
-					trigger.addEventListener(Event.ACTIVATE, onActivateShowTrigger);
-					trigger.addEventListener(Event.DEACTIVATE, onDeactivateShowTrigger);
+					trigger.addEventListener(TriggerEvent.ACTIVATE, onTriggerActivate);
+					trigger.addEventListener(TriggerEvent.UPDATE, onTriggerUpdate);
+					trigger.addEventListener(TriggerEvent.DEACTIVATE, onTriggerDeactivate);
 					trigger.play();
 				break;
 
-				case "CLEAR" :
-					trigger = m_triggers[action.attribute("trigger").toString()];
-					trigger.addEventListener(Event.ACTIVATE, onActivateClearTrigger);
-					trigger.play();
-				break;
-								
-				case "HIDE" :
-					trigger = m_triggers[action.attribute("trigger").toString()];
-					trigger.addEventListener(Event.ACTIVATE, onActivateClearTrigger);
-					trigger.play();
-				break;
+//				case "CLEAR" :
+//					trigger = m_triggers[action.attribute("trigger").toString()];
+//					trigger.addEventListener(Event.ACTIVATE, onActivateClearTrigger);
+//					trigger.play();
+//				break;
+//								
+//				case "HIDE" :
+//					trigger = m_triggers[action.attribute("trigger").toString()];
+//					trigger.addEventListener(Event.ACTIVATE, onActivateClearTrigger);
+//					trigger.play();
+//				break;
 			}		
 		}
 		
-		private function onActivateClearTrigger( a_event:Event ) :  void
+		private function onTriggerActivate( a_event:Event ) :  void
 		{
-			removeTriggerListners();
-			dispatchEvent( new SubtitleEvent(SubtitleEvent.SHOW,""));
-		}
-		
-		private function onActivateShowTrigger( a_event:Event ) :  void
-		{
-			dispatchEvent( new SubtitleEvent(SubtitleEvent.SHOW,(a_event.target as Trigger).text ));
+			dispatchEvent( new SubtitleEvent(SubtitleEvent.SHOW,"") );
 		}
 
-		private function onDeactivateShowTrigger( a_event:Event ) :  void
+		private function onTriggerUpdate( a_event:Event ) :  void
 		{
-			dispatchEvent( new SubtitleEvent(SubtitleEvent.HIDE));
+			var trigger:Trigger = a_event.target as Trigger;
+			dispatchEvent( new SubtitleEvent(SubtitleEvent.SHOW,trigger.text) );
+		}
+
+		private function onTriggerDeactivate( a_event:Event ) :  void
+		{
+			dispatchEvent( new SubtitleEvent(SubtitleEvent.HIDE) );
 		}
 
 		internal function getAction(a_trigger:String) : Object

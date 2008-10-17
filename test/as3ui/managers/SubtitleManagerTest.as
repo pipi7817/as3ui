@@ -34,14 +34,12 @@ package as3ui.managers
 		
 			m_data = <actions>
 						<action type="SHOW" trigger="ShowText1">
-							<text><![CDATA[Lorem ipsum dolor sit amet, consectetuer adipiscing elit.]]></text>
-							<timeout>1000</timeout>
-							<delay>250</delay>
+							<text timeout="1000" delay="250" position="bottom"><![CDATA[Text 1]]></text>
+							<text timeout="2000" delay="500" position="top"><![CDATA[Text 2]]></text>
+							<text timeout="3000" delay="750" position="bottom"><![CDATA[Text 3]]></text>
 						</action>
 						<action type="SHOW" trigger="ShowText2">
-							<text><![CDATA[In nulla. Fusce sit amet justo. Nulla odio dolor, accumsan eu.]]></text>
-							<timeout>0</timeout>
-							<delay>0</delay>
+							<text timeout="0" delay="0" position="bottom"><![CDATA[In nulla. Fusce sit amet justo. Nulla odio dolor, accumsan eu.]]></text>
 						</action>
 						<action type="CLEAR" trigger="ClearText">
 							<text><![CDATA[]]></text>
@@ -77,17 +75,17 @@ package as3ui.managers
 			assertEquals(["ShowText1","ShowText2","ClearText","HideText"].toString(), m_instance.getTriggerList().toString());
 		}
 
-//		public function testTriggerShow() : void
-//		{
-//			var handler:Function = addAsync(handleTriggerShow, 1000);
-//			m_instance.addEventListener(SubtitleEvent.SHOW,handler);
-//			context.dispatchEvent( new Event("ShowText1",true,true) );
-//		}
+		public function testTriggerShow() : void
+		{
+			var handler:Function = addAsync(handleTriggerShow, 1000);
+			m_instance.addEventListener(SubtitleEvent.SHOW,handler,false,0,true);
+			context.dispatchEvent( new Event("ShowText1",true,true) );
+		}
 
 		public function testTriggerHide() : void
 		{
 			var handler:Function = addAsync(handleTriggerHide, 2000);
-			m_instance.addEventListener(SubtitleEvent.HIDE,handler);
+			m_instance.addEventListener(SubtitleEvent.HIDE,handler,false,0,true);
 			context.dispatchEvent( new Event("ShowText1",true,true) );
 		}
 
