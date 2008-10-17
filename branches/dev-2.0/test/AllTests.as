@@ -16,6 +16,7 @@ package
 	import as3ui.managers.FocusManagerTest;
 	import as3ui.managers.soundmanager.TriggerTest;
 	import as3ui.managers.SoundManagerTest;
+	import as3ui.managers.subtitlemanager.TriggerTest;
 	import as3ui.managers.SubtitleManagerTest;
 	import as3ui.UIObjectTest;
 	import as3ui.utils.stage.TopLevelTest;
@@ -35,7 +36,8 @@ package
 //			addTest(as3ui.managers.FocusManagerTest.suite());
 //			addTest(as3ui.managers.soundmanager.TriggerTest.suite());
 //			addTest(as3ui.managers.SoundManagerTest.suite());
-			addTest(as3ui.managers.SubtitleManagerTest.suite());
+			addTest(as3ui.managers.subtitlemanager.TriggerTest.suite());
+//			addTest(as3ui.managers.SubtitleManagerTest.suite());
 //			addTest(as3ui.UIObjectTest.suite());
 //			addTest(as3ui.utils.stage.TopLevelTest.suite());
 //			addTest(as3ui.video.BasePlayerTest.suite());

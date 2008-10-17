@@ -83,27 +83,23 @@ package
 		private function onAdded( a_event:Event ) : void
 		{
 			var xml:XML = <actions>
-						<action type="SHOW" trigger="ShowText1">
-							<text><![CDATA[Lorem ipsum dolor sit amet, consectetuer\nadipiscing elit.]]></text>
-							<timeout>2000</timeout>
-							<delay>1000</delay>
-						</action>
-						<action type="SHOW" trigger="ShowText2">
-							<text><![CDATA[In nulla. Fusce sit amet justo. Nulla odio dolor,\naccumsan eu.]]></text>
-							<timeout>3000</timeout>
-							<delay>2000</delay>
-						</action>
-						<action type="CLEAR" trigger="ClearText">
-							<text><![CDATA[]]></text>
-							<timeout>0</timeout>
-							<delay>0</delay>
-						</action>
-						<action type="HIDE" trigger="HideText">
-							<text><![CDATA[]]></text>
-							<timeout>0</timeout>
-							<delay>0</delay>
-						</action>
-					 </actions>;
+								<action type="SHOW" trigger="ShowText1">
+									<text timeout="2000" delay="0" position="bottom"><![CDATA[Text 1]]></text>
+									<text timeout="4000" delay="400" position="top"><![CDATA[Text 2]]></text>
+									<text timeout="6000" delay="600"><![CDATA[Text 3]]></text>
+								</action>;
+
+								<action type="SHOW" trigger="ShowText2">
+									<text timeout="2000" delay="0" position="bottom"><![CDATA[Text a]]></text>
+									<text timeout="4000" delay="200" position="top"><![CDATA[Text b]]></text>
+									<text timeout="6000" delay="300"><![CDATA[Text c]]></text>
+								</action>;
+
+								<action type="SHOW" trigger="ShowText3">
+									<text timeout="2000" delay="100" position="bottom"><![CDATA[Text #]]></text>
+								</action>;
+
+					</actions>;
 					 
 
 			SubtitleManager.setContext(this);

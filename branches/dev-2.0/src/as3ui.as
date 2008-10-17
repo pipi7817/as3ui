@@ -54,23 +54,24 @@ package {
 			st.y = 100;
 			addChild(st);
 			
-//			var fm:FocusManager = new FocusManager();
-
-
-			var player:BasePlayer = new BasePlayer(300,200);
-			addChild(player);
-//			player.addEventListener(VideoEvent.STATE_CHANGE,changeState);
-//			player.addEventListener(VideoEvent.COMPLETE,loop);
-//			player.play("http://fujisan.acne.se/axe/stage/video/login_loop.flv"); 
-
-
-			var player2:BasePlayer = new BasePlayer(600,400);
-			player2.x = 400;
-//			player2.setSize(300,500);
-			addChild(player2);
-//			player.addEventListener(VideoEvent.STATE_CHANGE,changeState);
-//			player.addEventListener(VideoEvent.COMPLETE,loop);
-//			player2.play("http://fujisan.acne.se/axe/stage/video/intro.flv"); 
+			
+////			var fm:FocusManager = new FocusManager();
+//
+//
+//			var player:BasePlayer = new BasePlayer(300,200);
+//			addChild(player);
+////			player.addEventListener(VideoEvent.STATE_CHANGE,changeState);
+////			player.addEventListener(VideoEvent.COMPLETE,loop);
+////			player.play("http://fujisan.acne.se/axe/stage/video/login_loop.flv"); 
+//
+//
+//			var player2:BasePlayer = new BasePlayer(600,400);
+//			player2.x = 400;
+////			player2.setSize(300,500);
+//			addChild(player2);
+////			player.addEventListener(VideoEvent.STATE_CHANGE,changeState);
+////			player.addEventListener(VideoEvent.COMPLETE,loop);
+////			player2.play("http://fujisan.acne.se/axe/stage/video/intro.flv"); 
 						
 		}
 		
