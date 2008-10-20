@@ -151,11 +151,10 @@ package as3ui.managers
 					trigger.play();
 				break;
 
-//				case "CLEAR" :
-//					trigger = m_triggers[action.attribute("trigger").toString()];
-//					trigger.addEventListener(Event.ACTIVATE, onActivateClearTrigger);
-//					trigger.play();
-//				break;
+				case "HIDE" :
+					removeTriggerListners();
+					dispatchEvent( new SubtitleEvent(SubtitleEvent.HIDE) );
+				break;
 //								
 //				case "HIDE" :
 //					trigger = m_triggers[action.attribute("trigger").toString()];
