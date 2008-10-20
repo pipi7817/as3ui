@@ -43,14 +43,20 @@ package
 			btn.name = "ShowText1"; 
 			btn.x = xpos;
 			addChild(btn);
-			xpos = btn.width + 10;
+			xpos += btn.width + 10;
 
 			btn = new TextButton(getLabel("ShowText2"),new PNG_UP());
 			btn.name = "ShowText2"; 
 			btn.x = xpos;
 			addChild(btn);
-			xpos = btn.width + 10;
+			xpos += btn.width + 10;
 
+			btn = new TextButton(getLabel("ClearText"),new PNG_UP());
+			btn.name = "ClearText"; 
+			btn.x = xpos;
+			addChild(btn);
+			xpos += btn.width + 10;
+			
 			m_subtext = new TextField();
 			m_subtext.defaultTextFormat = new TextFormat("Arial",24,0xFFFFFF,true);
 			m_subtext.embedFonts = true;
@@ -87,18 +93,13 @@ package
 									<text timeout="2000" delay="0" position="bottom"><![CDATA[Text 1]]></text>
 									<text timeout="4000" delay="400" position="top"><![CDATA[Text 2]]></text>
 									<text timeout="6000" delay="600"><![CDATA[Text 3]]></text>
-								</action>;
-
+								</action>
 								<action type="SHOW" trigger="ShowText2">
 									<text timeout="2000" delay="0" position="bottom"><![CDATA[Text a]]></text>
 									<text timeout="4000" delay="200" position="top"><![CDATA[Text b]]></text>
 									<text timeout="6000" delay="300"><![CDATA[Text c]]></text>
-								</action>;
-
-								<action type="SHOW" trigger="ShowText3">
-									<text timeout="2000" delay="100" position="bottom"><![CDATA[Text #]]></text>
-								</action>;
-
+								</action>
+								<action type="HIDE" trigger="ClearText" />
 					</actions>;
 					 
 
