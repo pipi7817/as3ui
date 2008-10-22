@@ -12,6 +12,19 @@ package as3ui.controls.button
 	import as3ui.UIObject;
 	import as3ui.managers.IFocusObject;
 	
+	[Event (name="double_click", type="as3ui.controls.button.ButtonEvent")]
+	[Event (name="release", type="as3ui.controls.button.ButtonEvent")]
+	[Event (name="release_outside", type="as3ui.controls.button.ButtonEvent")]
+	[Event (name="press", type="as3ui.controls.button.ButtonEvent")]
+	[Event (name="roll_over", type="as3ui.controls.button.ButtonEvent")]
+	[Event (name="roll_out", type="as3ui.controls.button.ButtonEvent")]
+	[Event (name="roll_out_while_down", type="as3ui.controls.button.ButtonEvent")]
+	[Event (name="roll_over_while_down", type="as3ui.controls.button.ButtonEvent")]
+	[Event (name="enabled", type="as3ui.controls.button.ButtonEvent")]
+	[Event (name="disabled", type="as3ui.controls.button.ButtonEvent")]
+	[Event (name="change_state", type="as3ui.controls.button.ButtonEvent")]
+	[Event (name="toggle", type="as3ui.controls.button.ButtonEvent")]
+			
 	public class BaseButton extends UIObject implements IFocusObject
 	{
 
