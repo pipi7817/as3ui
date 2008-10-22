@@ -10,6 +10,14 @@ package as3ui
 	import flash.display.Sprite;
 	import flash.events.Event;
 
+	[Event (name="resize", type="as3ui.events.UIEvent")]
+	[Event (name="move", type="as3ui.events.UIEvent")]
+	[Event (name="moveComplete", type="as3ui.events.UIEvent")]
+	[Event (name="show", type="as3ui.events.UIEvent")]
+	[Event (name="showComplete", type="as3ui.events.UIEvent")]
+	[Event (name="hide", type="as3ui.events.UIEvent")]
+	[Event (name="hideComplete", type="as3ui.events.UIEvent")]
+	
 	public class UIObject extends Sprite
 	{
 		protected var m_maxWidth		:	Number;
