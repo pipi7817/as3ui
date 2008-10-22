@@ -2,11 +2,10 @@ package {
 	import as3ui.UIObject;
 	import as3ui.video.BasePlayer;
 	
-	import fl.video.VideoEvent;
-	
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.ui.Keyboard;
 	
 //	import as3ui.managers.FocusManager;
 	
@@ -19,10 +18,11 @@ package {
 			stage.align = StageAlign.TOP_LEFT;
 			stage.stageFocusRect = false;
 			
-//			var baseButtonExample:BaseButtonExample = new BaseButtonExample();
-//			baseButtonExample.x = 50;
-//			baseButtonExample.y = 150;
-//			addChild(baseButtonExample);
+			var baseButtonExample:BaseButtonExample = new BaseButtonExample();
+			baseButtonExample.x = 50;
+			baseButtonExample.y = 150;
+			baseButtonExample.bindKey(Keyboard.SPACE);
+			addChild(baseButtonExample);
 //			
 //			var simpleButtonExample:SimpleButtonExample = new SimpleButtonExample();
 //			simpleButtonExample.x = 50;

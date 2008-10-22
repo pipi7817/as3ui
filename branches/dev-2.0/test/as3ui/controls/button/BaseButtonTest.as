@@ -5,8 +5,10 @@ package as3ui.controls.button
 	import asunit.framework.TestSuite;
 	
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
+	import flash.ui.Keyboard;
 
 	public class BaseButtonTest extends AsynchronousTestCase
 	{
@@ -54,6 +56,8 @@ package as3ui.controls.button
 		
 		public function resultTestPress(event:ButtonEvent):void
 		{
+			event.target.removeEventListener(event.type, arguments.callee);
+
 			var instance:BaseButton = event.target as BaseButton;
 			assertEquals(ButtonEvent.PRESS, event.type);
 			assertEquals(instance.m_state, ButtonState.PRESSED);
@@ -65,13 +69,16 @@ package as3ui.controls.button
 			var handler:Function = addAsync(resultTestPressAndRelease, 1000);
 			var instance:BaseButton = m_instance;
 
-			instance.addEventListener(ButtonEvent.RELEASE, handler);
+			instance.addEventListener(ButtonEvent.RELEASE, handler,false,0,true);
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN,true,true,0,0,instance,false,false,false,true,0));
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP,true,true,0,0,instance,false,false,false,false,0));
 		}
 		
 		public function resultTestPressAndRelease(event:ButtonEvent):void
 		{
+
+			event.target.removeEventListener(event.type, arguments.callee);
+
 			var instance:BaseButton = event.target as BaseButton;
 			assertEquals(ButtonEvent.RELEASE, event.type);
 			assertEquals(ButtonState.RELEASED, instance.m_state);
@@ -83,7 +90,7 @@ package as3ui.controls.button
 			var handler:Function = addAsync(resultTestOverAndPressAndRelease, 1000);
 			var instance:BaseButton = m_instance;
 
-			instance.addEventListener(ButtonEvent.RELEASE, handler);
+			instance.addEventListener(ButtonEvent.RELEASE, handler,false,0,true);
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,instance,false,false,false,false,0));
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN,true,true,0,0,instance,false,false,false,true,0));
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP,true,true,0,0,instance,false,false,false,false,0));
@@ -91,6 +98,8 @@ package as3ui.controls.button
 
 		public function resultTestOverAndPressAndRelease(event:ButtonEvent):void
 		{
+			event.target.removeEventListener(event.type, arguments.callee);
+
 			var instance:BaseButton = event.target as BaseButton;
 			assertEquals(ButtonEvent.RELEASE, event.type);
 			assertEquals(ButtonState.OVER, instance.m_state);
@@ -102,7 +111,7 @@ package as3ui.controls.button
 			var handler:Function = addAsync(resultTestOverAndMouseDownAndPressAndRelease, 1000);
 			var instance:BaseButton = m_instance;
 
-			instance.addEventListener(ButtonEvent.RELEASE, handler);
+			instance.addEventListener(ButtonEvent.RELEASE, handler,false,0,true);
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,instance,false,false,false,false,0));
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN,true,true,0,0,instance,false,false,false,true,0));
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP,true,true,0,0,instance,false,false,false,false,0));
@@ -110,6 +119,8 @@ package as3ui.controls.button
 
 		public function resultTestOverAndMouseDownAndPressAndRelease(event:ButtonEvent):void
 		{
+			event.target.removeEventListener(event.type, arguments.callee);
+
 			var instance:BaseButton = event.target as BaseButton;
 			assertEquals(ButtonEvent.RELEASE, event.type);
 			assertEquals(ButtonState.OVER, instance.m_state);
@@ -121,7 +132,7 @@ package as3ui.controls.button
 			var handler:Function = addAsync(resultTestMouseDownAndOverAndAndRelease, 1000);
 			var instance:BaseButton = m_instance;
 
-			instance.addEventListener(ButtonEvent.ROLL_OVER, handler);
+			instance.addEventListener(ButtonEvent.ROLL_OVER, handler,false,0,true);
 //			instance.stage.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN,true,true,0,0,instance,false,false,false,true,0));
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,instance,false,false,false,true,0));
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP,true,true,0,0,instance,false,false,false,false,0));
@@ -129,6 +140,9 @@ package as3ui.controls.button
 
 		public function resultTestMouseDownAndOverAndAndRelease(event:ButtonEvent):void
 		{
+
+			event.target.removeEventListener(event.type, arguments.callee);
+
 			var instance:BaseButton = event.target as BaseButton;
 			assertEquals(ButtonEvent.ROLL_OVER, event.type);
 			assertEquals(ButtonState.OVER, instance.m_state);
@@ -141,12 +155,14 @@ package as3ui.controls.button
 			var handler:Function = addAsync(resultTestOver, 1000);
 			var instance:BaseButton = m_instance;
 
-			instance.addEventListener(ButtonEvent.ROLL_OVER, handler);
+			instance.addEventListener(ButtonEvent.ROLL_OVER, handler,false,0,true);
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,instance,false,false,false,false,0));
 		}
 		
 		public function resultTestOver(event:ButtonEvent):void
 		{
+			event.target.removeEventListener(event.type, arguments.callee);
+
 			var instance:BaseButton = event.target as BaseButton;
 			assertEquals(ButtonEvent.ROLL_OVER, event.type);
 			assertEquals(ButtonState.OVER, instance.m_state);
@@ -158,7 +174,7 @@ package as3ui.controls.button
 			var handler:Function = addAsync(resultTestOverAndOut, 1000);
 			var instance:BaseButton = m_instance;
 			
-			instance.addEventListener(ButtonEvent.ROLL_OUT, handler);
+			instance.addEventListener(ButtonEvent.ROLL_OUT, handler,false,0,true);
 
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,instance,false,false,false,false,0));
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OUT,true,true,0,0,instance,false,false,false,false,0)); 
@@ -166,6 +182,9 @@ package as3ui.controls.button
 		
 		public function resultTestOverAndOut(event:ButtonEvent):void
 		{
+
+			event.target.removeEventListener(event.type, arguments.callee);
+
 			var instance:BaseButton = event.target as BaseButton;
 			assertEquals(ButtonEvent.ROLL_OUT, event.type);
 			assertEquals(ButtonState.RELEASED, instance.m_state);
@@ -176,7 +195,7 @@ package as3ui.controls.button
 		{
 			var handler:Function = addAsync(resultTestPressAndOutAndRelease, 1000);
 			var instance:BaseButton = m_instance;
-			instance.addEventListener(ButtonEvent.RELEASE_OUTSIDE, handler);
+			instance.addEventListener(ButtonEvent.RELEASE_OUTSIDE, handler,false,0,true);
 
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN,true,true,0,0,instance,false,false,false,true,0));
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OUT,true,true,0,0,instance,false,false,false,true,0));
@@ -187,6 +206,8 @@ package as3ui.controls.button
 
 		public function resultTestPressAndOutAndRelease(event:ButtonEvent):void
 		{
+			event.target.removeEventListener(event.type, arguments.callee);
+
 			var instance:BaseButton = event.target as BaseButton;
 			
 			assertEquals(ButtonEvent.RELEASE_OUTSIDE,event.type);
@@ -210,44 +231,47 @@ package as3ui.controls.button
 		{
 			var handler:Function = addAsync(resultTestToggled, 1000);
 			var instance:BaseButton = m_instance;
-			instance.addEventListener(ButtonEvent.TOGGLE, handler);
+			instance.addEventListener(ButtonEvent.TOGGLE, handler,false,0,true);
 			instance.toggled = true;
 		}
 
 		public function testToggledAndMouseEvent():void
 		{
 			m_instance.toggled = true;
-			m_instance.addEventListener(ButtonEvent.CHANGE_STATE, resultFailStateEvent);
+			m_instance.addEventListener(ButtonEvent.CHANGE_STATE, resultFailStateEvent,false,0,true);
 			
 			m_instance.toggled = true;
-			m_instance.addEventListener(ButtonEvent.TOGGLE, resultFailToggledEvent);
+			m_instance.addEventListener(ButtonEvent.TOGGLE, resultFailToggledEvent,false,0,true);
 			m_instance.toggled = true;
 
-			m_instance.addEventListener(ButtonEvent.ROLL_OVER, resultTrigerOverEvent);
+			m_instance.addEventListener(ButtonEvent.ROLL_OVER, resultTrigerOverEvent,false,0,true);
 			m_instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,m_instance,false,false,false,false,0));
 
-			m_instance.addEventListener(ButtonEvent.PRESS, resultTrigerPressEvent);
+			m_instance.addEventListener(ButtonEvent.PRESS, resultTrigerPressEvent,false,0,true);
 			m_instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN,true,true,0,0,m_instance,false,false,false,true,0));
 			
-			m_instance.addEventListener(ButtonEvent.RELEASE, resultTrigerReleaseEvent);
+			m_instance.addEventListener(ButtonEvent.RELEASE, resultTrigerReleaseEvent,false,0,true);
 			m_instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP,true,true,0,0,m_instance,false,false,false,false,0));
 
-			m_instance.addEventListener(ButtonEvent.ROLL_OUT, resultTrigerOutEvent);
+			m_instance.addEventListener(ButtonEvent.ROLL_OUT, resultTrigerOutEvent,false,0,true);
 			m_instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OUT,true,true,0,0,m_instance,false,false,false,false,0));
 		}
 
 		public function resultFailStateEvent(event:ButtonEvent):void
 		{
+			event.target.removeEventListener(event.type, arguments.callee);
 			assertEquals("resultFailStateEvent should not be trigger", "false");
 		}
 		
 		public function resultFailToggledEvent(event:ButtonEvent):void
 		{
+			event.target.removeEventListener(event.type, arguments.callee);
 			assertEquals("resultFailToggledEvent should not be trigger", "false");
 		}
 
 		public function resultTrigerOverEvent(event:ButtonEvent):void
 		{
+			event.target.removeEventListener(event.type, arguments.callee);
 			var instance:BaseButton = event.target as BaseButton;
 			assertEquals(ButtonEvent.ROLL_OVER, event.type);
 			assertEquals(ButtonState.RELEASED, instance.m_state);
@@ -256,6 +280,7 @@ package as3ui.controls.button
 
 		public function resultTrigerPressEvent(event:ButtonEvent):void
 		{
+			event.target.removeEventListener(event.type, arguments.callee);
 			var instance:BaseButton = event.target as BaseButton;
 			assertEquals(ButtonEvent.PRESS, event.type);
 			assertEquals(ButtonState.RELEASED, instance.m_state);
@@ -264,6 +289,7 @@ package as3ui.controls.button
 
 		public function resultTrigerReleaseEvent(event:ButtonEvent):void
 		{
+			event.target.removeEventListener(event.type, arguments.callee);
 			var instance:BaseButton = event.target as BaseButton;
 			assertEquals(ButtonEvent.RELEASE, event.type);
 			assertEquals(ButtonState.RELEASED, instance.m_state);
@@ -272,6 +298,7 @@ package as3ui.controls.button
 
 		public function resultTrigerOutEvent(event:ButtonEvent):void
 		{
+			event.target.removeEventListener(event.type, arguments.callee);
 			var instance:BaseButton = event.target as BaseButton;
 			assertEquals(ButtonEvent.ROLL_OUT, event.type);
 			assertEquals(ButtonState.RELEASED, instance.m_state);
@@ -280,6 +307,7 @@ package as3ui.controls.button
 
 		public function resultTestToggled(event:ButtonEvent):void
 		{
+			event.target.removeEventListener(event.type, arguments.callee);
 			var instance:BaseButton = event.target as BaseButton;
 			assertEquals(ButtonEvent.TOGGLE,event.type);
 		}
@@ -301,7 +329,7 @@ package as3ui.controls.button
 		{
 			var handler:Function = addAsync(resultTestPressAndOutAndOver, 1000);
 			var instance:BaseButton = m_instance;
-			instance.addEventListener(ButtonEvent.ROLL_OVER_WHILE_DOWN, handler);
+			instance.addEventListener(ButtonEvent.ROLL_OVER_WHILE_DOWN, handler,false,0,true);
 
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN,true,true,0,0,instance,false,false,false,true,0));
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OUT,true,true,0,0,instance,false,false,false,true,0));
@@ -311,6 +339,7 @@ package as3ui.controls.button
 		
 		public function resultTestPressAndOutAndOver(event:ButtonEvent):void
 		{
+			event.target.removeEventListener(event.type, arguments.callee);
 			var instance:BaseButton = event.target as BaseButton;
 			assertEquals(ButtonEvent.ROLL_OVER_WHILE_DOWN,event.type);
 		}
@@ -326,7 +355,7 @@ package as3ui.controls.button
 		{
 			var handler:Function = addAsync(resultTestPressAndDragAndOutAndRelese, 1000);
 			var instance:BaseButton = m_instance;
-			instance.addEventListener(ButtonEvent.RELEASE_OUTSIDE, handler);
+			instance.addEventListener(ButtonEvent.RELEASE_OUTSIDE, handler,false,0,true);
 
 			instance.startDrag(false,new Rectangle(0,0,100,0));
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN,true,true,0,0,instance,false,false,false,true,0));
@@ -340,6 +369,7 @@ package as3ui.controls.button
 
 		private function resultTestPressAndDragAndOutAndRelese(event:Event):void
 		{
+			event.target.removeEventListener(event.type, arguments.callee);
 			var instance:BaseButton = event.target as BaseButton;
 			assertEquals(ButtonState.RELEASED,instance.m_state);
 
@@ -360,7 +390,35 @@ package as3ui.controls.button
 			assertEquals(ButtonState.DISABLED,m_instance.m_state);
 
 		}
+		
+		public function testKeyPress():void
+		{
+			var handler:Function = addAsync(resultTestKeyPress, 1000);
+			m_instance.addEventListener(ButtonEvent.CHANGE_STATE, handler,false,0,true);
+			m_instance.bindKey(Keyboard.SPACE);
+			context.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_DOWN,true,true,0,Keyboard.SPACE) );
+		}
+		
+		private function resultTestKeyPress(event:Event):void
+		{
+			event.target.removeEventListener(event.type, arguments.callee);
+			assertEquals(ButtonState.PRESSED,m_instance.m_state);
+		}
 
+		public function testKeyRelease():void
+		{
+			var handler:Function = addAsync(resultTestKeyPress, 1000);
+			m_instance.addEventListener(ButtonEvent.CHANGE_STATE, handler,false,0,true);
+			m_instance.bindKey(Keyboard.SPACE);
+			context.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_DOWN,true,true,0,Keyboard.SPACE) );
+			context.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_UP,true,true,0,Keyboard.SPACE) );
+		}
+		
+		private function resultTestKeyRelease(event:Event):void
+		{
+			event.target.removeEventListener(event.type, arguments.callee);
+			assertEquals(ButtonState.RELEASED,m_instance.m_state);
+		}
 				
 	}
 }

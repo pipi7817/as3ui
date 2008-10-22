@@ -28,7 +28,7 @@ package
 
 		public function AllTests()
 		{
-//			addTest(as3ui.controls.button.BaseButtonTest.suite());
+			addTest(as3ui.controls.button.BaseButtonTest.suite());
 //			addTest(as3ui.controls.button.SimpleButtonTest.suite());
 //			addTest(as3ui.controls.form.FormInputTest.suite());
 //			addTest(as3ui.controls.input.BaseInputTest.suite());
