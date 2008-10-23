@@ -1,5 +1,5 @@
   /**
- * @author Alexander Aivars (alexander.aivars@gmail.com)
+ * @author Alexander Aivars (alexander.aivars(at)gmail.com)
  * 
  * Base Button Class based on com.lessrain.as3lib.controls.button by Luis Martinez (Less Rain)
  */

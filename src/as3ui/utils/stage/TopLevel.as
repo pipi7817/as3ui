@@ -1,5 +1,5 @@
 /**
-* @author Alexander Aivars <alexander.aivars@gmail.com>
+* @author Alexander Aivars <alexander.aivars(at)gmail.com>
 * 
 * Based on com.lessrain.as3lib.utils.stage.TopLevel by Luis Martinez, Less Rain (luis@lessrain.com)
 *

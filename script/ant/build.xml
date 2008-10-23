@@ -1,0 +1,75 @@
+<project name="asdoc" default="documentation" basedir="../../">
+	<!-- check our os and load appropriate property files -->
+	
+	<condition property="os.family" value="unix">
+		<and>
+        	<os family="unix" />
+    		<not>
+				<os family="mac" />
+			</not>
+		</and>
+	</condition>
+
+
+	<condition property="os.family" value="osx">
+		<and>
+        	<os family="unix" />
+        	<os family="mac" />
+		</and>
+    </condition>
+
+    <condition property="os.family" value="windows">
+        <os family="windows" />
+    </condition>
+
+    <condition property="os.family" value="unix">
+		<and>
+			<not>
+        		<os family="windows" />
+			</not>
+			<not>
+				<os family="unix" />
+	    	</not>
+		</and>
+	</condition>
+
+	<property file="script/ant/${os.family}.properties"/>
+	<property file="script/ant/project.properties"/>
+
+	<property name="lib.dir" value="${build.dir}/lib"/>
+	<property name="template.dir" value="${build.dir}/template"/>
+	<property name="swc.dir" value="${build.dir}/assets"/>
+	<property name="source.dir" value="${build.dir}/src"/>
+	<property name="fonts.dir" value="${source.dir}/fonts"/>
+	<property name="swf.content" value="/flash/main.swf"/>
+
+	<target name="documentation">
+
+		<delete dir="${docs.dir}" failOnError="false" includeEmptyDirs="true"/>
+		
+		<dirset dir="${lib.dir}" id="lib.ref">
+			<patternset>
+				<include name="*"/>
+			</patternset>
+		</dirset>
+		<pathconvert pathsep=" " property="lib.source" refid="lib.ref"/>
+
+		<fileset dir="${build.dir}" id="src.files">
+			<include name="**/*.swc"/>
+	    </fileset>
+	    <pathconvert pathsep=" " property="swc.files" refid="src.files"/>
+	    			
+		<exec executable="${asdoc}" failonerror="true">
+		    <arg line='-doc-sources ${source.dir}/as3ui ${source.dir}/org'/>
+			<arg line='-include-lookup-only=true'/>
+			<arg line="-compiler.source-path ${lib.source}" />
+			<arg line="-compiler.library-path ${swc.files}"/>
+			<arg line="-compiler.strict=false"/>
+			<arg line='-exclude-classes=${doc.asdoc.excludes}'/>
+			<arg line='-warnings=false'/>
+		    <arg line='-output ${docs.dir}'/>
+		</exec>
+	</target>
+
+		
+</project>
