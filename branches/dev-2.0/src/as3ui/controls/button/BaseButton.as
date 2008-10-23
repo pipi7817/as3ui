@@ -68,7 +68,12 @@ package as3ui.controls.button
 		{
 			return m_isMouseOver;
 		}
-				
+		
+		/**
+		 * 
+		 * @param a_enabled
+		 * Sets whether the component can accept user input.
+		 */				
 		public function setEnabled(a_enabled:Boolean):void
 		{
 
@@ -93,6 +98,11 @@ package as3ui.controls.button
 			}
 		}
 		
+		/**
+		 * 
+		 * @return 
+		 * Gets a value that indicates whether the component can accept user input.
+		 */		
 		public function get isEnabled():Boolean
 		{
 			return m_enabled;
@@ -131,11 +141,22 @@ package as3ui.controls.button
 			return m_isFocus;
 		}
 				
+		/**
+		 * 
+		 * @return 
+		 * Gets or sets a value that indicates the current ButtonState of the component.
+		 */		
 		protected function get state():String
 		{
 			return m_state;
 		}
 		
+
+		/**
+		 * 
+		 * @return 
+		 * Gets or sets a value that indicates the current ButtonState of the component.
+		 */	
 		protected function set state(a_state:String):void
 		{
 
