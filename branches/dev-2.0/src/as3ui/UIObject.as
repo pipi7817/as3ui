@@ -1,5 +1,5 @@
 /**
- * @author Alexander Aivars (alexander.aivars@gmail.com)
+ * @author Alexander Aivars (alexander.aivars(at)gmail.com)
  */
 package as3ui
 {
