@@ -1,7 +1,7 @@
 package as3ui.managers.subtitlemanager
 {
 
-	import as3ui.managers.subtitlemanager.events.TriggerEvent;
+	import as3ui.managers.subtitlemanager.events.SubtitleTriggerEvent;
 	import as3ui.managers.subtitlemanager.vo.Text;
 	
 	import asunit.framework.TestCase;
@@ -76,12 +76,12 @@ package as3ui.managers.subtitlemanager
 		public function testPlay() : void
 		{
 			var handler:Function = addAsync(handleTestPlay, 3000);
-			m_instance.addEventListener(TriggerEvent.UPDATE, function(a_event:Event):void
+			m_instance.addEventListener(SubtitleTriggerEvent.UPDATE, function(a_event:Event):void
 			{
 				m_result.push( a_event.target.text );
 			},false,0,true);
 			
-			m_instance.addEventListener(TriggerEvent.DEACTIVATE,handler,false,0,true);
+			m_instance.addEventListener(SubtitleTriggerEvent.DEACTIVATE,handler,false,0,true);
 			m_instance.play();
 		}
 		
