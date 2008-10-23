@@ -3,7 +3,7 @@ package as3ui.managers
 
 	import as3ui.managers.subtitlemanager.Trigger;
 	import as3ui.managers.subtitlemanager.events.SubtitleEvent;
-	import as3ui.managers.subtitlemanager.events.TriggerEvent;
+	import as3ui.managers.subtitlemanager.events.SubtitleTriggerEvent;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -90,9 +90,9 @@ package as3ui.managers
 			for each ( var trigger:Trigger in m_triggers ) 
 			{
 				trigger.reset();
-				trigger.removeEventListener(TriggerEvent.ACTIVATE, onTriggerActivate);
-				trigger.removeEventListener(TriggerEvent.UPDATE, onTriggerUpdate);
-				trigger.removeEventListener(TriggerEvent.DEACTIVATE, onTriggerDeactivate);
+				trigger.removeEventListener(SubtitleTriggerEvent.ACTIVATE, onTriggerActivate);
+				trigger.removeEventListener(SubtitleTriggerEvent.UPDATE, onTriggerUpdate);
+				trigger.removeEventListener(SubtitleTriggerEvent.DEACTIVATE, onTriggerDeactivate);
 			}			
 		}
 		
@@ -135,19 +135,31 @@ package as3ui.managers
 			}
 		}
 			
-		private function onTrigger(a_event:Event) : void
+		private function onTrigger(a_event:Event,a_data:Object = null) : void
 		{
 			var action:XML =  getAction(a_event.type) as XML;
 			var trigger:Trigger;
+			
+			trace( a_event is SubtitleTriggerEvent );
+			
+			if(a_event is SubtitleTriggerEvent && (a_event as SubtitleTriggerEvent).data != null )
+			{
+				a_data = (a_event as SubtitleTriggerEvent).data;
+			}
 			
 			switch( action.attribute("type").toString() )
 			{
 				case "SHOW" :
 					removeTriggerListners();
 					trigger = m_triggers[action.attribute("trigger").toString()];
-					trigger.addEventListener(TriggerEvent.ACTIVATE, onTriggerActivate);
-					trigger.addEventListener(TriggerEvent.UPDATE, onTriggerUpdate);
-					trigger.addEventListener(TriggerEvent.DEACTIVATE, onTriggerDeactivate);
+					trigger.addEventListener(SubtitleTriggerEvent.ACTIVATE, onTriggerActivate);
+					trigger.addEventListener(SubtitleTriggerEvent.UPDATE, onTriggerUpdate);
+					trigger.addEventListener(SubtitleTriggerEvent.DEACTIVATE, onTriggerDeactivate);
+					if(a_data != null)
+					{
+						trigger.vars = a_data;
+					}
+
 					trigger.play();
 				break;
 
@@ -185,8 +197,14 @@ package as3ui.managers
 			return m_data..action.(attribute("trigger") == a_trigger )[0];
 		}
 		
-
-
+		public static function trigger(a_trigger:String,a_vars:Object) : void
+		{
+			if(m_instance.m_root.hasEventListener(a_trigger))
+			{
+				m_instance.onTrigger(new SubtitleTriggerEvent(a_trigger,a_vars));
+			}
+	
+		}
 		
 	}
 }

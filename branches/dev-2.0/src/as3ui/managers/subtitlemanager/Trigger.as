@@ -1,6 +1,6 @@
 package as3ui.managers.subtitlemanager
 {
-	import as3ui.managers.subtitlemanager.events.TriggerEvent;
+	import as3ui.managers.subtitlemanager.events.SubtitleTriggerEvent;
 	import as3ui.managers.subtitlemanager.vo.Text;
 	
 	import flash.events.Event;
@@ -8,9 +8,9 @@ package as3ui.managers.subtitlemanager
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
-	[Event (name="activate", type="as3ui.managers.subtitlemanager.events.TriggerEvent")]
-	[Event (name="deactivate", type="as3ui.managers.subtitlemanager.events.TriggerEvent")]
-	[Event (name="update", type="as3ui.managers.subtitlemanager.events.TriggerEvent")]
+	[Event (name="activate", type="as3ui.managers.subtitlemanager.events.SubtitleTriggerEvent")]
+	[Event (name="deactivate", type="as3ui.managers.subtitlemanager.events.SubtitleTriggerEvent")]
+	[Event (name="update", type="as3ui.managers.subtitlemanager.events.SubtitleTriggerEvent")]
 	
 	public class Trigger extends EventDispatcher
 	{
@@ -28,6 +28,7 @@ package as3ui.managers.subtitlemanager
 		private var m_timer:Timer;
 		internal var m_content:Array;
 		
+		public var vars:Object;
 		
 		
 		public function Trigger(a_xml:XML)
@@ -57,7 +58,24 @@ package as3ui.managers.subtitlemanager
 		
 		public function get text() : String
 		{
-			return (m_data != null)?m_data.data : "";
+			if(vars != null && m_data != null)
+			{
+				var str:String = m_data.data;
+				var pattern:RegExp;
+				
+				for (var name:* in vars)
+				{
+					pattern = new RegExp( "{" + name.toString() + "}","g" ) ;
+					str = str.replace(pattern,vars[name].toString());
+				}				
+				
+				return str;
+				
+			}
+			else
+			{
+				return (m_data != null)?m_data.data : "";
+			}
 		}
 		
 		public function reset(a_event:Event = null) : void
@@ -68,6 +86,7 @@ package as3ui.managers.subtitlemanager
 			m_data = null;
 			m_playing = false;
 			m_active = false;
+			vars = null;
 		}
 
 		public function play() : void
@@ -130,7 +149,7 @@ package as3ui.managers.subtitlemanager
 				a_event.target.removeEventListener(a_event.type, arguments.callee);
 			}
 
-			dispatchEvent(new TriggerEvent(TriggerEvent.UPDATE));
+			dispatchEvent(new SubtitleTriggerEvent(SubtitleTriggerEvent.UPDATE));
 
 			try
 			{
@@ -150,14 +169,14 @@ package as3ui.managers.subtitlemanager
 			if(!m_active)
 			{
 				m_active = true;
-				dispatchEvent(new TriggerEvent(TriggerEvent.ACTIVATE));
+				dispatchEvent(new SubtitleTriggerEvent(SubtitleTriggerEvent.ACTIVATE));
 			}			
 		}
 
 		private function deactivate() : void
 		{
 			reset();
-			dispatchEvent(new TriggerEvent(TriggerEvent.DEACTIVATE));
+			dispatchEvent(new SubtitleTriggerEvent(SubtitleTriggerEvent.DEACTIVATE));
 		}
 
 		private function cloneContent() : void
