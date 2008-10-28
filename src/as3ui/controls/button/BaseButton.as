@@ -254,6 +254,8 @@ package as3ui.controls.button
 		
 		private function addStageListners(a_event:Event = null) : void
 		{
+			if(a_event.target != this) return;
+			
 			stage.addEventListener(KeyboardEvent.KEY_DOWN,onKeyDown,false,0,true);
 			stage.addEventListener(KeyboardEvent.KEY_UP,onKeyUp,false,0,true);
 		}
@@ -419,9 +421,8 @@ package as3ui.controls.button
 		
 		protected function removeButtonHandler(a_event:Event):void
 		{
+			if(a_event.target != this) return;
 			finalize();
 		}
-		
-
 	}
 }
