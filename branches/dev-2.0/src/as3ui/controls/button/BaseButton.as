@@ -243,6 +243,7 @@ package as3ui.controls.button
 			addEventListener(MouseEvent.MOUSE_OVER, rollOverHandler,false,0,true);
 			addEventListener(MouseEvent.MOUSE_OUT, rollOutHandler,false,0,true);
 			addEventListener(Event.REMOVED, removeButtonHandler,false,0,true);			
+			addEventListener(Event.REMOVED_FROM_STAGE, removeButtonHandler,false,0,true);			
 			addEventListener(Event.ADDED_TO_STAGE,addStageListners,false,0,true);	
 		}
 
@@ -274,6 +275,7 @@ package as3ui.controls.button
 			removeEventListener(MouseEvent.MOUSE_UP, releaseHandler); 
 			removeEventListener(MouseEvent.MOUSE_OVER, rollOverHandler);
 			removeEventListener(MouseEvent.MOUSE_OUT, rollOutHandler);
+			removeEventListener(Event.REMOVED_FROM_STAGE, removeButtonHandler);			
 			removeEventListener(Event.REMOVED, removeButtonHandler);
 			removeEventListener(Event.ADDED_TO_STAGE,addStageListners);			
 		}
