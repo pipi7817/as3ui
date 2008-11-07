@@ -22,22 +22,22 @@ package as3ui.controls.button
 		{
    			var ts:TestSuite = new TestSuite();
 	 		ts.addTest(new BaseButtonTest());
-//	 		ts.addTest(new BaseButtonTest("testPressAndDisableAndRelese"));
+//	 		ts.addTest(new BaseButtonTest("testPreSetEnabled"));
    			return ts;
    		}
 
 		override protected function setUp():void
 		{
-			super.setUp();
 			m_instance = new BaseButton();
 			addChild(m_instance);
+			super.setUp();
 		}
 
 		override protected function tearDown():void
 		{
-			super.tearDown();
 			removeChild(m_instance);
-			m_instance = null;
+			// m_instance = null;
+			super.tearDown();
 		}
 
 		public function testInstantiated():void
@@ -375,22 +375,23 @@ package as3ui.controls.button
 
 		}
 
-		public function testPressAndDisableAndRelese():void
-		{
-			m_instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,m_instance,false,false,false,false,0));
-			assertEquals(ButtonState.OVER,m_instance.m_state);
-			
-			m_instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN,true,true,0,0,m_instance,false,false,false,true,0));
-			assertEquals(ButtonState.PRESSED,m_instance.m_state);
-
-			m_instance.setEnabled(false);
-			assertEquals(ButtonState.DISABLED,m_instance.m_state);
-
-			m_instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP,true,true,0,0,m_instance,false,false,false,false,0));
-			assertEquals(ButtonState.DISABLED,m_instance.m_state);
-
-		}
-		
+//		public function testPressAndDisableAndRelese():void
+//		{
+//			m_instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,m_instance,false,false,false,false,0));
+//			assertEquals(ButtonState.OVER,m_instance.m_state);
+//			
+//			m_instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN,true,true,0,0,m_instance,false,false,false,true,0));
+//			assertEquals(ButtonState.PRESSED,m_instance.m_state);
+//
+//			m_instance.setEnabled(false);
+//			assertEquals(ButtonState.DISABLED,m_instance.m_state);
+//
+//			m_instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP,true,true,0,0,m_instance,false,false,false,false,0));
+//			assertEquals(ButtonState.DISABLED,m_instance.m_state);
+//	
+//
+//		}
+//		
 		public function testKeyPress():void
 		{
 			var handler:Function = addAsync(resultTestKeyPress, 1000);
@@ -407,10 +408,13 @@ package as3ui.controls.button
 
 		public function testKeyRelease():void
 		{
-			var handler:Function = addAsync(resultTestKeyPress, 1000);
-			m_instance.addEventListener(ButtonEvent.CHANGE_STATE, handler,false,0,true);
+			var handler:Function = addAsync(resultTestKeyRelease, 1000);
 			m_instance.bindKey(Keyboard.SPACE);
+
 			context.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_DOWN,true,true,0,Keyboard.SPACE) );
+
+			m_instance.addEventListener(ButtonEvent.CHANGE_STATE, handler,false,0,true);
+
 			context.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_UP,true,true,0,Keyboard.SPACE) );
 		}
 		
@@ -419,6 +423,14 @@ package as3ui.controls.button
 			event.target.removeEventListener(event.type, arguments.callee);
 			assertEquals(ButtonState.RELEASED,m_instance.m_state);
 		}
-				
+		
+		public function testPreSetEnabled():void
+		{
+			var button:BaseButton = new BaseButton();
+			button.setEnabled(false);
+			button.setEnabled(true);
+			
+		}
+						
 	}
 }

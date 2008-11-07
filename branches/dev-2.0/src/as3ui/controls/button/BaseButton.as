@@ -47,7 +47,7 @@ package as3ui.controls.button
 		protected var m_toggledEvent			:	ButtonEvent;
 
 		internal var m_isMouseOver				:	Boolean;
-		internal var m_enabled					:	Boolean;
+		internal var m_enabled					:	Boolean			=	true;
 		internal var m_isFocus					:	Boolean;
 		internal var m_toggled					:	Boolean;
 		internal var m_state					:	String;
@@ -80,20 +80,26 @@ package as3ui.controls.button
 			var oldEnabled	:	Boolean	=	m_enabled;
 			m_enabled					=	a_enabled;
 			mouseEnabled				=	a_enabled;
-			
-			if(oldEnabled != a_enabled)
+			if(!stage)
 			{
-				if(a_enabled) 
+				m_state = a_enabled?ButtonState.RELEASED:ButtonState.DISABLED;
+			}
+			else
+			{
+				if(oldEnabled != a_enabled)
 				{
-					dispatchEvent(m_enabledEvent);
-					// reset state
-					state = ButtonState.RELEASED;
-					dispatchEvent(m_rollOutEvent);
-				}
-				else
-				{
-					state = ButtonState.DISABLED;
-					dispatchEvent(m_disabledEvent);
+					if(a_enabled) 
+					{
+						dispatchEvent(m_enabledEvent);
+						// reset state
+						state = ButtonState.RELEASED;
+						dispatchEvent(m_rollOutEvent);
+					}
+					else
+					{
+						state = ButtonState.DISABLED;
+						dispatchEvent(m_disabledEvent);
+					}
 				}
 			}
 		}
@@ -183,10 +189,14 @@ package as3ui.controls.button
 
 
 			m_state = ButtonState.RELEASED;
+			setEnabled(m_enabled);
 			
 			initializeEvents();
-			
-			setEnabled(true);
+
+			addEventListener(Event.ADDED_TO_STAGE,addButtonHandlers,false,0,true);	
+			addEventListener(Event.REMOVED_FROM_STAGE, removeButtonHandlers,false,0,true);			
+
+
 		}
 		
 		
@@ -207,13 +217,10 @@ package as3ui.controls.button
 			m_stateEvent				=	new ButtonEvent(ButtonEvent.CHANGE_STATE,true,true);
 			m_toggledEvent				= 	new ButtonEvent(ButtonEvent.TOGGLE,true,true);
 			
-			addButtonListeners();
-			
 		}
 
 		private function finalize():void
 		{
-			removeStageListener();
 			
 			m_doubleClickEvent			= null;
 			m_releaseEvent				= null;
@@ -228,7 +235,7 @@ package as3ui.controls.button
 			m_stateEvent				= null;
 			m_toggledEvent				= null;
 			
-			removeButtonListeners();
+			
 		}
 		
 		private function addButtonListeners():void
@@ -237,14 +244,14 @@ package as3ui.controls.button
 			{
 				addEventListener(MouseEvent.DOUBLE_CLICK, doubleClickHandler, false,0,true); 
 			}
+
+			stage.addEventListener(KeyboardEvent.KEY_DOWN,onKeyDown,false,0,true);
+			stage.addEventListener(KeyboardEvent.KEY_UP,onKeyUp,false,0,true);
 			
 			addEventListener(MouseEvent.MOUSE_DOWN, pressHandler,false,0,true);
 			addEventListener(MouseEvent.MOUSE_UP, releaseHandler,false,0,true); 
 			addEventListener(MouseEvent.MOUSE_OVER, rollOverHandler,false,0,true);
 			addEventListener(MouseEvent.MOUSE_OUT, rollOutHandler,false,0,true);
-			addEventListener(Event.REMOVED, removeButtonHandler,false,0,true);			
-			addEventListener(Event.REMOVED_FROM_STAGE, removeButtonHandler,false,0,true);			
-			addEventListener(Event.ADDED_TO_STAGE,addStageListners,false,0,true);	
 		}
 
 		public function bindKey(a_uint:uint):void
@@ -257,17 +264,17 @@ package as3ui.controls.button
 		{
 			if(a_event.target != this) return;
 			
-			stage.addEventListener(KeyboardEvent.KEY_DOWN,onKeyDown,false,0,true);
-			stage.addEventListener(KeyboardEvent.KEY_UP,onKeyUp,false,0,true);
 		}
 
 		private function removeButtonListeners():void
 		{
+			removeStageMouseEventListener();
+
 			if(hasEventListener(MouseEvent.DOUBLE_CLICK)) 
 			{
 				removeEventListener(MouseEvent.DOUBLE_CLICK, doubleClickHandler);
 			}
-			
+
 			stage.removeEventListener(KeyboardEvent.KEY_DOWN,onKeyDown);
 			stage.removeEventListener(KeyboardEvent.KEY_UP,onKeyUp);				
 
@@ -275,9 +282,6 @@ package as3ui.controls.button
 			removeEventListener(MouseEvent.MOUSE_UP, releaseHandler); 
 			removeEventListener(MouseEvent.MOUSE_OVER, rollOverHandler);
 			removeEventListener(MouseEvent.MOUSE_OUT, rollOutHandler);
-			removeEventListener(Event.REMOVED_FROM_STAGE, removeButtonHandler);			
-			removeEventListener(Event.REMOVED, removeButtonHandler);
-			removeEventListener(Event.ADDED_TO_STAGE,addStageListners);			
 		}
 				
 		private function onKeyDown(a_event:KeyboardEvent):void
@@ -297,7 +301,7 @@ package as3ui.controls.button
 			
 		}
 		
-		private function addStageListener():void
+		private function addStageMouseEventListener():void
 		{
 			if(stage)
 			{
@@ -305,7 +309,7 @@ package as3ui.controls.button
 			}
 		}
 
-		private function removeStageListener():void
+		private function removeStageMouseEventListener():void
 		{
 			if(stage)
 			{
@@ -327,7 +331,7 @@ package as3ui.controls.button
 				state = ButtonState.PRESSED;
 				if(a_event != null)
 				{
-					addStageListener();
+					addStageMouseEventListener();
 				}
 				dispatchEvent(m_pressEvent);
 			}
@@ -350,7 +354,7 @@ package as3ui.controls.button
 			{
 				if(a_event != null)
 				{
-					removeStageListener();
+					removeStageMouseEventListener();
 				}
 				
 				if(m_isFocus)
@@ -417,14 +421,25 @@ package as3ui.controls.button
 				dispatchEvent(m_releaseOutsideEvent);
 			}
 
-			removeStageListener();
+			removeStageMouseEventListener();
 
 		}
 		
-		protected function removeButtonHandler(a_event:Event):void
+
+		protected function addButtonHandlers(a_event:Event):void
 		{
-			if(a_event.target != this) return;
-			finalize();
+//			if(a_event.target != this) return;
+			addButtonListeners();
+			//finalize();
 		}
+
+
+		protected function removeButtonHandlers(a_event:Event):void
+		{
+//			if(a_event.target != this) return;
+			removeButtonListeners();
+			//finalize();
+		}
+		
 	}
 }
