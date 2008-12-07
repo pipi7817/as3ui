@@ -32,7 +32,7 @@ package as3ui
 		protected var m_autosize		:	Boolean;
 		
 		protected var m_float			:	String = Float.NONE;
-		protected var m_align			:	String = Align.LEFT;
+		protected var m_align			:	String = Align.NONE;
 		
 		public function UIObject()
 		{

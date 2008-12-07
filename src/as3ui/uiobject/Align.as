@@ -7,8 +7,9 @@ package as3ui.uiobject
 		public static const RIGHT:String	= "right";
 		public static const CENTER:String	= "center";
 		public static const BOTTOM:String 	= "bottom";
+		public static const NONE:String 	= "none";
 		
-		public function Float()
+		public function Align()
 		{
 		}
 
