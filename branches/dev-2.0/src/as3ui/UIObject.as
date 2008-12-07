@@ -4,6 +4,7 @@
 package as3ui
 {
 	import as3ui.events.UIEvent;
+	import as3ui.uiobject.Align;
 	import as3ui.uiobject.Float;
 	
 	import flash.display.DisplayObject;
@@ -30,7 +31,8 @@ package as3ui
 		protected var m_ypos			:	Number;
 		protected var m_autosize		:	Boolean;
 		
-		public var float				:	String = Float.NONE;
+		protected var m_float			:	String = Float.NONE;
+		protected var m_align			:	String = Align.LEFT;
 		
 		public function UIObject()
 		{
@@ -303,5 +305,24 @@ package as3ui
 			return ( ret );
 		}
 		
+		public function set align(a_value:String) : void
+		{
+			m_align = a_value;
+		}
+		
+		public function set float(a_value:String) : void
+		{
+			m_float = a_value;	
+		}
+
+		public function get align():String
+		{
+			return m_align;
+		}
+		
+		public function get float():String
+		{
+			return m_float;
+		}
 	}
 }
