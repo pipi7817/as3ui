@@ -237,6 +237,11 @@ package as3ui
 		}
 
 		
+		public function set top(a_y:Number):void
+		{
+			y = a_y;
+		}
+
 		public function set right(a_x:Number):void
 		{
 			x = a_x - width;
@@ -246,10 +251,30 @@ package as3ui
 		{
 			y = a_y - height;			
 		}
+		
+		public function set left(a_x:Number):void
+		{
+			x = a_x;
+		}
+
+		public function get top():Number
+		{
+			return y;
+		}
+
+		public function get right():Number
+		{
+			return x + width;
+		}
 
 		public function get bottom():Number
 		{
 			return y + height;			
+		}
+				
+		public function get left():Number
+		{
+			return x;			
 		}
 		
 
