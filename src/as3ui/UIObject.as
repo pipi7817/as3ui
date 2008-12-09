@@ -6,6 +6,7 @@ package as3ui
 	import as3ui.events.UIEvent;
 	import as3ui.uiobject.Align;
 	import as3ui.uiobject.Float;
+	import as3ui.uiobject.ILayoutable;
 	import as3ui.uiobject.Margin;
 	import as3ui.uiobject.Padding;
 	
@@ -21,7 +22,7 @@ package as3ui
 	[Event (name="hide", type="as3ui.events.UIEvent")]
 	[Event (name="hideComplete", type="as3ui.events.UIEvent")]
 	
-	public class UIObject extends Sprite
+	public class UIObject extends Sprite implements ILayoutable
 	{
 		protected var m_maxWidth		:	Number;
 		protected var m_minWidth		:	Number;
