@@ -6,6 +6,8 @@ package as3ui
 	import as3ui.events.UIEvent;
 	import as3ui.uiobject.Align;
 	import as3ui.uiobject.Float;
+	import as3ui.uiobject.Margin;
+	import as3ui.uiobject.Padding;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -33,6 +35,8 @@ package as3ui
 		
 		protected var m_float			:	String = Float.NONE;
 		protected var m_align			:	String = Align.NONE;
+		protected var m_margin			:	Margin = new Margin();
+		protected var m_padding			:	Padding = new Padding();
 		
 		public function UIObject()
 		{
@@ -324,5 +328,16 @@ package as3ui
 		{
 			return m_float;
 		}
+		
+		public function get padding():Padding
+		{
+			return m_padding;
+		}
+	
+		public function get margin():Margin
+		{
+			return m_margin;
+		}
+		
 	}
 }
