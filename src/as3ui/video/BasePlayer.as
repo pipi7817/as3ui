@@ -76,7 +76,7 @@ package as3ui.video
 			m_recoverSeekTimer.addEventListener(TimerEvent.TIMER, recoverSeek);
 			
 			m_video = new Video(a_width,a_height);
-			m_video.opaqueBackground = true;
+			m_video.opaqueBackground = 0;
 			m_contentPath = "";
 			m_lastValidSeek = 0;
 
@@ -84,6 +84,9 @@ package as3ui.video
 			addChild(m_video);
 		}
 		
+		override public  function get opaqueBackground():Object { return m_video.opaqueBackground;  }
+    	override public  function set opaqueBackground(a_value:Object):void { m_video.opaqueBackground = a_value;  }
+    		
 		override public function setSize(a_width:Number=NaN, a_height:Number=NaN, a_pixelSnap:Boolean=false):void
 		{
 			m_video.width = a_width;
