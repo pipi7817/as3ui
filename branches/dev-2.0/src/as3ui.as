@@ -40,10 +40,10 @@ package {
 //			input.y = 50;
 //			addChild(input);
 //						
-//			var vp:VideoPlayerExample = new VideoPlayerExample();
-//			vp.x = 50;
-//			vp.y = 200;
-//			addChild(vp);
+			var vp:VideoPlayerExample = new VideoPlayerExample();
+			vp.x = 50;
+			vp.y = 200;
+			addChild(vp);
 
 //			var ti:FormInput = new FormInput(new RoundTextInput(),"",true);
 //			ti.x = 50;
