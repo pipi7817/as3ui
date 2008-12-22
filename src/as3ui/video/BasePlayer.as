@@ -98,6 +98,7 @@ package as3ui.video
 		{
 			if(a_url != null)
 			{
+				m_metadata = null;
 				m_contentPath = a_url;
 
 				if(m_ns != null)
