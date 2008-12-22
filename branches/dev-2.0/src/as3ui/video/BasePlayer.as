@@ -98,7 +98,10 @@ package as3ui.video
 		{
 			if(a_url != null)
 			{
+				// reset meta data
 				m_metadata = null;
+				m_streamLength = undefined;
+				
 				m_contentPath = a_url;
 
 				if(m_ns != null)
