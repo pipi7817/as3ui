@@ -61,6 +61,14 @@ package as3ui.video
 		protected var m_video:Video;
 		
 
+		[Event (name="cuePoint", type="fl.video.MetadataEvent")]
+		[Event (name="close", type="fl.video.VideoEvent")]
+		[Event (name="complete", type="fl.video.VideoEvent")]
+		[Event (name="stateChange", type="fl.video.VideoEvent")]
+		[Event (name="netStatus", type="flash.events.NetStatusEvent")]
+		[Event (name="progress", type="flash.events.ProgressEvent")]
+
+
 		public function BasePlayer(a_width:Number, a_height:Number)
 		{
 			super();
@@ -223,7 +231,7 @@ package as3ui.video
         }
 
 		public function set volume(a_volume:Number):void {
-
+			trace(">>>" + a_volume);
 			if(m_ns != null)
 			{
 				if(m_ns.soundTransform.volume != a_volume)
@@ -233,6 +241,33 @@ package as3ui.video
 			}
 			
 		}
+		
+		override public function set soundTransform(sndTransform:SoundTransform):void
+		{
+			if(m_ns != null)
+			{
+				m_ns.soundTransform = sndTransform;
+			}
+			else
+			{
+				super.soundTransform = sndTransform;
+			}
+		}
+
+		override public function get soundTransform():SoundTransform
+		{
+			if(m_ns != null)
+			{
+				return m_ns.soundTransform;
+			}
+			else
+			{
+				return super.soundTransform;
+			}
+			
+		}
+
+
         
         public function get bufferTime() : Number
         {
@@ -357,9 +392,10 @@ package as3ui.video
 			m_ns.bufferTime = m_bufferTime;
 			m_ns.addEventListener(NetStatusEvent.NET_STATUS,onNetStatus);
 			m_video.attachNetStream(m_ns);
-        }
-        
-        private function doDelayedBuffering(event:TimerEvent):void
+			m_ns.checkPolicyFile = true;
+		}
+
+		private function doDelayedBuffering(event:TimerEvent):void
         {
 			switch (m_state)
 			{
