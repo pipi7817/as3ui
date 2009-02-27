@@ -190,6 +190,12 @@ package as3ui.video
 		}
 
 		// TODO: ADD functionality
+	   public function onLastSecond(... args):void
+       {
+       		if(m_ns) m_ns.seek(0);
+       }
+       
+       
 		public function onBWDone(... args):void
 		{
 			return;
