@@ -1,16 +1,15 @@
 package {
-	import flash.display.Sprite;
+	import as3ui.UIObject;
+	import as3ui.video.BasePlayer;
+	
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
-	import flash.text.TextField;
+	import flash.events.Event;
+	import flash.ui.Keyboard;
 	
-	import se.konstruktor.as3ui.controls.form.FormInput;
-	import se.konstruktor.as3ui.controls.input.BaseInput;
-	import se.konstruktor.as3ui.controls.input.RoundTextInput;
+//	import as3ui.managers.FocusManager;
 	
-//	import se.konstruktor.as3ui.managers.FocusManager;
-	
-	public class as3ui extends Sprite {
+	public class as3ui extends UIObject {
 
 		public function as3ui() {
 			trace("as3ui instantiated!");
@@ -22,6 +21,7 @@ package {
 			var baseButtonExample:BaseButtonExample = new BaseButtonExample();
 			baseButtonExample.x = 50;
 			baseButtonExample.y = 150;
+			baseButtonExample.bindKey(Keyboard.SPACE);
 			addChild(baseButtonExample);
 //			
 //			var simpleButtonExample:SimpleButtonExample = new SimpleButtonExample();
@@ -33,27 +33,11 @@ package {
 //			textButtonExample.x = 50;
 //			textButtonExample.y = 150;
 //			addChild(textButtonExample);
-			
-			
-			var input:RoundTextInput = new RoundTextInput()
-			input.x = 50;
-			input.y = 50;
-			addChild(input);
-//						
-//			var vp:VideoPlayerExample = new VideoPlayerExample();
-//			vp.x = 50;
-//			vp.y = 200;
-//			addChild(vp);
 
-			var ti:FormInput = new FormInput(new RoundTextInput(),"",true);
-			ti.x = 50;
-			ti.y = 100;
-			addChild(ti);
-
-
-//			var fm:FocusManager = new FocusManager();
-
-
+			var vp:VideoPlayerExample = new VideoPlayerExample();
+			vp.x = 50;
+			vp.y = 200;
+			addChild(vp);
 		}
 
 	}

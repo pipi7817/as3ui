@@ -11,7 +11,7 @@ package
 	
 	import org.bytearray.display.ScaleBitmap;
 	
-	import se.konstruktor.as3ui.controls.button.TextButton;
+	import as3ui.controls.button.LabelButton;
 	
 	public class TextButtonExample extends Sprite
 	{
@@ -47,7 +47,7 @@ package
 			over.scale9Grid		= new Rectangle(1,1,over.width-2,over.height-2);
 			down.scale9Grid		= new Rectangle(1,1,down.width-2,down.height-2);
 			
-			var button:TextButton = new TextButton(label,up,over,down);
+			var button:LabelButton = new LabelButton(label,up,over,down);
 
 			label.filters = [new DropShadowFilter(0,120,0,0.21,5,5,1)];
 			up.filters = [new DropShadowFilter(0,120,0,0.41,5,5,1)];
