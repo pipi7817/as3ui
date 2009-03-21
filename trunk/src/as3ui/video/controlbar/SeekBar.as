@@ -3,6 +3,9 @@
 */
 package as3ui.video.controlbar
 {
+	import as3ui.controls.scrollbar.ScrollBarEvent;
+	import as3ui.display.UISprite;
+	
 	import flash.display.Bitmap;
 	import flash.display.Shape;
 	import flash.display.Sprite;
@@ -16,10 +19,7 @@ package as3ui.video.controlbar
 	
 	import org.bytearray.display.ScaleBitmap;
 	
-	import as3ui.UIObject;
-	import as3ui.controls.scrollbar.ScrollBarEvent;
-	
-	public class SeekBar extends UIObject
+	public class SeekBar extends UISprite
 	{
 		private var m_background:ScaleBitmap;
 		private var m_backgroundMask:Shape;

@@ -5,7 +5,8 @@
  */
 package as3ui.controls.button
 {
-	import as3ui.UIObject;
+	import as3ui.display.UISprite;
+	
 	import flash.events.Event;
 	import flash.events.EventPhase;
 	import flash.events.KeyboardEvent;
@@ -24,7 +25,7 @@ package as3ui.controls.button
 	[Event (name="change_state", type="as3ui.controls.button.ButtonEvent")]
 	[Event (name="toggle", type="as3ui.controls.button.ButtonEvent")]
 			
-	public class BaseButton extends UIObject
+	public class BaseButton extends UISprite
 	{
 
 		protected var m_useHandCursor			:	Boolean			=   true;

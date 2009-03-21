@@ -3,7 +3,7 @@
 */
 package as3ui.video
 {
-	import as3ui.UIObject;
+	import as3ui.display.UISprite;
 	import as3ui.net.NetStatus;
 	
 	import fl.video.MetadataEvent;
@@ -21,7 +21,7 @@ package as3ui.video
 	import flash.net.NetStream;
 	import flash.utils.Timer;
 
-	public class BasePlayer extends UIObject
+	public class BasePlayer extends UISprite
 	{
 		
 		// Constants 
