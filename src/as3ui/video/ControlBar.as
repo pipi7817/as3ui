@@ -3,16 +3,16 @@
 */
 package as3ui.video
 {
+	import as3ui.controls.button.ButtonEvent;
+	import as3ui.display.UISprite;
+	import as3ui.video.controlbar.Button;
+	
 	import fl.video.VideoEvent;
 	import fl.video.VideoState;
 	
 	import flash.events.Event;
-	
-	import as3ui.UIObject;
-	import as3ui.controls.button.ButtonEvent;
-	import as3ui.video.controlbar.Button;
 
-	public class ControlBar extends UIObject
+	public class ControlBar extends UISprite
 	{
 		
 		// graphics 

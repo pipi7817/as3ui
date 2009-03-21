@@ -7,9 +7,9 @@
 */
 package as3ui.controls.scrollbar
 {
-	import as3ui.UIObject;
+	import as3ui.display.UISprite;
 
-	public class BaseScrollBar extends UIObject
+	public class BaseScrollBar extends UISprite
 	{
 		private var m_scroll				:	Number;
 		private var m_delta					:	Number;
