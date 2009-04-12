@@ -1,6 +1,7 @@
 package as3ui
 {
 
+	import as3ui.display.UISprite;
 	import as3ui.events.UIEvent;
 	
 	import asunit.framework.TestCase;
@@ -11,7 +12,7 @@ package as3ui
 
 	public class UIObjectTest extends TestCase
 	{
-		private var m_instance:UIObject;
+		private var m_instance:UISprite;
 
 		public function UIObjectTest(methodName:String=null)
 		{
@@ -42,7 +43,7 @@ package as3ui
 
 		public function testInstantiated():void
 		{
-			assertTrue("instance is BaseUIObject", m_instance is UIObject);
+			assertTrue("instance is BaseUIObject", m_instance is UISprite);
 		}
 
 		public function testMove():void
@@ -102,7 +103,7 @@ package as3ui
 		public function testMoveEvent():void
 		{
 			var handler:Function = addAsync(resultTestMoveEvent, 1000);
-			var instance:UIObject = m_instance;
+			var instance:UISprite = m_instance;
 			instance.addEventListener(UIEvent.MOVE,handler);
 			instance.move(1,1);
 		}
@@ -131,7 +132,7 @@ package as3ui
 			var child1:Sprite = new Sprite();
 			var child2:Sprite = new Sprite();
 			var child3:Sprite = new Sprite();
-			var instance:UIObject = new UIObject();
+			var instance:UISprite = new UISprite();
 			
 			stage.addChild(child1);
 			child1.addChild(child2);
@@ -171,7 +172,7 @@ package as3ui
 			var child1:Sprite = new Sprite();
 			var child2:Sprite = new Sprite();
 			var child3:Sprite = new Sprite();
-			var instance:UIObject = new UIObject();
+			var instance:UISprite = new UISprite();
 			
 			stage.addChild(child1);
 			child1.addChild(child2);
@@ -208,7 +209,7 @@ package as3ui
 		public function testShow():void
 		{
 			var handler:Function = addAsync(resultTestShow, 1000);
-			var instance:UIObject = m_instance;
+			var instance:UISprite = m_instance;
 			instance.addEventListener(UIEvent.SHOW_COMPLETE,handler);
 			instance.visible = false;
 			instance.show();
@@ -216,7 +217,7 @@ package as3ui
 
 		public function resultTestShow(event:UIEvent):void
 		{
-			var instance:UIObject = event.target as UIObject;
+			var instance:UISprite = event.target as UISprite;
 			assertEquals(UIEvent.SHOW_COMPLETE, event.type);
 			assertEquals(true, instance.visible);
 		}
@@ -224,7 +225,7 @@ package as3ui
 		public function testHide():void
 		{
 			var handler:Function = addAsync(resultTestHide, 1000);
-			var instance:UIObject = m_instance;
+			var instance:UISprite = m_instance;
 			instance.addEventListener(UIEvent.HIDE_COMPLETE,handler);
 			instance.visible = true;
 			instance.hide();
@@ -232,7 +233,7 @@ package as3ui
 
 		public function resultTestHide(event:UIEvent):void
 		{
-			var instance:UIObject = event.target as UIObject;
+			var instance:UISprite = event.target as UISprite;
 			assertEquals(UIEvent.HIDE_COMPLETE, event.type);
 			assertEquals(false, instance.visible);
 		}
@@ -444,7 +445,7 @@ package as3ui
 		public function testSizeEvent():void
 		{
 			var handler:Function;
-			var instance:UIObject = m_instance;
+			var instance:UISprite = m_instance;
 
 			instance.addEventListener(UIEvent.RESIZE,resultTestSizeEvent);
 			instance.setSize(1,1);
@@ -466,15 +467,15 @@ package as3ui
 		
 		public function testAutoSize() : void
 		{
-			var instance:UIObject = new AutoSizeUIObject();
-			var holder:UIObject = new UIObject();
+			var instance:UISprite = new AutoSizeUIObject();
+			var holder:UISprite = new UISprite();
 
 
 			assertFalse("instance is not listening on resize of holder",holder.hasEventListener(UIEvent.RESIZE));
 
 
 			holder.addChild(instance);
-			assertTrue("instance is UIObject", instance is UIObject);
+			assertTrue("instance is UISprite", instance is UISprite);
 			assertTrue("instance is a child of holder", holder.contains(instance));
 			assertTrue("instance is listening on resize of holder",holder.hasEventListener(UIEvent.RESIZE));
 
