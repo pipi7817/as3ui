@@ -50,6 +50,7 @@ package as3ui.controls.button
 		internal var m_isFocus					:	Boolean;
 		internal var m_toggled					:	Boolean;
 		internal var m_state					:	String;
+		internal var m_pendingState				:	String;
 		internal var m_bindKey					:	uint;
 				
 		public function BaseButton()
@@ -121,7 +122,14 @@ package as3ui.controls.button
 			if(oldToggled != a_toggled)
 			{
 				dispatchEvent(m_toggledEvent);
-			}			
+
+				if(!a_toggled && m_state != m_pendingState)
+				{
+					state = m_pendingState;
+				}	
+
+			}
+			
 		}
 		
 		public function get toggled():Boolean
@@ -129,6 +137,10 @@ package as3ui.controls.button
 			return m_toggled;
 		}
 		
+		public function set isToggleButton(a_value:Boolean):void
+		{
+			m_isToggleButton = a_value;
+		}
 		
 		public function setFocus(a_isFocus:Boolean = true):void
 		{
@@ -166,6 +178,11 @@ package as3ui.controls.button
 		{
 
 			var oldState 	: 	String	= m_state;
+			if(m_toggled)
+			{
+				m_pendingState = a_state;
+			}			
+			
 			if(oldState != a_state && !m_toggled)
 			{
 				m_state = a_state;

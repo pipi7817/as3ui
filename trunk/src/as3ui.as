@@ -1,15 +1,13 @@
 package {
-	import as3ui.UIObject;
-	import as3ui.video.BasePlayer;
+	import as3ui.display.UISprite;
 	
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
-	import flash.events.Event;
 	import flash.ui.Keyboard;
 	
 //	import as3ui.managers.FocusManager;
 	
-	public class as3ui extends UIObject {
+	public class as3ui extends UISprite {
 
 		public function as3ui() {
 			trace("as3ui instantiated!");
@@ -18,11 +16,19 @@ package {
 			stage.align = StageAlign.TOP_LEFT;
 			stage.stageFocusRect = false;
 			
-			var baseButtonExample:BaseButtonExample = new BaseButtonExample();
-			baseButtonExample.x = 50;
-			baseButtonExample.y = 150;
-			baseButtonExample.bindKey(Keyboard.SPACE);
-			addChild(baseButtonExample);
+			
+
+			var toggleButtonExample:ToggleButtonExample = new ToggleButtonExample();
+			toggleButtonExample.x = 50;
+			toggleButtonExample.y = 150;
+			addChild(toggleButtonExample);
+
+			
+//			var baseButtonExample:BaseButtonExample = new BaseButtonExample();
+//			baseButtonExample.x = 50;
+//			baseButtonExample.y = 150;
+//			baseButtonExample.bindKey(Keyboard.SPACE);
+//			addChild(baseButtonExample);
 //			
 //			var simpleButtonExample:SimpleButtonExample = new SimpleButtonExample();
 //			simpleButtonExample.x = 50;
@@ -34,10 +40,10 @@ package {
 //			textButtonExample.y = 150;
 //			addChild(textButtonExample);
 
-			var vp:VideoPlayerExample = new VideoPlayerExample();
-			vp.x = 50;
-			vp.y = 200;
-			addChild(vp);
+//			var vp:VideoPlayerExample = new VideoPlayerExample();
+//			vp.x = 50;
+//			vp.y = 200;
+//			addChild(vp);
 		}
 
 	}
