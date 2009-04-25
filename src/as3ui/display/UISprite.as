@@ -220,6 +220,26 @@ package as3ui.display
 			return isNaN(m_visibleWidth)?super.width:m_visibleWidth;
 		}
 
+		public function get right():Number
+		{
+			return x + width;
+		}
+
+		public function set right(a_value:Number):void
+		{
+			x = a_value - width;
+		}
+
+		public function get bottom():Number
+		{
+			return x + height;
+		}
+
+		public function set bottom(a_value:Number):void
+		{
+			x = a_value - height;
+		}
+
 		public function set globalX(value:Number):void
 		{
 			var origion:Point = stage.globalToLocal(localToGlobal(new Point(0,0) ));
