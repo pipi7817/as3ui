@@ -407,10 +407,7 @@ package as3ui.controls.button
 				{
 					if(m_isFocus)
 					{
-						if(!m_isStickyButton)
-						{
-							state = ButtonState.PRESSED;
-						}
+						state = ButtonState.PRESSED;
 						dispatchEvent(m_rollOverWhileDownEvent);
 					}
 				}
