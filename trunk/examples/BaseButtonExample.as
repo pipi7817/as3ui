@@ -18,7 +18,7 @@ package
 		private var m_pressedState:Shape;
 		private var m_releasedState:Shape;
 		private var m_label:TextField;
-		private var m_width:int = 200;
+		private var m_width:int = 400;
 		private var m_height:int = 24;
 
 
@@ -100,13 +100,15 @@ package
 
 		private function writeCurrentState(event:ButtonEvent):void
 		{
-			m_label.text = event.type;
+			//  m_label.text = event.type + "_" + state;
 		}
 		
 		
 		
 		private function onChangeState(event:ButtonEvent):void
 		{
+						m_label.text = state;
+			
 			switch (state)
 			{
 				case ButtonState.OVER:

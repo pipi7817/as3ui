@@ -10,11 +10,11 @@ package as3ui
 	import flash.display.Sprite;
 	import flash.display.Stage;
 
-	public class UIObjectTest extends TestCase
+	public class UISpriteTest extends TestCase
 	{
 		private var m_instance:UISprite;
 
-		public function UIObjectTest(methodName:String=null)
+		public function UISpriteTest(methodName:String=null)
 		{
 			super(methodName)
 		}
@@ -22,7 +22,7 @@ package as3ui
 		public static function suite():TestSuite
 		{
    			var ts:TestSuite = new TestSuite();
-	 		ts.addTest(new UIObjectTest());
+	 		ts.addTest(new UISpriteTest());
 //	 		ts.addTest(new BaseUIObjectTest("testInstantiated"));
    			return ts;
    		}
