@@ -324,6 +324,35 @@ package as3ui.controls.button
 			assertEquals(false,m_instance.isFocus);
 
 		}
+		
+		public function testOverAndPressAndMouseDownOut():void
+		{
+			var instance:BaseButton = m_instance;
+			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,instance,false,false,false,false,0));
+			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN,true,true,0,0,instance,false,false,false,true,0));
+			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OUT,true,true,0,0,instance,false,false,false,true,0));
+			assertEquals(ButtonState.RELEASED,instance.m_state);
+		}
+		
+		public function testStickyButtonOverAndPressAndMouseDownOut():void
+		{
+			var instance:BaseButton = m_instance;
+			instance.isStickyButton = true;
+			
+			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,instance,false,false,false,false,0));
+			assertEquals(ButtonState.OVER,instance.m_state);
+
+			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN,true,true,0,0,instance,false,false,false,true,0));
+			assertEquals(ButtonState.PRESSED,instance.m_state);
+			
+			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OUT,true,true,0,0,instance,false,false,false,true,0));
+			assertEquals(ButtonState.PRESSED,instance.m_state);
+
+			getContext().dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP,true,true,0,0,getContext(),false,false,false,false,0));
+			assertEquals(ButtonState.RELEASED,instance.m_state);
+
+
+		}
 
 		public function testPressAndOutAndOver():void
 		{
@@ -336,6 +365,7 @@ package as3ui.controls.button
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,instance,false,false,false,true,0));
 			assertEquals(ButtonState.PRESSED,instance.m_state);
 		}
+
 		
 		public function resultTestPressAndOutAndOver(event:ButtonEvent):void
 		{

@@ -24,11 +24,11 @@ package {
 			addChild(toggleButtonExample);
 
 			
-//			var baseButtonExample:BaseButtonExample = new BaseButtonExample();
-//			baseButtonExample.x = 50;
-//			baseButtonExample.y = 150;
-//			baseButtonExample.bindKey(Keyboard.SPACE);
-//			addChild(baseButtonExample);
+			var baseButtonExample:BaseButtonExample = new BaseButtonExample();
+			baseButtonExample.x = 50;
+			baseButtonExample.y = 150;
+			baseButtonExample.bindKey(Keyboard.SPACE);
+			addChild(baseButtonExample);
 //			
 //			var simpleButtonExample:SimpleButtonExample = new SimpleButtonExample();
 //			simpleButtonExample.x = 50;

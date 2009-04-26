@@ -31,6 +31,7 @@ package as3ui.controls.button
 		protected var m_useHandCursor			:	Boolean			=   true;
 		protected var m_doubleClick				:	Boolean			=   false;
 		protected var m_isToggleButton			:	Boolean;
+		protected var m_isStickyButton				:	Boolean;
 
 		protected var m_doubleClickEvent		:   ButtonEvent;
 		protected var m_releaseEvent			:   ButtonEvent;
@@ -140,6 +141,11 @@ package as3ui.controls.button
 		public function set isToggleButton(a_value:Boolean):void
 		{
 			m_isToggleButton = a_value;
+		}
+		
+		public function set isStickyButton(a_value:Boolean):void
+		{
+			m_isStickyButton = a_value;
 		}
 		
 		public function setFocus(a_isFocus:Boolean = true):void
@@ -401,7 +407,10 @@ package as3ui.controls.button
 				{
 					if(m_isFocus)
 					{
-						state = ButtonState.PRESSED;
+						if(!m_isStickyButton)
+						{
+							state = ButtonState.PRESSED;
+						}
 						dispatchEvent(m_rollOverWhileDownEvent);
 					}
 				}
@@ -413,13 +422,17 @@ package as3ui.controls.button
 			if(m_enabled)
 			{
 				m_isMouseOver = false;
-				state = ButtonState.RELEASED
 				if(!a_event.buttonDown)
 				{
+					state = ButtonState.RELEASED
 					dispatchEvent(m_rollOutEvent);
 				}
 				else
 				{
+					if(!m_isStickyButton)
+					{
+						state = ButtonState.RELEASED
+					}
 					if(m_isFocus)
 					{
 						dispatchEvent(m_rollOutWhileDownEvent);
