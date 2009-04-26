@@ -29,7 +29,7 @@ package
 		{
 			super();
 
-
+			m_isStickyButton = true;
 			drawStates();
 			setupStates();
 			setupListners();
