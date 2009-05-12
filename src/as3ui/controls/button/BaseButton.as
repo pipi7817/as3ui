@@ -81,11 +81,7 @@ package as3ui.controls.button
 			var oldEnabled	:	Boolean	=	m_enabled;
 			m_enabled					=	a_enabled;
 			mouseEnabled				=	a_enabled;
-			if(!stage)
-			{
-				m_state = a_enabled?ButtonState.RELEASED:ButtonState.DISABLED;
-			}
-			else
+			if(stage)
 			{
 				if(oldEnabled != a_enabled)
 				{
@@ -102,6 +98,10 @@ package as3ui.controls.button
 						dispatchEvent(m_disabledEvent);
 					}
 				}
+			}
+			else
+			{
+				m_state = a_enabled?ButtonState.RELEASED:ButtonState.DISABLED;
 			}
 		}
 		
@@ -150,13 +150,12 @@ package as3ui.controls.button
 		
 		public function setFocus(a_isFocus:Boolean = true):void
 		{
-			var oldFocus	:	Boolean	=	m_isFocus;
+//			var oldFocus	:	Boolean	=	m_isFocus;
 			m_isFocus					=	a_isFocus;
-			
-			if(oldFocus != a_isFocus)
-			{
+//			if(oldFocus != a_isFocus)
+//			{
 //				dispatchEvent(m_focusEvent);
-			}
+//			}
 		}
 		
 		public function get isFocus():Boolean
@@ -187,9 +186,8 @@ package as3ui.controls.button
 			if(m_toggled)
 			{
 				m_pendingState = a_state;
-			}			
-			
-			if(oldState != a_state && !m_toggled)
+			}
+			else if ( oldState != a_state )
 			{
 				m_state = a_state;
 				dispatchEvent(m_stateEvent);
@@ -256,8 +254,6 @@ package as3ui.controls.button
 			m_disabledEvent				= null;
 			m_stateEvent				= null;
 			m_toggledEvent				= null;
-			
-			
 		}
 		
 		private function addButtonListeners():void
@@ -351,7 +347,7 @@ package as3ui.controls.button
 			{				
 				m_isFocus = true;
 				state = ButtonState.PRESSED;
-				if(a_event != null)
+				if(a_event)
 				{
 					addStageMouseEventListener();
 				}
@@ -398,18 +394,18 @@ package as3ui.controls.button
 			if(m_enabled)
 			{
 				m_isMouseOver = true;
-				if(!m_event.buttonDown) 
-				{
-					state = ButtonState.OVER
-					dispatchEvent(m_rollOverEvent);
-				}
-				else
+				if(m_event.buttonDown) 
 				{
 					if(m_isFocus)
 					{
 						state = ButtonState.PRESSED;
 						dispatchEvent(m_rollOverWhileDownEvent);
 					}
+				}
+				else
+				{
+					state = ButtonState.OVER
+					dispatchEvent(m_rollOverEvent);
 				}
 			}
 		}
@@ -419,12 +415,7 @@ package as3ui.controls.button
 			if(m_enabled)
 			{
 				m_isMouseOver = false;
-				if(!a_event.buttonDown)
-				{
-					state = ButtonState.RELEASED
-					dispatchEvent(m_rollOutEvent);
-				}
-				else
+				if(a_event.buttonDown)
 				{
 					if(!m_isStickyButton)
 					{
@@ -434,6 +425,11 @@ package as3ui.controls.button
 					{
 						dispatchEvent(m_rollOutWhileDownEvent);
 					}
+				}
+				else
+				{
+					state = ButtonState.RELEASED
+					dispatchEvent(m_rollOutEvent);
 				}
 			}
 		}		
