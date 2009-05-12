@@ -16,13 +16,12 @@ package as3ui.display
 	[Event (name="showComplete", type="as3ui.events.UIEvent")]
 	[Event (name="hide", type="as3ui.events.UIEvent")]
 	[Event (name="hideComplete", type="as3ui.events.UIEvent")]
-
 	public class UISprite extends Sprite
 	{
 		protected var m_maxWidth		:	Number;
-		protected var m_minWidth		:	Number;
+		protected var m_minWidth		:	Number = 0;
 		protected var m_maxHeight		:	Number;
-		protected var m_minHeight		:	Number;
+		protected var m_minHeight		:	Number = 0;
 		protected var m_visibleHeight	:	Number;
 		protected var m_visibleWidth	:	Number;
 		protected var m_xpos			:	Number;
@@ -31,12 +30,12 @@ package as3ui.display
 		
 		public function UISprite()
 		{
+			super();
 			if(m_autosize)
 			{
 				addEventListener(Event.ADDED,onAdded);
 				addEventListener(Event.REMOVED,onRemoved);
 			}
-			super();
 		}
 
 		private function onAdded( a_event:Event ):void
@@ -60,7 +59,7 @@ package as3ui.display
 			m_xpos = a_x;
 			m_ypos = a_y;
 			
-			if(a_pixelSnap == true)
+			if(a_pixelSnap)
 			{
 				this.x = Math.round(m_xpos);
 				this.y = Math.round(m_ypos);
@@ -145,48 +144,22 @@ package as3ui.display
 				a_width = Math.round( a_width );
 			}
 
-			if(a_height<0)
-			{
-				a_height = 0;
-			}
-
-			if(a_width<0)
-			{
-				a_width = 0;
-			}
-
-			if(!isNaN(m_maxWidth) && !isNaN(m_minWidth))
-			{
-				newWidth = Math.max(Math.min(a_width,m_maxWidth),m_minWidth);
-			}
-			else if ( !isNaN(m_maxWidth) )
-			{
-				newWidth = Math.min(a_width,m_maxWidth);
-			}
-			else if ( !isNaN(m_minWidth) )
+			if ( isNaN(m_maxWidth) )
 			{
 				newWidth = Math.max(a_width,m_minWidth);
 			}
 			else
 			{
-				newWidth = a_width;
+				newWidth = Math.max(Math.min(a_width,m_maxWidth),m_minWidth);
 			}
 			
-			if(!isNaN(m_maxHeight) && !isNaN(m_minHeight))
-			{
-				newHeight = Math.max(Math.min(a_height,m_maxHeight),m_minHeight);
-			}
-			else if ( !isNaN(m_maxHeight) )
-			{
-				newHeight = Math.min(a_height,m_maxHeight);
-			}
-			else if ( !isNaN(m_minHeight) )
+			if ( isNaN(m_maxHeight) )
 			{
 				newHeight = Math.max(a_height,m_minHeight);
 			}
 			else
 			{
-				newHeight = a_height;
+				newHeight = Math.max(Math.min(a_height,m_maxHeight),m_minHeight);
 			}
 	
 	
@@ -200,24 +173,38 @@ package as3ui.display
 		
 		public function setMaxSize(a_maxWidth:Number = NaN, a_maxHeight:Number = NaN):void
 		{
-			if(!isNaN(a_maxWidth)) m_maxWidth = a_maxWidth;
-			if(!isNaN(a_maxHeight)) m_maxHeight = a_maxHeight;	
+			if(!isNaN(a_maxWidth)) { m_maxWidth = a_maxWidth; }
+			if(!isNaN(a_maxHeight)) { m_maxHeight = a_maxHeight; }
 		}
 		
 		public function setMinSize(a_minWidth:Number = NaN, a_minHeight:Number = NaN):void
 		{
-			if(!isNaN(a_minWidth)) m_minWidth = a_minWidth;
-			if(!isNaN(a_minHeight)) m_minHeight = a_minHeight;	
+			if(!isNaN(a_minWidth)) { m_minWidth = a_minWidth; }
+			if(!isNaN(a_minHeight)) { m_minHeight = a_minHeight; }
 		}
 
 		override public function get height():Number 
 		{
-			return isNaN(m_visibleHeight)?super.height:m_visibleHeight;
+			if( isNaN(m_visibleHeight) )
+			{
+				return super.height;
+			}
+			else
+			{
+				return m_visibleHeight
+			}
 		}
 
 		override public function get width():Number 
 		{
-			return isNaN(m_visibleWidth)?super.width:m_visibleWidth;
+			if( isNaN(m_visibleWidth) )
+			{
+				return super.width;
+			}
+			else
+			{
+				return m_visibleWidth
+			}
 		}
 
 		public function get right():Number
@@ -242,21 +229,13 @@ package as3ui.display
 
 		public function set globalX(value:Number):void
 		{
-			var origion:Point = stage.globalToLocal(localToGlobal(new Point(0,0) ));
-			var diff:Number = value-origion.x;
-			var result:Number = x + diff;
-			m_xpos = x = result;
+			m_xpos = x = x + value-stage.globalToLocal(localToGlobal(new Point(0,0) )).x;
 
 		}
 	
 		public function set globalY(value:Number):void
 		{
-			var origion:Point = stage.globalToLocal(localToGlobal(new Point(0,0) ));
-			var diff:Number = value-origion.y;
-			var result:Number = y + diff;
-			
-			m_ypos = y = result;
-
+			m_ypos = y = y + value-stage.globalToLocal(localToGlobal(new Point(0,0) )).y;
 		}
 
 		public function get globalX():Number
