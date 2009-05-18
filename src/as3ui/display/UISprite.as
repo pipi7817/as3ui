@@ -16,7 +16,7 @@ package as3ui.display
 	[Event (name="showComplete", type="as3ui.events.UIEvent")]
 	[Event (name="hide", type="as3ui.events.UIEvent")]
 	[Event (name="hideComplete", type="as3ui.events.UIEvent")]
-	public class UISprite extends Sprite
+	public class UISprite extends Sprite implements IDisposable
 	{
 		protected var m_maxWidth		:	Number;
 		protected var m_minWidth		:	Number = 0;
@@ -33,8 +33,8 @@ package as3ui.display
 			super();
 			if(m_autosize)
 			{
-				addEventListener(Event.ADDED,onAdded);
-				addEventListener(Event.REMOVED,onRemoved);
+				addEventListener(Event.ADDED,onAdded,false,0,true);
+				addEventListener(Event.REMOVED,onRemoved,false,0,true);
 			}
 		}
 
@@ -42,7 +42,7 @@ package as3ui.display
 		{
 			if(a_event.target != this) return;
 			parent.removeEventListener(UIEvent.RESIZE,parentResize);
-			parent.addEventListener(UIEvent.RESIZE,parentResize);
+			parent.addEventListener(UIEvent.RESIZE,parentResize,false,0,true);
 		}
 		
 		private function onRemoved( a_event:Event ):void
@@ -247,7 +247,17 @@ package as3ui.display
 		{
 			return stage.globalToLocal(localToGlobal(new Point(0,0) )).y;
 		}
-		
+
+		public function dispose():void
+		{
+			if(parent)
+			{
+				parent.removeEventListener(UIEvent.RESIZE,parentResize);
+			}
+
+			removeEventListener(Event.ADDED,onAdded);
+			removeEventListener(Event.REMOVED,onRemoved);
+		}			
 		
 	}
 }
