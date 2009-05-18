@@ -1,4 +1,5 @@
 package {
+	import as3ui.display.UIComponent;
 	import as3ui.display.UISprite;
 	
 	import flash.display.StageAlign;
@@ -41,6 +42,11 @@ package {
 //			vp.x = 50;
 //			vp.y = 200;
 //			addChild(vp);
+
+			var uicomponent:UIComponent = new UIComponent();
+			
+			addChild(uicomponent);
+
 		}
 
 	}
