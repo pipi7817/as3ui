@@ -6,10 +6,11 @@ package {
 	 * modifications will be lost!
 	 */
 
-	import as3ui.UISpriteTest;
+
 	import as3ui.controls.button.BaseButtonTest;
 	import as3ui.controls.button.SimpleButtonTest;
 	import as3ui.controls.scrollbar.BaseScrollBarTest;
+	import as3ui.display.UISpriteTest;
 	import as3ui.utils.stage.TopLevelTest;
 	import as3ui.video.MediaTest;
 	

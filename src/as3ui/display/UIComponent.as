@@ -1,3 +1,9 @@
+/**
+* @author Alexander Aivars <alexander.aivars(at)gmail.com>
+* 
+* note:
+* THIS IS VERY BETA USE ATT OWN RISK!
+*/
 package as3ui.display
 {
 	import as3ui.events.UIEvent;
@@ -8,20 +14,13 @@ package as3ui.display
 	{
 		
 		protected var m_changed:Boolean = false;
+		protected var m_debug:Boolean = false;
 		
 		public function UIComponent()
 		{
 			super();
 			addEventListener(Event.ADDED_TO_STAGE, handleAddedToStage,false,0,true);
 			addEventListener(Event.REMOVED_FROM_STAGE, handleRemovedFromStage,false,0,true);
-
-			with(graphics)
-			{
-				beginFill(0xFF0000,1);
-				drawRect(0,0,600,600);
-				endFill();
-			}
-			
 			setChanged();
 		}
 		
@@ -50,12 +49,19 @@ package as3ui.display
 
 		protected function draw():void
 		{
-			with(graphics)
-			{
-				beginFill(0x00FF00,1);
-				drawRect(0,0,300,300);
-				endFill();
-			}
+			if(m_debug)
+ 			{
+				with(graphics)
+				{
+					beginFill(0xFFF000,1);
+					drawRect(0,0,width,height);
+					drawRect(1,1,width-2,height-2);
+
+					beginFill(0xCCCCCC,0.1);
+					drawRect(1,1,width-2,height-2);
+					endFill();
+				}
+ 			}
 		}
 		
 		protected function clearChanged():void
@@ -105,6 +111,19 @@ package as3ui.display
 		///////////////////////////////////////////////////////////////////////
 		// PUBLIC
 		///////////////////////////////////////////////////////////////////////
+		override public function setSize(a_width:Number=NaN, a_height:Number=NaN, a_pixelSnap:Boolean=false):void
+		{
+			if(a_width != width || a_height != height)
+			{
+				super.setSize(a_width,a_height,a_pixelSnap);
+				setChanged();
+			}
+			else
+			{
+				super.setSize(a_width,a_height,a_pixelSnap);
+			}
+		}
+
 		public function redraw():void {
 			draw();
 			clearChanged();				
@@ -113,12 +132,6 @@ package as3ui.display
 		override public function dispose():void
 		{
 			super.dispose();
-
-			while(numChildren>0)
-			{
-				removeChildAt(0);
-			}
-
 			removeEventListener(Event.ADDED_TO_STAGE, handleAddedToStage);
 			removeEventListener(Event.REMOVED_FROM_STAGE, handleRemovedFromStage);
 			UIComponentManager.removeEventListener(UIEvent.RENDER, handleRenderStage);

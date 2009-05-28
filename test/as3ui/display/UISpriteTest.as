@@ -1,7 +1,6 @@
-package as3ui
+package as3ui.display
 {
 
-	import as3ui.display.UISprite;
 	import as3ui.events.UIEvent;
 	
 	import asunit.framework.TestCase;
@@ -30,7 +29,7 @@ package as3ui
 		override protected function setUp():void
 		{
 			super.setUp();
-			m_instance = new UIObject();
+			m_instance = new UISprite();
 			addChild(m_instance);
 		}
 
@@ -231,6 +230,42 @@ package as3ui
 			instance.hide();
 		}
 
+		public function testBottom():void
+		{
+			var instance:UISprite = m_instance;
+			instance.setSize(100,50);
+
+			instance.bottom = 0;
+			assertEquals(instance.bottom ,0);
+			assertEquals(-50,instance.y);
+
+			instance.bottom = 50;
+			assertEquals(instance.bottom ,50);
+			assertEquals(0,instance.y);
+
+			instance.bottom = 200;
+			assertEquals(instance.bottom ,200);
+			assertEquals(150,instance.y);
+		}
+
+		public function testRight():void
+		{
+			var instance:UISprite = m_instance;
+			instance.setSize(100,50);
+
+			instance.right = 0;
+			assertEquals(instance.right ,0);
+			assertEquals(-100,instance.x);
+
+			instance.right = 50;
+			assertEquals(instance.right ,50);
+			assertEquals(-50,instance.x);
+
+			instance.right = 200;
+			assertEquals(instance.right ,200);
+			assertEquals(100,instance.x);
+		}
+		
 		public function resultTestHide(event:UIEvent):void
 		{
 			var instance:UISprite = event.target as UISprite;

@@ -1,7 +1,10 @@
 /**
 * @author Alexander Aivars <alexander.aivars(at)gmail.com>
 * 
+* note:
+* THIS IS VERY BETA USE ATT OWN RISK!
 */
+
 package as3ui.display
 {
 	import as3ui.events.UIEvent;
@@ -46,9 +49,7 @@ package as3ui.display
        		m_stage.addEventListener(Event.RENDER,stageRenderHandler,false,0,true);
 			
 		}
-        /**
-        * @param a_stage Main document stage [example: myRootDocument.stage]
-        */
+
         static public function init(a_stage:Stage):void
         {
 			m_instance.initalize(a_stage);
