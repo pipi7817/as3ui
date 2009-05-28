@@ -5,6 +5,7 @@ package as3ui.display
 {
 	import as3ui.events.UIEvent;
 	
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
@@ -207,24 +208,25 @@ package as3ui.display
 			}
 		}
 
-		public function get right():Number
-		{
-			return x + width;
-		}
 
 		public function set right(a_value:Number):void
 		{
 			x = a_value - width;
 		}
 
-		public function get bottom():Number
+		public function get right():Number
 		{
-			return x + height;
+			return x + width;
 		}
 
 		public function set bottom(a_value:Number):void
 		{
-			x = a_value - height;
+			y = a_value - height;
+		}
+
+		public function get bottom():Number
+		{
+			return y + height;
 		}
 
 		public function set globalX(value:Number):void
@@ -255,6 +257,17 @@ package as3ui.display
 				parent.removeEventListener(UIEvent.RESIZE,parentResize);
 			}
 
+			var child:DisplayObject;
+			while(numChildren>0)
+			{
+				child = removeChildAt(0);
+				if(child is IDisposable)
+				{
+					(child as IDisposable).dispose();
+				}
+			}
+			child = null;
+			
 			removeEventListener(Event.ADDED,onAdded);
 			removeEventListener(Event.REMOVED,onRemoved);
 		}			
