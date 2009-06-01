@@ -10,7 +10,7 @@ Sprout::ProjectModel.setup do |model|
 
   # Default Values:
   # model.src_dir       = 'src'
-  # model.lib_dir       = 'lib'
+  model.lib_dir       = 'lib'
   # model.swc_dir       = 'lib'
   # model.bin_dir       = 'bin'
   # model.test_dir      = 'test'
@@ -83,6 +83,8 @@ mxmlc model.output => [] do |t|
   t.default_size              = '600 400'
   t.input                     = "#{model.src_dir}/as3ui.as"
   t.source_path               << 'examples'
+  t.source_path               << "#{model.lib_dir}/away3d"
+  t.target_player	      = 10
 # t.library_path              << "#{model.lib_dir}/non-sprout.swc"
 end
 
