@@ -2,6 +2,8 @@ package {
 	import as3ui.display.UIComponent;
 	import as3ui.display.UISprite;
 	
+	import away3d.containers.View3D;
+	
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.ui.Keyboard;
@@ -46,7 +48,8 @@ package {
 			var uicomponent:UIComponent = new UIComponent();
 			
 			addChild(uicomponent);
-
+			
+			var view:View3D = new View3D();
 		}
 
 	}
