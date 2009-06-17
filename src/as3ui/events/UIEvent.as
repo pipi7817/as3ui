@@ -15,6 +15,7 @@ package as3ui.events
 		public static const MOVE_COMPLETE		:	String = "UIMoveComplete";
 		public static const RESIZE				:	String = "UIResize";
 		public static const RENDER				:	String = "UIRender";
+		public static const REDRAW				:	String = "UIRedraw";
 		
 		public function UIEvent(type:String,bubbles:Boolean = false,cancelable:Boolean = false)
 		{
