@@ -45,9 +45,9 @@ package {
 //			vp.y = 200;
 //			addChild(vp);
 
-			var uicomponent:UIComponent = new UIComponent();
+			var uiComponentExample:UIComponentExample = new UIComponentExample();
 			
-			addChild(uicomponent);
+			addChild(uiComponentExample);
 			
 			var view:View3D = new View3D();
 		}

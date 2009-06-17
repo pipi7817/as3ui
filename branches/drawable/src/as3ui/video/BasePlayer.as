@@ -599,7 +599,7 @@ package as3ui.video
 			closeNS()
 			clear();
 
-			m_statusTimer.addEventListener(TimerEvent.TIMER,onStatusTimer);
+			m_statusTimer.removeEventListener(TimerEvent.TIMER,onStatusTimer);
 			m_statusTimer.stop();
 			m_statusTimer = null;
 
@@ -607,7 +607,7 @@ package as3ui.video
 			m_delayedBufferingTimer.stop();
 			m_delayedBufferingTimer = null;
 			
-			m_recoverSeekTimer.addEventListener(TimerEvent.TIMER, recoverSeek);
+			m_recoverSeekTimer.removeEventListener(TimerEvent.TIMER, recoverSeek);
 			m_recoverSeekTimer.stop();
 			m_recoverSeekTimer = null;
 
