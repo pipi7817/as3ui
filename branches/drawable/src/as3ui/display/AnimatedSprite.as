@@ -16,11 +16,10 @@
 
 package as3ui.display
 {
-	import flash.events.Event;
 	import flash.filters.ColorMatrixFilter;
 	
 
-	public class AnimatedSprite extends UISprite
+	public class AnimatedSprite extends UIComponent
 	{
 
 		// Defines luminance using sRGB luminance
@@ -34,6 +33,8 @@ package as3ui.display
 		protected var m_brightness:Number;	// Brightness offset: -1 (black) -> 0 (normal) -> 1 (full white)
 		protected var m_exposure:Number;	// Brightness multiplier: 0 (black) -> 1 (normal) -> 2 (super bright)
 		protected var m_hue:Number;			// Hue offset in degrees: -180 -> 0 (normal) -> 180 
+		protected var m_color:uint;			// Color: 0x000000 (black) -> 0xFFFFFF (white).
+		protected var m_colorization:Number;// Amount of color to add: 0 (normal) -> 1 (full color)
 
 		// Color transform matrices
 		protected var saturationMatrix:Array;
@@ -41,23 +42,35 @@ package as3ui.display
 		protected var brightnessMatrix:Array;
 		protected var exposureMatrix:Array;
 		protected var hueMatrix:Array;
-  
+  		protected var colorizeMatrix:Array;
+  		
 		// Instance propertes
-  		protected var m_setToUpdate:Boolean;
-  		protected var m_pendingVisualUpdate:Boolean;
   		protected var m_filters:Array;
   		
-		public function AnimatedSprite()
+		public function AnimatedSprite(a_init:Object = null)
 		{
 			super();
-			m_setToUpdate = false;
-			filters = [];
-			saturation = 1;
-			contrast = 1;
-			brightness = 0;
-			exposure = 1;
-			hue = 0;
-			addEventListener(Event.ADDED_TO_STAGE,handleAddedToStage,false,0,true);
+			if(a_init)
+			{
+				filters = [];
+				saturation = a_init.saturation?a_init.saturation:1;
+				contrast = a_init.contrast?a_init.contrast:1;
+				brightness =a_init.brightness?a_init.brightness:0;
+				exposure = a_init.exposure?a_init.exposure:1;
+				colorization = a_init.colorization?a_init.colorization:0;
+				color = a_init.color?a_init.color:0;
+				hue = a_init.hue?a_init.hue:0;				
+			}
+			else
+			{
+				filters = [];
+				saturation = 1;
+				contrast = 1;
+				brightness = 0;
+				exposure = 1;
+				colorization = 0;
+				hue = 0;
+			}
 		}
 
 
@@ -73,7 +86,7 @@ package as3ui.display
 								nr,ng,nb+m_saturation,0,0,
 								0,0,0,1,0
 								];
-			requestVisualUpdate();
+			setChanged();
 		}
 
 		protected function updateContrastMatrix(): void {
@@ -84,7 +97,7 @@ package as3ui.display
 			0, 0, m_contrast,  0,  co,
 			0, 0, 0,  1,  0
 			];
-			requestVisualUpdate();
+			setChanged();
 		}
 
 		protected function updateBrightnessMatrix(): void {
@@ -95,7 +108,7 @@ package as3ui.display
 			0, 0, 1,  0,  co,
 			0, 0, 0,  1,  0
 			];
-			requestVisualUpdate();
+			setChanged();
 		}
 
 		protected function updateExposureMatrix(): void {
@@ -105,7 +118,7 @@ package as3ui.display
 			0, 0, m_exposure,  0,  0,
 			0, 0, 0,  1,  0
 			];
-			requestVisualUpdate();
+			setChanged();
 		}
 
 		protected function updateHueMatrix(): void
@@ -120,26 +133,30 @@ package as3ui.display
 			((LUMINANCE_R + (hCos * -(LUMINANCE_R))) + (hSin * -((1 - LUMINANCE_R)))), ((LUMINANCE_G + (hCos * -(LUMINANCE_G))) + (hSin * LUMINANCE_G)), ((LUMINANCE_B + (hCos * (1 - LUMINANCE_B))) + (hSin * LUMINANCE_B)), 0, 0,
 			0, 0, 0, 1, 0
 			];
-			requestVisualUpdate();
+			setChanged();
 		}
-
-		protected function requestVisualUpdate(): void
+		
+		protected function updateColorizeMatrix(): void
 		{
-			if (Boolean(stage) && !m_setToUpdate)
-			{
-				m_setToUpdate = true;
-				m_pendingVisualUpdate = false;
-				stage.addEventListener(Event.RENDER, handleStageRender, false, 0, true);
-				stage.invalidate();
-			}
-			else
-			{
-				m_pendingVisualUpdate = true;
-			}
+			var amount:Number = m_colorization;
+			
+			var r:Number = ((color >> 16) & 0xff) / 255;
+			var g:Number = ((color >> 8)  & 0xff) / 255;
+			var b:Number = (color         & 0xff) / 255;
+			var inv:Number = 1 - amount;
+
+			colorizeMatrix = [inv + amount * r * LUMINANCE_R, amount * r * LUMINANCE_G, amount * r * LUMINANCE_B, 0, 0,
+							  amount * g * LUMINANCE_R, inv + amount * g * LUMINANCE_G, amount * g * LUMINANCE_B, 0, 0,
+							  amount * b * LUMINANCE_R, amount * b * LUMINANCE_G, inv + amount * b * LUMINANCE_B, 0, 0,
+							  0, 0, 0, 1, 0];
+							  
+			setChanged();
 		}
+		
 
-		protected function doVisualUpdate(): void 
+		override protected function draw(): void 
 		{
+			super.draw();
 			var mtx:Array = [
 							1,0,0,0,0,
 							0,1,0,0,0,
@@ -151,7 +168,7 @@ package as3ui.display
 
 			// Precalculate a single matrix from all matrices by multiplication
 			// The order the final matrix is calculated can change the way it looks
-			var matrices:Array = [saturationMatrix, contrastMatrix, brightnessMatrix, exposureMatrix, hueMatrix];
+			var matrices:Array = [saturationMatrix, contrastMatrix, brightnessMatrix, exposureMatrix, hueMatrix, colorizeMatrix];
 			
 			var i:int, j:int, mat:Array;
 			var x:int, y:int;
@@ -180,23 +197,6 @@ package as3ui.display
 			super.filters = newFilters.concat(m_filters);
 		}
 
-		//////////////////////////////////////////////////////////////////
-		// EVENT HANDLER's
-		//////////////////////////////////////////////////////////////////
-		protected function handleStageRender(e:Event): void
-		{
-			stage.removeEventListener(Event.RENDER, handleStageRender);
-			m_setToUpdate = false;
-			doVisualUpdate();
-		}
-		
-		protected function handleAddedToStage(a_event:Event):void
-		{
-			if(m_pendingVisualUpdate)
-			{
-				requestVisualUpdate();
-			}
-		}
 
 		//////////////////////////////////////////////////////////////////
 		// PUBLIC ACCESSOR's
@@ -264,7 +264,30 @@ package as3ui.display
 		override public function set filters(a_value:Array): void
 		{
 			m_filters = a_value;
-			requestVisualUpdate();
+			setChanged();
 		}		
+
+		public function get color(): Number
+		{
+			return m_color;
+		}
+	
+		public function set color(a_value:Number): void
+		{
+			m_color = a_value;
+			updateColorizeMatrix();
+		}
+
+		public function get colorization(): Number
+		{
+			return m_colorization;
+		}
+		
+		public function set colorization(a_value:Number): void
+		{
+			m_colorization = a_value;
+			updateColorizeMatrix();
+		}
+
 	}
 }

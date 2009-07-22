@@ -9,7 +9,7 @@ package as3ui.display
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
-
+	
 	[Event (name="resize", type="as3ui.events.UIEvent")]
 	[Event (name="move", type="as3ui.events.UIEvent")]
 	[Event (name="moveComplete", type="as3ui.events.UIEvent")]
@@ -96,6 +96,7 @@ package as3ui.display
 		{
 			
 			dispatchEvent(new UIEvent(UIEvent.SHOW,true,true));
+			visible = true;
 			showComplete();	
 		}
 
@@ -208,20 +209,14 @@ package as3ui.display
 			}
 		}
 
-
-		public function set right(a_value:Number):void
-		{
-			x = a_value - width;
-		}
-
 		public function get right():Number
 		{
 			return x + width;
 		}
 
-		public function set bottom(a_value:Number):void
+		public function set right(a_value:Number):void
 		{
-			y = a_value - height;
+			x = a_value - width;
 		}
 
 		public function get bottom():Number
@@ -229,17 +224,55 @@ package as3ui.display
 			return y + height;
 		}
 
-		public function set globalX(value:Number):void
+		public function set bottom(a_value:Number):void
 		{
-			m_xpos = x = x + value-stage.globalToLocal(localToGlobal(new Point(0,0) )).x;
+			y = a_value - height;
+		}
 
+		public function set globalX(a_value:Number):void
+		{
+			if(stage)
+			{
+				m_xpos = x = x + a_value-stage.globalToLocal(localToGlobal(new Point(0,0) )).x;
+			}
+			else
+			{
+				m_xpos = x = a_value;
+			}
 		}
 	
-		public function set globalY(value:Number):void
+		public function set globalY(a_value:Number):void
 		{
-			m_ypos = y = y + value-stage.globalToLocal(localToGlobal(new Point(0,0) )).y;
+			if(stage)
+			{
+				m_ypos = y = y + a_value-stage.globalToLocal(localToGlobal(new Point(0,0) )).y;
+			}
+			else
+			{
+				m_ypos = y = a_value;
+			}
 		}
 
+		public function set centerX(a_value:Number):void
+		{
+			x = a_value - Math.round( width*.5 );
+		}
+		
+		public function get centerX():Number
+		{
+			return x + Math.round( width*.5 );
+		}
+		
+		public function set centerY(a_value:Number):void
+		{
+			y = a_value - height*.5;
+		}
+		
+		public function get centerY():Number
+		{
+			return y + height*.5;
+		}
+		
 		public function get globalX():Number
 		{
 			return stage.globalToLocal(localToGlobal(new Point(0,0) )).x;
@@ -255,21 +288,28 @@ package as3ui.display
 			if(parent)
 			{
 				parent.removeEventListener(UIEvent.RESIZE,parentResize);
+				parent.removeChild(this);
 			}
+			
+			removeEventListener(Event.ADDED,onAdded);
+			removeEventListener(Event.REMOVED,onRemoved);
 
 			var child:DisplayObject;
 			while(numChildren>0)
 			{
 				child = removeChildAt(0);
+
+				if(child.parent)
+				{
+					child.parent.removeChild(child);
+				}
+				
 				if(child is IDisposable)
 				{
 					(child as IDisposable).dispose();
 				}
 			}
-			child = null;
-			
-			removeEventListener(Event.ADDED,onAdded);
-			removeEventListener(Event.REMOVED,onRemoved);
+			child = null;			
 		}			
 		
 	}

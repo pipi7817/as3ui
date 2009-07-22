@@ -24,6 +24,7 @@ package as3ui.controls.button
 	[Event (name="disabled", type="as3ui.controls.button.ButtonEvent")]
 	[Event (name="change_state", type="as3ui.controls.button.ButtonEvent")]
 	[Event (name="toggle", type="as3ui.controls.button.ButtonEvent")]
+	[Event (name="click", type="as3ui.controls.button.ButtonEvent")]
 			
 	public class BaseButton extends UISprite
 	{
@@ -34,6 +35,7 @@ package as3ui.controls.button
 		protected var m_isStickyButton				:	Boolean;
 
 		protected var m_doubleClickEvent		:   ButtonEvent;
+		protected var m_clickEvent				:   ButtonEvent;
 		protected var m_releaseEvent			:   ButtonEvent;
 		protected var m_releaseOutsideEvent		:   ButtonEvent;
 		protected var m_pressEvent				:   ButtonEvent;
@@ -75,7 +77,7 @@ package as3ui.controls.button
 		 * @param a_enabled
 		 * Sets whether the component can accept user input.
 		 */				
-		public function setEnabled(a_enabled:Boolean):void
+		public function set enabled(a_enabled:Boolean):void
 		{
 
 			var oldEnabled	:	Boolean	=	m_enabled;
@@ -89,7 +91,7 @@ package as3ui.controls.button
 					{
 						dispatchEvent(m_enabledEvent);
 						// reset state
-						state = ButtonState.RELEASED;
+						state = ButtonState.OUT;
 						dispatchEvent(m_rollOutEvent);
 					}
 					else
@@ -101,7 +103,7 @@ package as3ui.controls.button
 			}
 			else
 			{
-				m_state = a_enabled?ButtonState.RELEASED:ButtonState.DISABLED;
+				m_state = a_enabled?ButtonState.OUT:ButtonState.DISABLED;
 			}
 		}
 		
@@ -110,7 +112,7 @@ package as3ui.controls.button
 		 * @return 
 		 * Gets a value that indicates whether the component can accept user input.
 		 */		
-		public function get isEnabled():Boolean
+		public function get enabled():Boolean
 		{
 			return m_enabled;
 		}
@@ -208,8 +210,8 @@ package as3ui.controls.button
 			}
 
 
-			m_state = ButtonState.RELEASED;
-			setEnabled(m_enabled);
+			m_state = ButtonState.OUT;
+			enabled = m_enabled;
 			
 			initializeEvents();
 
@@ -236,7 +238,7 @@ package as3ui.controls.button
 			m_disabledEvent				=	new ButtonEvent(ButtonEvent.DISABLED,true,true);
 			m_stateEvent				=	new ButtonEvent(ButtonEvent.CHANGE_STATE,true,true);
 			m_toggledEvent				= 	new ButtonEvent(ButtonEvent.TOGGLE,true,true);
-			
+			m_clickEvent				=	new ButtonEvent(ButtonEvent.CLICK,true,true);
 		}
 
 		private function finalize():void
@@ -254,6 +256,7 @@ package as3ui.controls.button
 			m_disabledEvent				= null;
 			m_stateEvent				= null;
 			m_toggledEvent				= null;
+			m_clickEvent				= null;
 		}
 		
 		private function addButtonListeners():void
@@ -270,6 +273,8 @@ package as3ui.controls.button
 			addEventListener(MouseEvent.MOUSE_UP, releaseHandler,false,0,true); 
 			addEventListener(MouseEvent.MOUSE_OVER, rollOverHandler,false,0,true);
 			addEventListener(MouseEvent.MOUSE_OUT, rollOutHandler,false,0,true);
+			addEventListener(MouseEvent.CLICK, clickHandler,false,0,true);
+
 		}
 
 		public function bindKey(a_uint:uint):void
@@ -292,14 +297,19 @@ package as3ui.controls.button
 			{
 				removeEventListener(MouseEvent.DOUBLE_CLICK, doubleClickHandler);
 			}
-
-			stage.removeEventListener(KeyboardEvent.KEY_DOWN,onKeyDown);
-			stage.removeEventListener(KeyboardEvent.KEY_UP,onKeyUp);				
-
+			
+			if(stage)
+			{
+				stage.removeEventListener(KeyboardEvent.KEY_DOWN,onKeyDown);
+				stage.removeEventListener(KeyboardEvent.KEY_UP,onKeyUp);				
+			}
+			
 			removeEventListener(MouseEvent.MOUSE_DOWN, pressHandler);
 			removeEventListener(MouseEvent.MOUSE_UP, releaseHandler); 
 			removeEventListener(MouseEvent.MOUSE_OVER, rollOverHandler);
 			removeEventListener(MouseEvent.MOUSE_OUT, rollOutHandler);
+			removeEventListener(MouseEvent.CLICK, clickHandler);
+
 		}
 				
 		private function onKeyDown(a_event:KeyboardEvent):void
@@ -365,6 +375,11 @@ package as3ui.controls.button
 			if(m_enabled) dispatchEvent(m_doubleClickEvent);
 		}
 
+		protected function clickHandler(a_event:MouseEvent):void
+		{
+			if(m_enabled) dispatchEvent(m_clickEvent);
+		}
+
 
 		protected function releaseHandler(a_event:MouseEvent = null):void
 		{
@@ -378,7 +393,7 @@ package as3ui.controls.button
 				if(m_isFocus)
 				{
 					m_isFocus = false;
-					state = m_isMouseOver?ButtonState.OVER:ButtonState.RELEASED;
+					state = m_isMouseOver?ButtonState.OVER:ButtonState.OUT;
 					dispatchEvent(m_releaseEvent);
 				}
 				else
@@ -419,7 +434,7 @@ package as3ui.controls.button
 				{
 					if(!m_isStickyButton)
 					{
-						state = ButtonState.RELEASED
+						state = ButtonState.OUT
 					}
 					if(m_isFocus)
 					{
@@ -428,7 +443,7 @@ package as3ui.controls.button
 				}
 				else
 				{
-					state = ButtonState.RELEASED
+					state = ButtonState.OUT
 					dispatchEvent(m_rollOutEvent);
 				}
 			}
@@ -439,7 +454,7 @@ package as3ui.controls.button
 			if(m_enabled)
 			{
 				m_isFocus = false;
-				state = ButtonState.RELEASED;
+				state = ButtonState.OUT;
 				dispatchEvent(m_releaseOutsideEvent);
 			}
 
@@ -463,5 +478,10 @@ package as3ui.controls.button
 			//finalize();
 		}
 		
+		override public function dispose():void
+		{
+			removeButtonListeners();
+			finalize();
+		}	
 	}
 }
