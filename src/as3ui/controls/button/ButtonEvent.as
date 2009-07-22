@@ -8,6 +8,7 @@ package as3ui.controls.button
 	public class ButtonEvent extends Event
 	{
 		public static const DISABLED				:	String = "buttonDisabled";
+		public static const CLICK					:	String = "buttonClick";
 		public static const DOUBLE_CLICK			:	String = "buttonDoubleClick";
 		public static const ENABLED					:	String = "buttonEnabled";
 		public static const PRESS					:	String = "buttonPress";

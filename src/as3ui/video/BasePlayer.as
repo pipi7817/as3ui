@@ -28,7 +28,7 @@ package as3ui.video
 		// Constants 
 		protected static const STATUS_UPDATE_INTERVAL		:	uint	= 250;
 		protected static const DELAYED_BUFFERING_INTERVAL	:	uint	= 200;
-		protected static const DEBUG						:	Boolean	= true;
+		protected static const DEBUG						:	Boolean	= false;
 		protected static const SEEK_INTERVAL				:	uint	= 250;
 		protected static const SEEK_INTERVAL_REPEAT			:	uint	= 4;
 		
@@ -596,7 +596,7 @@ package as3ui.video
 		override public function dispose():void
 		{
 			super.dispose();
-			closeNS()
+			closeNS();
 			clear();
 
 			m_statusTimer.removeEventListener(TimerEvent.TIMER,onStatusTimer);

@@ -1,13 +1,8 @@
-/**
-* @author Alexander Aivars <alexander.aivars(at)gmail.com>
-* 
-* note:
-* THIS IS VERY BETA USE ATT OWN RISK!
-*/
 package as3ui.display
 {
 	import as3ui.events.UIEvent;
 	
+	import flash.display.DisplayObject;
 	import flash.events.Event;
 	
 	public class UIComponent extends UISprite implements IDisposable, IDrawable
@@ -50,18 +45,18 @@ package as3ui.display
 		protected function draw():void
 		{
 			if(m_debug)
- 			{
+			{
 				with(graphics)
 				{
 					beginFill(0xFFF000,1);
 					drawRect(0,0,width,height);
 					drawRect(1,1,width-2,height-2);
 
-					beginFill(0xCCCCCC,0.1);
+					beginFill(0xCCCCCC,0);
 					drawRect(1,1,width-2,height-2);
 					endFill();
 				}
- 			}
+			}
 		}
 		
 		protected function clearChanged():void
@@ -131,11 +126,10 @@ package as3ui.display
 		
 		override public function dispose():void
 		{
-			super.dispose();
 			removeEventListener(Event.ADDED_TO_STAGE, handleAddedToStage);
 			removeEventListener(Event.REMOVED_FROM_STAGE, handleRemovedFromStage);
 			UIComponentManager.removeEventListener(UIEvent.RENDER, handleRenderStage);
-			
+			super.dispose();
 		}	
 	}
 }
