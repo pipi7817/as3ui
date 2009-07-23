@@ -426,7 +426,7 @@ package as3ui.controls.button
 		{
 			var handler:Function = addAsync(resultTestKeyPress, 1000);
 			m_instance.addEventListener(ButtonEvent.CHANGE_STATE, handler,false,0,true);
-			m_instance.bindKey(Keyboard.SPACE);
+			m_instance.key = Keyboard.SPACE;
 			context.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_DOWN,true,true,0,Keyboard.SPACE) );
 		}
 		
@@ -439,7 +439,7 @@ package as3ui.controls.button
 		public function testKeyRelease():void
 		{
 			var handler:Function = addAsync(resultTestKeyRelease, 1000);
-			m_instance.bindKey(Keyboard.SPACE);
+			m_instance.key = Keyboard.SPACE;
 
 			context.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_DOWN,true,true,0,Keyboard.SPACE) );
 
