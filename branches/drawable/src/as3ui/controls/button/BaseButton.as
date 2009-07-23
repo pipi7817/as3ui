@@ -29,10 +29,13 @@ package as3ui.controls.button
 	public class BaseButton extends UISprite
 	{
 
+		/**********************************************************************
+		 * MEMBER VARIABLES
+		 * *******************************************************************/	
 		protected var m_useHandCursor			:	Boolean			=   true;
 		protected var m_doubleClick				:	Boolean			=   false;
 		protected var m_isToggleButton			:	Boolean;
-		protected var m_isStickyButton				:	Boolean;
+		protected var m_isStickyButton			:	Boolean;
 
 		protected var m_doubleClickEvent		:   ButtonEvent;
 		protected var m_clickEvent				:   ButtonEvent;
@@ -55,147 +58,21 @@ package as3ui.controls.button
 		internal var m_state					:	String;
 		internal var m_pendingState				:	String;
 		internal var m_bindKey					:	uint;
-				
+
+
+		/**********************************************************************
+		 * CONSTRUCTOR
+		 * *******************************************************************/	
 		public function BaseButton()
 		{
 			super();
 			initialize();
 		}
 		
-		protected function setMouseOver(a_value:Boolean):void
-		{
-			m_isMouseOver = a_value;
-		}	
-
-		public function get isMouseOver():Boolean
-		{
-			return m_isMouseOver;
-		}
 		
-		/**
-		 * 
-		 * @param a_enabled
-		 * Sets whether the component can accept user input.
-		 */				
-		public function set enabled(a_enabled:Boolean):void
-		{
-
-			var oldEnabled	:	Boolean	=	m_enabled;
-			m_enabled					=	a_enabled;
-			mouseEnabled				=	a_enabled;
-			if(stage)
-			{
-				if(oldEnabled != a_enabled)
-				{
-					if(a_enabled) 
-					{
-						dispatchEvent(m_enabledEvent);
-						// reset state
-						state = ButtonState.OUT;
-						dispatchEvent(m_rollOutEvent);
-					}
-					else
-					{
-						state = ButtonState.DISABLED;
-						dispatchEvent(m_disabledEvent);
-					}
-				}
-			}
-			else
-			{
-				m_state = a_enabled?ButtonState.OUT:ButtonState.DISABLED;
-			}
-		}
-		
-		/**
-		 * 
-		 * @return 
-		 * Gets a value that indicates whether the component can accept user input.
-		 */		
-		public function get enabled():Boolean
-		{
-			return m_enabled;
-		}
-				
-		public function set toggled(a_toggled:Boolean):void
-		{
-			var oldToggled	:	Boolean	=	m_toggled;
-			m_toggled					=	a_toggled;
-			
-			if(oldToggled != a_toggled)
-			{
-				dispatchEvent(m_toggledEvent);
-
-				if(!a_toggled && m_state != m_pendingState)
-				{
-					state = m_pendingState;
-				}	
-
-			}
-			
-		}
-		
-		public function get toggled():Boolean
-		{
-			return m_toggled;
-		}
-		
-		public function set isToggleButton(a_value:Boolean):void
-		{
-			m_isToggleButton = a_value;
-		}
-		
-		public function set isStickyButton(a_value:Boolean):void
-		{
-			m_isStickyButton = a_value;
-		}
-		
-		public function setFocus(a_isFocus:Boolean = true):void
-		{
-//			var oldFocus	:	Boolean	=	m_isFocus;
-			m_isFocus					=	a_isFocus;
-//			if(oldFocus != a_isFocus)
-//			{
-//				dispatchEvent(m_focusEvent);
-//			}
-		}
-		
-		public function get isFocus():Boolean
-		{
-			return m_isFocus;
-		}
-				
-		/**
-		 * 
-		 * @return 
-		 * Gets or sets a value that indicates the current ButtonState of the component.
-		 */		
-		protected function get state():String
-		{
-			return m_state;
-		}
-		
-
-		/**
-		 * 
-		 * @return 
-		 * Gets or sets a value that indicates the current ButtonState of the component.
-		 */	
-		protected function set state(a_state:String):void
-		{
-
-			var oldState 	: 	String	= m_state;
-			if(m_toggled)
-			{
-				m_pendingState = a_state;
-			}
-			else if ( oldState != a_state )
-			{
-				m_state = a_state;
-				dispatchEvent(m_stateEvent);
-			}
-		}
-
+		/**********************************************************************
+		 * INITIALIZE AND SETUP
+		 * *******************************************************************/	
 		private function initialize():void
 		{
 			if(m_useHandCursor)
@@ -217,15 +94,10 @@ package as3ui.controls.button
 
 			addEventListener(Event.ADDED_TO_STAGE,addButtonHandlers,false,0,true);	
 			addEventListener(Event.REMOVED_FROM_STAGE, removeButtonHandlers,false,0,true);			
-
-
 		}
-		
-		
-		
+
 		private function initializeEvents():void
 		{
-
 			m_doubleClickEvent			=	new ButtonEvent(ButtonEvent.DOUBLE_CLICK,true,true);
 			m_releaseEvent				=	new ButtonEvent(ButtonEvent.RELEASE,true,true);
 			m_releaseOutsideEvent		=	new ButtonEvent(ButtonEvent.RELEASE_OUTSIDE,true,true);
@@ -240,34 +112,15 @@ package as3ui.controls.button
 			m_toggledEvent				= 	new ButtonEvent(ButtonEvent.TOGGLE,true,true);
 			m_clickEvent				=	new ButtonEvent(ButtonEvent.CLICK,true,true);
 		}
-
-		private function finalize():void
-		{
-			
-			m_doubleClickEvent			= null;
-			m_releaseEvent				= null;
-			m_releaseOutsideEvent		= null;
-			m_pressEvent				= null;
-			m_rollOverEvent				= null;
-			m_rollOutEvent				= null;
-			m_rollOutWhileDownEvent		= null;
-			m_rollOverWhileDownEvent	= null;
-			m_enabledEvent				= null;
-			m_disabledEvent				= null;
-			m_stateEvent				= null;
-			m_toggledEvent				= null;
-			m_clickEvent				= null;
-		}
 		
-		private function addButtonListeners():void
+		private function initializeButtonListeners():void
 		{
 			if(doubleClickEnabled)
 			{
 				addEventListener(MouseEvent.DOUBLE_CLICK, doubleClickHandler, false,0,true); 
 			}
-
-			stage.addEventListener(KeyboardEvent.KEY_DOWN,onKeyDown,false,0,true);
-			stage.addEventListener(KeyboardEvent.KEY_UP,onKeyUp,false,0,true);
+			
+			initializeKeyListeners();
 			
 			addEventListener(MouseEvent.MOUSE_DOWN, pressHandler,false,0,true);
 			addEventListener(MouseEvent.MOUSE_UP, releaseHandler,false,0,true); 
@@ -276,59 +129,65 @@ package as3ui.controls.button
 			addEventListener(MouseEvent.CLICK, clickHandler,false,0,true);
 
 		}
-
-		public function bindKey(a_uint:uint):void
+		
+		private function initializeKeyListeners():void
 		{
-			if(m_bindKey == a_uint) return;
-			else m_bindKey = a_uint;
+			stage.addEventListener(KeyboardEvent.KEY_DOWN,keyDownHandler,false,0,true);
+			stage.addEventListener(KeyboardEvent.KEY_UP,keyUpHandler,false,0,true);
 		}
 		
-		private function addStageListners(a_event:Event = null) : void
+		protected function setMouseOver(a_value:Boolean):void
 		{
-			if(a_event.target != this) return;
-			
-		}
+			m_isMouseOver = a_value;
+		}	
 
-		private function removeButtonListeners():void
-		{
-			removeStageMouseEventListener();
 
-			if(hasEventListener(MouseEvent.DOUBLE_CLICK)) 
-			{
-				removeEventListener(MouseEvent.DOUBLE_CLICK, doubleClickHandler);
-			}
-			
-			if(stage)
-			{
-				stage.removeEventListener(KeyboardEvent.KEY_DOWN,onKeyDown);
-				stage.removeEventListener(KeyboardEvent.KEY_UP,onKeyUp);				
-			}
-			
-			removeEventListener(MouseEvent.MOUSE_DOWN, pressHandler);
-			removeEventListener(MouseEvent.MOUSE_UP, releaseHandler); 
-			removeEventListener(MouseEvent.MOUSE_OVER, rollOverHandler);
-			removeEventListener(MouseEvent.MOUSE_OUT, rollOutHandler);
-			removeEventListener(MouseEvent.CLICK, clickHandler);
-
-		}
 				
-		private function onKeyDown(a_event:KeyboardEvent):void
+		/**
+		 * 
+		 * @return 
+		 * Gets or sets a value that indicates the current ButtonState of the component.
+		 */		
+		protected function getCurrentState():String
 		{
-			if(m_bindKey != 0 && m_bindKey == a_event.keyCode)
+			return m_state;
+		}
+		
+
+		/**
+		 * 
+		 * @return 
+		 * Gets or sets a value that indicates the current ButtonState of the component.
+		 */	
+		protected function setCurrentState(a_state:String):void
+		{
+
+			var oldState 	: 	String	= m_state;
+			if(m_toggled)
 			{
-				pressHandler();
+				m_pendingState = a_state;
+			}
+			else if ( oldState != a_state )
+			{
+				m_state = a_state;
+				dispatchEvent(m_stateEvent);
 			}
 		}
 
-		private function onKeyUp(a_event:KeyboardEvent):void
-		{
-			if(m_bindKey != 0 && m_bindKey == a_event.keyCode)
-			{
-				releaseHandler();
-			}
-			
-		}
+
 		
+		
+		
+
+
+
+		
+
+
+				
+
+
+
 		private function addStageMouseEventListener():void
 		{
 			if(stage)
@@ -345,6 +204,46 @@ package as3ui.controls.button
 			}
 		}
 		
+
+		/**********************************************************************
+		 * PRIVATE
+		 * *******************************************************************/	
+
+		private function addButtonHandlers(a_event:Event):void
+		{
+//			if(a_event.target != this) return;
+			initializeButtonListeners();
+			//finalize();
+		}
+
+
+		private function removeButtonHandlers(a_event:Event):void
+		{
+//			if(a_event.target != this) return;
+			removeButtonListeners();
+			//finalize();
+		}
+
+
+		/**********************************************************************
+		 * EVENT HANDLERS
+		 * *******************************************************************/	
+		private function keyDownHandler(a_event:KeyboardEvent):void
+		{
+			if(m_bindKey != 0 && m_bindKey == a_event.keyCode)
+			{
+				pressHandler();
+			}
+		}
+
+		private function keyUpHandler(a_event:KeyboardEvent):void
+		{
+			if(m_bindKey != 0 && m_bindKey == a_event.keyCode)
+			{
+				releaseHandler();
+			}
+		}
+		
 		private function stageMouseUpHandler(a_event:MouseEvent):void
 		{
 			if(a_event.eventPhase>=EventPhase.AT_TARGET) releaseOutsideHandler();
@@ -356,7 +255,7 @@ package as3ui.controls.button
 			if(m_enabled)
 			{				
 				m_isFocus = true;
-				state = ButtonState.PRESSED;
+				setCurrentState(ButtonState.PRESSED);
 				if(a_event)
 				{
 					addStageMouseEventListener();
@@ -393,12 +292,12 @@ package as3ui.controls.button
 				if(m_isFocus)
 				{
 					m_isFocus = false;
-					state = m_isMouseOver?ButtonState.OVER:ButtonState.OUT;
+					setCurrentState(m_isMouseOver?ButtonState.OVER:ButtonState.OUT);
 					dispatchEvent(m_releaseEvent);
 				}
 				else
 				{
-					state = ButtonState.OVER
+					setCurrentState(ButtonState.OVER);
 					dispatchEvent(m_rollOverEvent);
 				}
 			}			
@@ -413,13 +312,13 @@ package as3ui.controls.button
 				{
 					if(m_isFocus)
 					{
-						state = ButtonState.PRESSED;
+						setCurrentState(ButtonState.PRESSED);
 						dispatchEvent(m_rollOverWhileDownEvent);
 					}
 				}
 				else
 				{
-					state = ButtonState.OVER
+					setCurrentState(ButtonState.OVER);
 					dispatchEvent(m_rollOverEvent);
 				}
 			}
@@ -434,7 +333,7 @@ package as3ui.controls.button
 				{
 					if(!m_isStickyButton)
 					{
-						state = ButtonState.OUT
+						setCurrentState(ButtonState.OUT);
 					}
 					if(m_isFocus)
 					{
@@ -443,7 +342,7 @@ package as3ui.controls.button
 				}
 				else
 				{
-					state = ButtonState.OUT
+					setCurrentState(ButtonState.OUT);
 					dispatchEvent(m_rollOutEvent);
 				}
 			}
@@ -454,34 +353,178 @@ package as3ui.controls.button
 			if(m_enabled)
 			{
 				m_isFocus = false;
-				state = ButtonState.OUT;
+				setCurrentState(ButtonState.OUT);
 				dispatchEvent(m_releaseOutsideEvent);
 			}
 
 			removeStageMouseEventListener();
 
 		}
-		
 
-		protected function addButtonHandlers(a_event:Event):void
-		{
-//			if(a_event.target != this) return;
-			addButtonListeners();
-			//finalize();
-		}
-
-
-		protected function removeButtonHandlers(a_event:Event):void
-		{
-//			if(a_event.target != this) return;
-			removeButtonListeners();
-			//finalize();
-		}
-		
+		/**********************************************************************
+		 * DISPOSE AND DESTROY
+		 * *******************************************************************/	
 		override public function dispose():void
 		{
 			removeButtonListeners();
-			finalize();
-		}	
+
+			m_doubleClickEvent			= null;
+			m_releaseEvent				= null;
+			m_releaseOutsideEvent		= null;
+			m_pressEvent				= null;
+			m_rollOverEvent				= null;
+			m_rollOutEvent				= null;
+			m_rollOutWhileDownEvent		= null;
+			m_rollOverWhileDownEvent	= null;
+			m_enabledEvent				= null;
+			m_disabledEvent				= null;
+			m_stateEvent				= null;
+			m_toggledEvent				= null;
+			m_clickEvent				= null;
+
+			super.dispose();
+		}
+		
+		private function removeButtonListeners():void
+		{
+			removeStageMouseEventListener();
+
+			if(hasEventListener(MouseEvent.DOUBLE_CLICK)) 
+			{
+				removeEventListener(MouseEvent.DOUBLE_CLICK, doubleClickHandler);
+			}
+			
+			if(stage)
+			{
+				stage.removeEventListener(KeyboardEvent.KEY_DOWN,keyDownHandler);
+				stage.removeEventListener(KeyboardEvent.KEY_UP,keyUpHandler);				
+			}
+			
+			removeEventListener(MouseEvent.MOUSE_DOWN, pressHandler);
+			removeEventListener(MouseEvent.MOUSE_UP, releaseHandler); 
+			removeEventListener(MouseEvent.MOUSE_OVER, rollOverHandler);
+			removeEventListener(MouseEvent.MOUSE_OUT, rollOutHandler);
+			removeEventListener(MouseEvent.CLICK, clickHandler);
+
+		}		
+
+
+
+		/**********************************************************************
+		 * PUBLIC ACCESSORS AND SETTERS
+		 * *******************************************************************/
+		public function set key(a_uint:uint):void
+		{
+			if(m_bindKey == a_uint) return;
+			else m_bindKey = a_uint;
+		}
+
+		public function get key():uint
+		{
+			return m_bindKey;
+		}
+		 
+		public function get isMouseOver():Boolean
+		{
+			return m_isMouseOver;
+		}
+
+		/**
+		 * 
+		 * @param a_enabled
+		 * Sets whether the component can accept user input.
+		 */				
+		public function set enabled(a_enabled:Boolean):void
+		{
+
+			var oldEnabled	:	Boolean	=	m_enabled;
+			m_enabled					=	a_enabled;
+			mouseEnabled				=	a_enabled;
+			if(stage)
+			{
+				if(oldEnabled != a_enabled)
+				{
+					if(a_enabled) 
+					{
+						dispatchEvent(m_enabledEvent);
+						// reset state
+						setCurrentState(ButtonState.OUT);
+						dispatchEvent(m_rollOutEvent);
+					}
+					else
+					{
+						setCurrentState(ButtonState.DISABLED);
+						dispatchEvent(m_disabledEvent);
+					}
+				}
+			}
+			else
+			{
+				m_state = a_enabled?ButtonState.OUT:ButtonState.DISABLED;
+			}
+		}
+		
+		/**
+		 * 
+		 * @return 
+		 * Gets a value that indicates whether the component can accept user input.
+		 */		
+		public function get enabled():Boolean
+		{
+			return m_enabled;
+		}
+				
+		public function set toggled(a_toggled:Boolean):void
+		{
+			var oldToggled	:	Boolean	=	m_toggled;
+			m_toggled					=	a_toggled;
+			
+			if(oldToggled != a_toggled)
+			{
+				dispatchEvent(m_toggledEvent);
+
+				if(!a_toggled && m_state != m_pendingState)
+				{
+					setCurrentState(m_pendingState);
+				}	
+
+			}
+			
+		}
+		
+		public function get toggled():Boolean
+		{
+			return m_toggled;
+		}
+		
+		public function set isToggleButton(a_value:Boolean):void
+		{
+			m_isToggleButton = a_value;
+		}
+		
+		public function set isStickyButton(a_value:Boolean):void
+		{
+			m_isStickyButton = a_value;
+		}
+		
+		public function setFocus(a_isFocus:Boolean = true):void
+		{
+//			var oldFocus	:	Boolean	=	m_isFocus;
+			m_isFocus					=	a_isFocus;
+//			if(oldFocus != a_isFocus)
+//			{
+//				dispatchEvent(m_focusEvent);
+//			}
+		}
+		
+		public function get isFocus():Boolean
+		{
+			return m_isFocus;
+		}
+				
+		public function get state():String
+		{
+			return getCurrentState();
+		}
 	}
 }

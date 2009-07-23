@@ -27,7 +27,7 @@ package {
 			var baseButtonExample:BaseButtonExample = new BaseButtonExample();
 			baseButtonExample.x = 50;
 			baseButtonExample.y = 150;
-			baseButtonExample.bindKey(Keyboard.SPACE);
+			baseButtonExample.key = Keyboard.SPACE;
 			addChild(baseButtonExample);
 //			
 			var simpleButtonExample:SimpleButtonExample = new SimpleButtonExample();
