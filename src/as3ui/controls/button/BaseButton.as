@@ -88,7 +88,7 @@ package as3ui.controls.button
 
 
 			m_state = ButtonState.OUT;
-			enabled = m_enabled;
+			setEnabled( m_enabled );
 			
 			initializeEvents();
 
@@ -135,12 +135,6 @@ package as3ui.controls.button
 			stage.addEventListener(KeyboardEvent.KEY_DOWN,keyDownHandler,false,0,true);
 			stage.addEventListener(KeyboardEvent.KEY_UP,keyUpHandler,false,0,true);
 		}
-		
-		protected function setMouseOver(a_value:Boolean):void
-		{
-			m_isMouseOver = a_value;
-		}	
-
 
 				
 		/**
@@ -148,7 +142,7 @@ package as3ui.controls.button
 		 * @return 
 		 * Gets or sets a value that indicates the current ButtonState of the component.
 		 */		
-		protected function getCurrentState():String
+		private function getCurrentState():String
 		{
 			return m_state;
 		}
@@ -159,7 +153,7 @@ package as3ui.controls.button
 		 * @return 
 		 * Gets or sets a value that indicates the current ButtonState of the component.
 		 */	
-		protected function setCurrentState(a_state:String):void
+		private function setCurrentState(a_state:String):void
 		{
 
 			var oldState 	: 	String	= m_state;
@@ -174,19 +168,10 @@ package as3ui.controls.button
 			}
 		}
 
-
-		
-		
-		
-
-
-
-		
-
-
-				
-
-
+		private function setMouseOver(a_value:Boolean):void
+		{
+			m_isMouseOver = a_value;
+		}
 
 		private function addStageMouseEventListener():void
 		{
@@ -208,7 +193,6 @@ package as3ui.controls.button
 		/**********************************************************************
 		 * PRIVATE
 		 * *******************************************************************/	
-
 		private function addButtonHandlers(a_event:Event):void
 		{
 //			if(a_event.target != this) return;
@@ -224,6 +208,35 @@ package as3ui.controls.button
 			//finalize();
 		}
 
+		private function setEnabled(a_enabled:Boolean):void
+		{
+
+			var oldEnabled	:	Boolean	=	m_enabled;
+			m_enabled					=	a_enabled;
+			mouseEnabled				=	a_enabled;
+			if(stage)
+			{
+				if(oldEnabled != a_enabled)
+				{
+					if(a_enabled) 
+					{
+						dispatchEvent(m_enabledEvent);
+						// reset state
+						setCurrentState(ButtonState.OUT);
+						dispatchEvent(m_rollOutEvent);
+					}
+					else
+					{
+						setCurrentState(ButtonState.DISABLED);
+						dispatchEvent(m_disabledEvent);
+					}
+				}
+			}
+			else
+			{
+				m_state = a_enabled?ButtonState.OUT:ButtonState.DISABLED;
+			}
+		}
 
 		/**********************************************************************
 		 * EVENT HANDLERS
@@ -250,7 +263,7 @@ package as3ui.controls.button
 			return;			
 		}
 		
-		protected function pressHandler(a_event:MouseEvent = null):void
+		private function pressHandler(a_event:MouseEvent = null):void
 		{
 			if(m_enabled)
 			{				
@@ -261,6 +274,8 @@ package as3ui.controls.button
 					addStageMouseEventListener();
 				}
 				dispatchEvent(m_pressEvent);
+				
+				onPress();
 			}
 
 			if(m_isToggleButton)
@@ -269,18 +284,26 @@ package as3ui.controls.button
 			}
 		}
 
-		protected function doubleClickHandler(a_event:MouseEvent):void
+		private function doubleClickHandler(a_event:MouseEvent):void
 		{
-			if(m_enabled) dispatchEvent(m_doubleClickEvent);
+			if(m_enabled)
+			{ 
+				dispatchEvent(m_doubleClickEvent);
+				onDoubleClick();
+			}
 		}
 
-		protected function clickHandler(a_event:MouseEvent):void
+		private function clickHandler(a_event:MouseEvent):void
 		{
-			if(m_enabled) dispatchEvent(m_clickEvent);
+			if(m_enabled)
+			{ 
+				dispatchEvent(m_clickEvent);
+				onClick();
+			}
 		}
 
 
-		protected function releaseHandler(a_event:MouseEvent = null):void
+		private function releaseHandler(a_event:MouseEvent = null):void
 		{
 			if(m_enabled)
 			{
@@ -300,10 +323,12 @@ package as3ui.controls.button
 					setCurrentState(ButtonState.OVER);
 					dispatchEvent(m_rollOverEvent);
 				}
+				
+				onRelease();
 			}			
 		}
 
-		protected function rollOverHandler(m_event:MouseEvent):void
+		private function rollOverHandler(m_event:MouseEvent):void
 		{
 			if(m_enabled)
 			{
@@ -321,10 +346,12 @@ package as3ui.controls.button
 					setCurrentState(ButtonState.OVER);
 					dispatchEvent(m_rollOverEvent);
 				}
+				
+				onRollOver();
 			}
 		}
 
-		protected function rollOutHandler(a_event:MouseEvent):void
+		private function rollOutHandler(a_event:MouseEvent):void
 		{
 			if(m_enabled)
 			{
@@ -345,21 +372,38 @@ package as3ui.controls.button
 					setCurrentState(ButtonState.OUT);
 					dispatchEvent(m_rollOutEvent);
 				}
+
+				onRollOut();
+
 			}
 		}		
 		
-		protected function releaseOutsideHandler():void
+		private function releaseOutsideHandler():void
 		{
 			if(m_enabled)
 			{
 				m_isFocus = false;
 				setCurrentState(ButtonState.OUT);
 				dispatchEvent(m_releaseOutsideEvent);
+				onReleaseOutside();
 			}
 
 			removeStageMouseEventListener();
-
 		}
+		
+
+		/**********************************************************************
+		 * PROTECTED INTERFACE METHODS
+		 * *******************************************************************/	
+		protected function onPress():void {}
+		protected function onDoubleClick():void {}
+		protected function onClick():void {}
+		protected function onRelease():void {}
+		protected function onRollOver():void {}
+		protected function onRollOut():void {}
+		protected function onReleaseOutside():void {}
+		protected function onToggled():void {}
+
 
 		/**********************************************************************
 		 * DISPOSE AND DESTROY
@@ -408,8 +452,6 @@ package as3ui.controls.button
 
 		}		
 
-
-
 		/**********************************************************************
 		 * PUBLIC ACCESSORS AND SETTERS
 		 * *******************************************************************/
@@ -434,34 +476,9 @@ package as3ui.controls.button
 		 * @param a_enabled
 		 * Sets whether the component can accept user input.
 		 */				
-		public function set enabled(a_enabled:Boolean):void
+		public function set enabled(a_value:Boolean):void
 		{
-
-			var oldEnabled	:	Boolean	=	m_enabled;
-			m_enabled					=	a_enabled;
-			mouseEnabled				=	a_enabled;
-			if(stage)
-			{
-				if(oldEnabled != a_enabled)
-				{
-					if(a_enabled) 
-					{
-						dispatchEvent(m_enabledEvent);
-						// reset state
-						setCurrentState(ButtonState.OUT);
-						dispatchEvent(m_rollOutEvent);
-					}
-					else
-					{
-						setCurrentState(ButtonState.DISABLED);
-						dispatchEvent(m_disabledEvent);
-					}
-				}
-			}
-			else
-			{
-				m_state = a_enabled?ButtonState.OUT:ButtonState.DISABLED;
-			}
+			setEnabled(a_value);			
 		}
 		
 		/**
@@ -473,6 +490,7 @@ package as3ui.controls.button
 		{
 			return m_enabled;
 		}
+		
 				
 		public function set toggled(a_toggled:Boolean):void
 		{
@@ -487,7 +505,8 @@ package as3ui.controls.button
 				{
 					setCurrentState(m_pendingState);
 				}	
-
+				
+				onToggled();
 			}
 			
 		}
