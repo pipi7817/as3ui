@@ -72,7 +72,27 @@ package as3ui.utils.display
 				a_disp.y = Math.round( (max - a_disp.height)*.5 );
 			}
 		}
+		
+		static public function AlignHorizontal(a_list:Array,a_offset:Number = 0, a_pixelSnap:Boolean = true):void
+		{
+			var xpos:int = a_offset;
+			for each ( var a_disp:DisplayObject in a_list)
+			{
+				a_disp.x = a_pixelSnap?Math.round(xpos):xpos;
+				xpos += a_disp.width;
+			}
+		}		
 
+		static public function AlignVertical(a_list:Array,a_offset:Number = 0, a_pixelSnap:Boolean = true):void
+		{
+			var ypos:int = a_offset;
+			for each ( var a_disp:DisplayObject in a_list)
+			{
+				a_disp.y = a_pixelSnap?Math.round(ypos):ypos;
+				ypos += a_disp.height;
+			}
+		}	
+		
 		static public function AlignCenterVertical(a_list:Array):void
 		{
 			var max:int = getMaxWidth( a_list);
