@@ -1,5 +1,8 @@
 package {
+	import as3ui.display.UIComponent;
 	import as3ui.display.UISprite;
+	
+	import away3d.containers.View3D;
 	
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -24,7 +27,7 @@ package {
 			var baseButtonExample:BaseButtonExample = new BaseButtonExample();
 			baseButtonExample.x = 50;
 			baseButtonExample.y = 150;
-			baseButtonExample.bindKey(Keyboard.SPACE);
+			baseButtonExample.key = Keyboard.SPACE;
 			addChild(baseButtonExample);
 //			
 			var simpleButtonExample:SimpleButtonExample = new SimpleButtonExample();
@@ -41,6 +44,12 @@ package {
 //			vp.x = 50;
 //			vp.y = 200;
 //			addChild(vp);
+
+			var uiComponentExample:UIComponentExample = new UIComponentExample();
+			
+			addChild(uiComponentExample);
+			
+			var view:View3D = new View3D();
 		}
 
 	}

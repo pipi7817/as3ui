@@ -81,7 +81,7 @@ package as3ui.controls.button
 
 			var instance:BaseButton = event.target as BaseButton;
 			assertEquals(ButtonEvent.RELEASE, event.type);
-			assertEquals(ButtonState.RELEASED, instance.m_state);
+			assertEquals(ButtonState.OUT, instance.m_state);
 			assertEquals(false, instance.m_isFocus);
 		}
 
@@ -187,7 +187,7 @@ package as3ui.controls.button
 
 			var instance:BaseButton = event.target as BaseButton;
 			assertEquals(ButtonEvent.ROLL_OUT, event.type);
-			assertEquals(ButtonState.RELEASED, instance.m_state);
+			assertEquals(ButtonState.OUT, instance.m_state);
 			assertEquals(false, instance.m_isFocus);
 		}
 
@@ -211,7 +211,7 @@ package as3ui.controls.button
 			var instance:BaseButton = event.target as BaseButton;
 			
 			assertEquals(ButtonEvent.RELEASE_OUTSIDE,event.type);
-			assertEquals(ButtonState.RELEASED, instance.m_state);
+			assertEquals(ButtonState.OUT, instance.m_state);
 			assertEquals(false, instance.m_isFocus);
 		}
 
@@ -274,7 +274,7 @@ package as3ui.controls.button
 			event.target.removeEventListener(event.type, arguments.callee);
 			var instance:BaseButton = event.target as BaseButton;
 			assertEquals(ButtonEvent.ROLL_OVER, event.type);
-			assertEquals(ButtonState.RELEASED, instance.m_state);
+			assertEquals(ButtonState.OUT, instance.m_state);
 			assertEquals(false, instance.m_isFocus);
 		}
 
@@ -283,7 +283,7 @@ package as3ui.controls.button
 			event.target.removeEventListener(event.type, arguments.callee);
 			var instance:BaseButton = event.target as BaseButton;
 			assertEquals(ButtonEvent.PRESS, event.type);
-			assertEquals(ButtonState.RELEASED, instance.m_state);
+			assertEquals(ButtonState.OUT, instance.m_state);
 			assertEquals(true, instance.m_isFocus);
 		}
 
@@ -292,7 +292,7 @@ package as3ui.controls.button
 			event.target.removeEventListener(event.type, arguments.callee);
 			var instance:BaseButton = event.target as BaseButton;
 			assertEquals(ButtonEvent.RELEASE, event.type);
-			assertEquals(ButtonState.RELEASED, instance.m_state);
+			assertEquals(ButtonState.OUT, instance.m_state);
 			assertEquals(false, instance.m_isFocus);
 		}
 
@@ -301,7 +301,7 @@ package as3ui.controls.button
 			event.target.removeEventListener(event.type, arguments.callee);
 			var instance:BaseButton = event.target as BaseButton;
 			assertEquals(ButtonEvent.ROLL_OUT, event.type);
-			assertEquals(ButtonState.RELEASED, instance.m_state);
+			assertEquals(ButtonState.OUT, instance.m_state);
 			assertEquals(false, instance.m_isFocus);
 		}
 
@@ -331,7 +331,7 @@ package as3ui.controls.button
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,instance,false,false,false,false,0));
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN,true,true,0,0,instance,false,false,false,true,0));
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OUT,true,true,0,0,instance,false,false,false,true,0));
-			assertEquals(ButtonState.RELEASED,instance.m_state);
+			assertEquals(ButtonState.OUT,instance.m_state);
 		}
 		
 		public function testStickyButtonOverAndPressAndMouseDownOut():void
@@ -349,7 +349,7 @@ package as3ui.controls.button
 			assertEquals(ButtonState.PRESSED,instance.m_state);
 
 			getContext().dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP,true,true,0,0,getContext(),false,false,false,false,0));
-			assertEquals(ButtonState.RELEASED,instance.m_state);
+			assertEquals(ButtonState.OUT,instance.m_state);
 
 
 		}
@@ -378,7 +378,7 @@ package as3ui.controls.button
 		{
 			var instance:BaseButton = m_instance;
 			instance.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_OVER,true,true,0,0,instance,false,false,false,true,0));
-			assertEquals(ButtonState.RELEASED,instance.m_state);
+			assertEquals(ButtonState.OUT,instance.m_state);
 		}
 		
 		public function testPressAndDragAndOutAndRelese():void
@@ -394,14 +394,14 @@ package as3ui.controls.button
 			
 			getContext().dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP,true,true,0,0,getContext(),false,false,false,false,0));
 			
-			assertEquals(ButtonState.RELEASED,instance.m_state);
+			assertEquals(ButtonState.OUT,instance.m_state);
 		}
 
 		private function resultTestPressAndDragAndOutAndRelese(event:Event):void
 		{
 			event.target.removeEventListener(event.type, arguments.callee);
 			var instance:BaseButton = event.target as BaseButton;
-			assertEquals(ButtonState.RELEASED,instance.m_state);
+			assertEquals(ButtonState.OUT,instance.m_state);
 
 		}
 
@@ -426,7 +426,7 @@ package as3ui.controls.button
 		{
 			var handler:Function = addAsync(resultTestKeyPress, 1000);
 			m_instance.addEventListener(ButtonEvent.CHANGE_STATE, handler,false,0,true);
-			m_instance.bindKey(Keyboard.SPACE);
+			m_instance.key = Keyboard.SPACE;
 			context.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_DOWN,true,true,0,Keyboard.SPACE) );
 		}
 		
@@ -439,7 +439,7 @@ package as3ui.controls.button
 		public function testKeyRelease():void
 		{
 			var handler:Function = addAsync(resultTestKeyRelease, 1000);
-			m_instance.bindKey(Keyboard.SPACE);
+			m_instance.key = Keyboard.SPACE;
 
 			context.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_DOWN,true,true,0,Keyboard.SPACE) );
 
@@ -451,14 +451,14 @@ package as3ui.controls.button
 		private function resultTestKeyRelease(event:Event):void
 		{
 			event.target.removeEventListener(event.type, arguments.callee);
-			assertEquals(ButtonState.RELEASED,m_instance.m_state);
+			assertEquals(ButtonState.OUT,m_instance.m_state);
 		}
 		
 		public function testPreSetEnabled():void
 		{
 			var button:BaseButton = new BaseButton();
-			button.setEnabled(false);
-			button.setEnabled(true);
+			button.enabled = false;
+			button.enabled = true;
 			
 		}
 						

@@ -3,6 +3,7 @@
 */
 package as3ui.video
 {
+	import as3ui.display.IDisposable;
 	import as3ui.display.UISprite;
 	import as3ui.net.NetStatus;
 	
@@ -21,7 +22,7 @@ package as3ui.video
 	import flash.net.NetStream;
 	import flash.utils.Timer;
 
-	public class BasePlayer extends UISprite
+	public class BasePlayer extends UISprite implements IDisposable
 	{
 		
 		// Constants 
@@ -31,9 +32,9 @@ package as3ui.video
 		protected static const SEEK_INTERVAL				:	uint	= 250;
 		protected static const SEEK_INTERVAL_REPEAT			:	uint	= 4;
 		
-		protected static const BUFFER_EMPTY				:	String	= "bufferEmpty";
-		protected static const BUFFER_FULL				:	String	= "bufferFull";
-		protected static const BUFFER_FLUSH				:	String	= "bufferFlush";		
+		protected static const BUFFER_EMPTY					:	String	= "bufferEmpty";
+		protected static const BUFFER_FULL					:	String	= "bufferFull";
+		protected static const BUFFER_FLUSH					:	String	= "bufferFlush";		
 
 		// Network
 		protected var m_nc:NetConnection;
@@ -48,6 +49,7 @@ package as3ui.video
 		protected var m_state:String = VideoState.DISCONNECTED;
 		protected var m_cachedState:String = m_state;
 		protected var m_bufferState:String;
+		protected var m_preloading:Boolean;
 		
 		// Stored data
 		protected var m_streamLength:Number;
@@ -77,14 +79,14 @@ package as3ui.video
 			super();
 			
 			m_statusTimer = new Timer(STATUS_UPDATE_INTERVAL);
-			m_statusTimer.addEventListener(TimerEvent.TIMER,onStatusTimer);
+			m_statusTimer.addEventListener(TimerEvent.TIMER,onStatusTimer,false,0,true);
 			m_statusTimer.start();
 
 			m_delayedBufferingTimer = new Timer(DELAYED_BUFFERING_INTERVAL);
-			m_delayedBufferingTimer.addEventListener(TimerEvent.TIMER,doDelayedBuffering);
+			m_delayedBufferingTimer.addEventListener(TimerEvent.TIMER,doDelayedBuffering,false,0,true);
 			
 			m_recoverSeekTimer = new Timer(SEEK_INTERVAL,SEEK_INTERVAL_REPEAT);
-			m_recoverSeekTimer.addEventListener(TimerEvent.TIMER, recoverSeek);
+			m_recoverSeekTimer.addEventListener(TimerEvent.TIMER, recoverSeek,false,0,true);
 			
 			m_video = new Video(a_width,a_height);
 			m_video.opaqueBackground = 0;
@@ -93,6 +95,7 @@ package as3ui.video
 
 			setSize(a_width,a_height);
 			addChild(m_video);
+			
 		}
 		
 		override public  function get opaqueBackground():Object { return m_video.opaqueBackground;  }
@@ -104,7 +107,13 @@ package as3ui.video
 			m_video.height = a_height;
 			super.setSize(a_width,a_height,true);
 		}
-
+		
+		public function preload(a_url:String):void
+		{
+			m_preloading = true;
+			play(a_url);
+		}
+		
 		public function play(a_url:String = null):void
 		{
 			if(a_url != null)
@@ -135,8 +144,16 @@ package as3ui.video
 				m_ns.play(source)			
 
 			}
-			else 
+			else if(m_preloading)
 			{
+				m_preloading = false;
+				_pause(false);
+				setState(VideoState.PLAYING);				
+			}
+			else
+			{
+				
+				
 				switch (state)
 				{
 					case VideoState.STOPPED:
@@ -234,7 +251,6 @@ package as3ui.video
         }
 
 		public function set volume(a_volume:Number):void {
-			trace(">>>" + a_volume);
 			if(m_ns != null)
 			{
 				if(m_ns.soundTransform.volume != a_volume)
@@ -293,7 +309,7 @@ package as3ui.video
 					return;
 				}
 			}
-
+			
 			if (m_state == VideoState.PAUSED || m_state == VideoState.STOPPED || m_ns == null) return;
 
 			_pause(true);
@@ -493,11 +509,17 @@ package as3ui.video
 				{
 					setState(VideoState.PLAYING);	
 				}
+
+				if(m_preloading)
+				{
+					_pause(true);
+				}
+
 			break;
 			
 			case NetStatus.NETSTREAM_PLAY_START:
 			{
-				if( m_state != VideoState.LOADING) // Still loading firstbuffer
+				if( m_state != VideoState.LOADING && !m_preloading) // Still loading firstbuffer
 				{
 					setState(VideoState.PLAYING);
 				}
@@ -544,6 +566,12 @@ package as3ui.video
         protected function setState(a_state:String):void
         {
         	if (a_state == m_state) return;
+			
+			if(m_preloading)
+			{
+				return;
+			}
+			
 			m_cachedState = m_state;
 			m_state = a_state;
 			dispatchEvent(new VideoEvent(VideoEvent.STATE_CHANGE, false, false, m_state, playheadTime));
@@ -559,11 +587,33 @@ package as3ui.video
 
 				// remove listeners from NetStream
 				m_ns.removeEventListener(NetStatusEvent.NET_STATUS,onNetStatus);
-
 				// close and delete NetStream
 				m_ns.close();
 				m_ns = null;
 			}
+		}
+		
+		override public function dispose():void
+		{
+			super.dispose();
+			closeNS();
+			clear();
+
+			m_statusTimer.removeEventListener(TimerEvent.TIMER,onStatusTimer);
+			m_statusTimer.stop();
+			m_statusTimer = null;
+
+			m_delayedBufferingTimer.removeEventListener(TimerEvent.TIMER,doDelayedBuffering);
+			m_delayedBufferingTimer.stop();
+			m_delayedBufferingTimer = null;
+			
+			m_recoverSeekTimer.removeEventListener(TimerEvent.TIMER, recoverSeek);
+			m_recoverSeekTimer.stop();
+			m_recoverSeekTimer = null;
+
+			m_nc = null;
+			m_ns = null;
+			m_video = null;
 		}
 
 	}

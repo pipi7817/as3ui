@@ -1,6 +1,5 @@
-package as3ui
+package as3ui.display
 {
-	import as3ui.display.UISprite;
 	
 	public class AutoSizeUIObject extends UISprite
 	{

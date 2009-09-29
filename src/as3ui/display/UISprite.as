@@ -5,10 +5,11 @@ package as3ui.display
 {
 	import as3ui.events.UIEvent;
 	
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
-
+	
 	[Event (name="resize", type="as3ui.events.UIEvent")]
 	[Event (name="move", type="as3ui.events.UIEvent")]
 	[Event (name="moveComplete", type="as3ui.events.UIEvent")]
@@ -16,7 +17,7 @@ package as3ui.display
 	[Event (name="showComplete", type="as3ui.events.UIEvent")]
 	[Event (name="hide", type="as3ui.events.UIEvent")]
 	[Event (name="hideComplete", type="as3ui.events.UIEvent")]
-	public class UISprite extends Sprite
+	public class UISprite extends Sprite implements IDisposable
 	{
 		protected var m_maxWidth		:	Number;
 		protected var m_minWidth		:	Number = 0;
@@ -33,8 +34,8 @@ package as3ui.display
 			super();
 			if(m_autosize)
 			{
-				addEventListener(Event.ADDED,onAdded);
-				addEventListener(Event.REMOVED,onRemoved);
+				addEventListener(Event.ADDED,onAdded,false,0,true);
+				addEventListener(Event.REMOVED,onRemoved,false,0,true);
 			}
 		}
 
@@ -42,7 +43,7 @@ package as3ui.display
 		{
 			if(a_event.target != this) return;
 			parent.removeEventListener(UIEvent.RESIZE,parentResize);
-			parent.addEventListener(UIEvent.RESIZE,parentResize);
+			parent.addEventListener(UIEvent.RESIZE,parentResize,false,0,true);
 		}
 		
 		private function onRemoved( a_event:Event ):void
@@ -95,6 +96,7 @@ package as3ui.display
 		{
 			
 			dispatchEvent(new UIEvent(UIEvent.SHOW,true,true));
+			visible = true;
 			showComplete();	
 		}
 
@@ -219,25 +221,58 @@ package as3ui.display
 
 		public function get bottom():Number
 		{
-			return x + height;
+			return y + height;
 		}
 
 		public function set bottom(a_value:Number):void
 		{
-			x = a_value - height;
+			y = a_value - height;
 		}
 
-		public function set globalX(value:Number):void
+		public function set globalX(a_value:Number):void
 		{
-			m_xpos = x = x + value-stage.globalToLocal(localToGlobal(new Point(0,0) )).x;
-
+			if(stage)
+			{
+				m_xpos = x = x + a_value-stage.globalToLocal(localToGlobal(new Point(0,0) )).x;
+			}
+			else
+			{
+				m_xpos = x = a_value;
+			}
 		}
 	
-		public function set globalY(value:Number):void
+		public function set globalY(a_value:Number):void
 		{
-			m_ypos = y = y + value-stage.globalToLocal(localToGlobal(new Point(0,0) )).y;
+			if(stage)
+			{
+				m_ypos = y = y + a_value-stage.globalToLocal(localToGlobal(new Point(0,0) )).y;
+			}
+			else
+			{
+				m_ypos = y = a_value;
+			}
 		}
 
+		public function set centerX(a_value:Number):void
+		{
+			x = a_value - Math.round( width*.5 );
+		}
+		
+		public function get centerX():Number
+		{
+			return x + Math.round( width*.5 );
+		}
+		
+		public function set centerY(a_value:Number):void
+		{
+			y = a_value - height*.5;
+		}
+		
+		public function get centerY():Number
+		{
+			return y + height*.5;
+		}
+		
 		public function get globalX():Number
 		{
 			return stage.globalToLocal(localToGlobal(new Point(0,0) )).x;
@@ -247,7 +282,35 @@ package as3ui.display
 		{
 			return stage.globalToLocal(localToGlobal(new Point(0,0) )).y;
 		}
-		
+
+		public function dispose():void
+		{
+			if(parent)
+			{
+				parent.removeEventListener(UIEvent.RESIZE,parentResize);
+				parent.removeChild(this);
+			}
+			
+			removeEventListener(Event.ADDED,onAdded);
+			removeEventListener(Event.REMOVED,onRemoved);
+
+			var child:DisplayObject;
+			while(numChildren>0)
+			{
+				child = removeChildAt(0);
+
+				if(child.parent)
+				{
+					child.parent.removeChild(child);
+				}
+				
+				if(child is IDisposable)
+				{
+					(child as IDisposable).dispose();
+				}
+			}
+			child = null;			
+		}			
 		
 	}
 }
