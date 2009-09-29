@@ -1,16 +1,16 @@
 package as3ui.display
 {
 	import as3ui.events.UIEvent;
+	import as3ui.framework.component.IBasicComponent;
 	
-	import flash.display.DisplayObject;
 	import flash.events.Event;
-	
-	public class UIComponent extends UISprite implements IDisposable, IDrawable
+	public class UIComponent extends UISprite implements IDisposable, IDrawable, IBasicComponent
 	{
 		
 		protected var m_changed:Boolean = false;
 		protected var m_debug:Boolean = false;
-		
+		protected var m_data:Object;
+				
 		public function UIComponent()
 		{
 			super();
@@ -117,6 +117,11 @@ package as3ui.display
 			{
 				super.setSize(a_width,a_height,a_pixelSnap);
 			}
+		}
+		
+		public function setData(a_data:Object):void
+		{
+			m_data = a_data;
 		}
 
 		public function redraw():void {
