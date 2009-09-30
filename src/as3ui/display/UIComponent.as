@@ -9,7 +9,7 @@ package as3ui.display
 		
 		protected var m_changed:Boolean = false;
 		protected var m_debug:Boolean = false;
-		protected var m_data:Object;
+
 				
 		public function UIComponent()
 		{
@@ -121,7 +121,7 @@ package as3ui.display
 		
 		public function setData(a_data:Object):void
 		{
-			m_data = a_data;
+
 		}
 
 		public function redraw():void {
