@@ -393,7 +393,7 @@ package as3ui.controls.button
 		
 
 		/**********************************************************************
-		 * PROTECTED INTERFACE METHODS
+		 * ABSTRACT METHODS
 		 * *******************************************************************/	
 		protected function onPress():void {}
 		protected function onDoubleClick():void {}
