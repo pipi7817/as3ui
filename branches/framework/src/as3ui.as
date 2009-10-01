@@ -1,8 +1,7 @@
 package {
-	import as3ui.display.UIComponent;
 	import as3ui.display.UISprite;
-	
-	import away3d.containers.View3D;
+	import as3ui.framework.component.BasicComponent;
+	import as3ui.framework.component.BasicComponentInfo;
 	
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -45,11 +44,17 @@ package {
 //			vp.y = 200;
 //			addChild(vp);
 
-			var uiComponentExample:UIComponentExample = new UIComponentExample();
+//			var uiComponentExample:UIComponentExample = new UIComponentExample();
+//			
+//			addChild(uiComponentExample);
 			
-			addChild(uiComponentExample);
 			
-			var view:View3D = new View3D();
+			
+			var comp:BasicComponent = new BasicComponent();
+			comp.componentInfo.parseXML(<component id="mycomponent" depth="1" layer="top">
+			<file><![CDATA[components/mycomponent.swf]]></file>
+			</component>);
+			trace(comp.componentInfo.toString()); 
 		}
 
 	}
