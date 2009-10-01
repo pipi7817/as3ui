@@ -1,4 +1,4 @@
-package as3ui.utils.display
+package as3ui.utils.sprite
 {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;

@@ -1,4 +1,4 @@
-package as3ui.utils.display
+package as3ui.utils.bitmap
 {
 	import flash.display.BitmapData;
 	import flash.geom.Matrix;
