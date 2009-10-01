@@ -4,13 +4,13 @@
 
 package as3ui.framework.componentmanager
 {
-	import as3ui.events.UIEvent;
+	import as3ui.framework.componentmanager.events.ComponentManagerEvent;
 	
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	
-	[Event (name="render", type="as3ui.events.UIEvent")]
+	[Event (name="update", type="as3ui.framework.componentmanager.events")]
 	public class ComponentManager extends EventDispatcher
 	{
 		
@@ -29,7 +29,7 @@ package as3ui.framework.componentmanager
 		
 		private function stageRenderHandler(a_event:Event):void
 		{
-			dispatchEvent(new UIEvent(UIEvent.RENDER,false,false));
+			dispatchEvent(new ComponentManagerEvent(ComponentManagerEvent.UPDATE,false,false));
 		}
 
 		private function initalize(a_stage:Stage):void

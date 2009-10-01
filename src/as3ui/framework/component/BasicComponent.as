@@ -7,8 +7,8 @@ package as3ui.framework.component
 	import as3ui.display.IDisposable;
 	import as3ui.display.IDrawable;
 	import as3ui.display.UISprite;
-	import as3ui.events.UIEvent;
 	import as3ui.framework.componentmanager.ComponentManager;
+	import as3ui.framework.componentmanager.events.ComponentManagerEvent;
 	import as3ui.framework.componentmanager.ns_component_manager;
 	
 	import flash.errors.IllegalOperationError;
@@ -99,7 +99,7 @@ package as3ui.framework.component
 				ComponentManager.init(stage);	
 			}
 			
-			ComponentManager.addEventListener(UIEvent.RENDER, handleRenderStage,false,0,true);
+			ComponentManager.addEventListener(ComponentManagerEvent.UPDATE, handleRenderStage,false,0,true);
 
 			if(hasChanged())
 			{
@@ -110,7 +110,7 @@ package as3ui.framework.component
 		
 		private function handleRemovedFromStage(a_event:Event):void
 		{
-			ComponentManager.removeEventListener(UIEvent.RENDER, handleRenderStage);
+			ComponentManager.removeEventListener(ComponentManagerEvent.UPDATE, handleRenderStage);
 		}
 		
 		private function handleRenderStage(a_event:Event):void
@@ -145,7 +145,7 @@ package as3ui.framework.component
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, handleAddedToStage);
 			removeEventListener(Event.REMOVED_FROM_STAGE, handleRemovedFromStage);
-			ComponentManager.removeEventListener(UIEvent.RENDER, handleRenderStage);
+			ComponentManager.removeEventListener(ComponentManagerEvent.UPDATE, handleRenderStage);
 			super.dispose();
 		}	
 		
