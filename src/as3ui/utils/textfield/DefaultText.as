@@ -1,4 +1,4 @@
-package as3ui.text
+package as3ui.utils.textfield
 {
 	import flash.text.AntiAliasType;
 	import flash.text.GridFitType;

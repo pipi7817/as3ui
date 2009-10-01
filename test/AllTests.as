@@ -11,7 +11,6 @@ package {
 	import as3ui.controls.button.SimpleButtonTest;
 	import as3ui.controls.scrollbar.BaseScrollBarTest;
 	import as3ui.display.UISpriteTest;
-	import as3ui.utils.away3d.Object3DUtilTest;
 	import as3ui.utils.stage.TopLevelTest;
 	import as3ui.video.MediaTest;
 
@@ -22,7 +21,6 @@ package {
 			addTest(as3ui.controls.button.SimpleButtonTest.suite());
 			addTest(as3ui.controls.scrollbar.BaseScrollBarTest.suite());
 			addTest(as3ui.display.UISpriteTest.suite());
-			addTest(as3ui.utils.away3d.Object3DUtilTest.suite());
 			addTest(as3ui.utils.stage.TopLevelTest.suite());
 			addTest(as3ui.video.MediaTest.suite());
 		}
