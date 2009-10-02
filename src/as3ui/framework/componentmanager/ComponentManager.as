@@ -24,8 +24,6 @@ package as3ui.framework.componentmanager
 				throw new Error("ComponentHandler can only be accessed through ComponentHandler.instance");
 			}
 		}
-
-
 		
 		private function stageRenderHandler(a_event:Event):void
 		{
