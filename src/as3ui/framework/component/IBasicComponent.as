@@ -10,9 +10,9 @@ package as3ui.framework.component
 	{
 		function get componentInfo():BasicComponentInfo;
 
-		function setData(data:Object):void
-		function show():void
-		function hide():void
+		function setData(data:Object):void;
+		function show():void;
+		function hide():void;
 		function dispose():void;
 				
 				
