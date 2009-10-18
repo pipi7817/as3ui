@@ -19,7 +19,8 @@ package as3ui.framework.component
 		private var m_layer:String;
 		private var m_depth:String;
 		private var m_file:String;
-
+		private var m_data:XML;
+		private var m_progressive:Boolean;
 
 		///////////////////////////////////////////////////////////////////////
 		// SETTERS AND ACCESSORS
@@ -34,8 +35,10 @@ package as3ui.framework.component
 		public function set depth(value:String):void { m_depth = value; }
 
 		public function get file():String { return m_file; }
-		
-		ns_component function set file(value:String):void { m_file = value; }
+		public function get data():XML { return m_data; }
+
+		ns_component function set file(a_value:String):void { m_file = a_value; }
+		ns_component function set data(a_value:XML):void { m_data = a_value; }
 
 		///////////////////////////////////////////////////////////////////////
 		// CONSTRUCTOR
@@ -48,7 +51,6 @@ package as3ui.framework.component
 		///////////////////////////////////////////////////////////////////////
 		public function parseXML(a_xml:XML):BasicComponentInfo
 		{
-			
 			for each ( var att:XML in a_xml.attributes() )
 			{
 				if(hasOwnProperty(att.name()))
@@ -64,8 +66,17 @@ package as3ui.framework.component
 			for each ( var item:XML in a_xml.children() )
 			{
 				if(hasOwnProperty(item.name()))
-				{
-					ns_component::[item.name().toString()] = item.toString();;
+				{	
+					switch( item.name().toString() )
+					{
+						case "data":
+							ns_component::[item.name().toString()] =  XML(item);
+						break;
+						
+						default:
+							ns_component::[item.name().toString()] = item.toString();;
+						break;
+					}
 				}
 				else if ( item.name() == "id" )
 				{
