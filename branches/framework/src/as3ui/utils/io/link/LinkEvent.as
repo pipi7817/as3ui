@@ -1,7 +1,5 @@
 package as3ui.utils.io.link
 {
-	import app.view.components.menu.vo.LinkVO;
-	
 	import flash.events.Event;
 
 	public class LinkEvent extends Event
