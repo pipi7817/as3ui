@@ -20,6 +20,7 @@ package as3ui.utils.io.link
 			if(a_data is XML)
 			{
 				m_href = a_data.attribute("href").toString();
+				m_label = a_data.toString();
 				m_target = a_data.attribute("target").toString().toLowerCase();
 				if(m_target.length<1)
 				{
@@ -86,7 +87,7 @@ package as3ui.utils.io.link
 		
 		public function toString():String
 		{
-			return "LinkVO[label:"+label+",target:"+target+",href:"+href+"]";
+			return "Link[label:"+label+",target:"+target+",href:"+href+"]";
 		}
 	}
 }
