@@ -312,5 +312,18 @@ package as3ui.display
 			child = null;			
 		}			
 		
+		public function clearChildren():void
+		{
+			var child:DisplayObject;
+			while(numChildren>0)
+			{
+				child = removeChildAt(0);
+				if(child is IDisposable)
+				{
+					(child as IDisposable).dispose();
+				}
+			}
+			child = null;
+		}
 	}
 }
