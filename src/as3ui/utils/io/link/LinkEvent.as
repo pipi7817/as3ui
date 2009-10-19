@@ -7,19 +7,19 @@ package as3ui.utils.io.link
 	public class LinkEvent extends Event
 	{
 		
-		private var m_data:LinkVO;
+		private var m_data:Link;
 		
 		public static const CLICK:String = "MenuEventClick";
 
 
-		public function LinkEvent(a_type:String, a_data:LinkVO, a_bubbles:Boolean=true, a_cancelable:Boolean=true)
+		public function LinkEvent(a_type:String, a_data:Link, a_bubbles:Boolean=true, a_cancelable:Boolean=true)
 		{
 			m_data = a_data;
 			super(a_type, a_bubbles, a_cancelable);
 
 		}
 		
-		public function get data():LinkVO
+		public function get data():Link
 		{
 			return m_data;
 		}
