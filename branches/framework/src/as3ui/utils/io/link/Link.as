@@ -1,6 +1,5 @@
 package as3ui.utils.io.link
 {
-	import as3ui.controls.model.vo.LinkTarget;
 	
 	public class Link
 	{
@@ -9,7 +8,8 @@ package as3ui.utils.io.link
 		private var m_style:Object = new Object();
 		private var m_target:String;
 		private var m_href:String;
-
+		private var m_uri:String;
+		
 		
 		// public function Link( a_label:String, a_url:String, a_target:String = null, a_id:String = null, a_logid:String = "")
 		
@@ -30,7 +30,7 @@ package as3ui.utils.io.link
 				{
 					m_style[attr.split(":")[0]] = cast( attr.split(":")[1] );
 				}
-
+				m_uri = a_data.attribute("uri").toString();
 			}
 			else
 			{
@@ -76,7 +76,12 @@ package as3ui.utils.io.link
 		
 		public function get label():String
 		{
-			return m_data.toString();
+			return m_label;
+		}
+		
+		public function get uri():String
+		{
+			return m_uri;
 		}
 		
 		public function toString():String
