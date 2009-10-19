@@ -11,6 +11,7 @@ package as3ui.controls.model.vo
 		private var m_id:String;
 		private var m_logid:String;
 		
+		[Deprecated("Use as3ui.utils.io.link.Link")]
 		public function Link( a_label:String, a_url:String, a_target:String = null, a_id:String = null, a_logid:String = "")
 		{
 			if(a_target != null) 
