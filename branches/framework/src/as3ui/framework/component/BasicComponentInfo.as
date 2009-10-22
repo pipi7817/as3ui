@@ -21,7 +21,8 @@ package as3ui.framework.component
 		private var m_file:String;
 		private var m_data:XML;
 		private var m_progressive:Boolean;
-
+		private var m_float:String;
+		
 		///////////////////////////////////////////////////////////////////////
 		// SETTERS AND ACCESSORS
 		///////////////////////////////////////////////////////////////////////
@@ -32,11 +33,14 @@ package as3ui.framework.component
 		public function set layer(value:String):void { m_layer = value; }
 
 		public function get depth():String { return m_depth; }
-		public function set depth(value:String):void { m_depth = value; }
+		public function set depth(a_value:String):void { m_depth = a_value; }
+
+		public function get float():String { return m_float; }
+		public function set float(a_value:String):void { m_float = a_value; }
 
 		public function get file():String { return m_file; }
 		public function get data():XML { return m_data; }
-
+		
 		ns_component function set file(a_value:String):void { m_file = a_value; }
 		ns_component function set data(a_value:XML):void { m_data = a_value; }
 
