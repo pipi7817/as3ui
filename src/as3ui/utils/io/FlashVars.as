@@ -11,6 +11,7 @@ package as3ui.utils.io
 		public var viewHeight:int = 540;
 		public var touch:int = 0;
 		public var debug:int = 0;
+		public var logLevel:int = 0;
 		
 		public function FlashVars()
 		{
