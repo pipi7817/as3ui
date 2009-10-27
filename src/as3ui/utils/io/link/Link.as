@@ -26,8 +26,7 @@ package as3ui.utils.io.link
 				{
 					m_target = LinkTarget.FLASH;
 				}
-
-				for each ( var attr:String in a_data.attribute("style").toString().match( /(\w+:\w+)/g ) )
+				for each ( var attr:String in a_data.attribute("style").toString().match( /(\w+:[-\w]+)/g ) )
 				{
 					m_style[attr.split(":")[0]] = cast( attr.split(":")[1] );
 				}
