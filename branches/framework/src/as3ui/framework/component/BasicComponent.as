@@ -10,7 +10,12 @@ package as3ui.framework.component
 	import as3ui.framework.componentmanager.ComponentManager;
 	import as3ui.framework.componentmanager.events.ComponentManagerEvent;
 	import as3ui.framework.componentmanager.ns_component_manager;
+	import as3ui.utils.io.Log;
+	import as3ui.utils.io.Parameters;
+	import as3ui.utils.stage.TopLevel;
 	
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
 	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
 
@@ -38,6 +43,22 @@ package as3ui.framework.component
 		public function BasicComponent()
 		{
 			super();
+
+			if(stage)
+			{
+				try
+				{
+					TopLevel.stage = stage;
+					Parameters.vars.load(this.root.loaderInfo);
+					Log.level = Parameters.vars.logLevel;
+					stage.align = StageAlign.TOP_LEFT;
+					stage.scaleMode = StageScaleMode.NO_SCALE;
+				} catch (err:Error) {
+					Log.error(this +":" + err.message );
+				}
+
+			}
+			
 			addEventListener(Event.ADDED_TO_STAGE, handleAddedToStage,false,0,true);
 			addEventListener(Event.REMOVED_FROM_STAGE, handleRemovedFromStage,false,0,true);
 			setChanged();
