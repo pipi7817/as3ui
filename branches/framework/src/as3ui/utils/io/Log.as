@@ -26,7 +26,7 @@ package as3ui.utils.io
 		{
 			if(level >= WARNING)
 			{
-				trace("WARNING	| " + a_message);	
+				trace("WARNING		| " + a_message);	
 			}
 		}
 
@@ -34,7 +34,7 @@ package as3ui.utils.io
 		{
 			if(level >= INFO)
 			{
-				trace("INFO		| " + a_message);	
+				trace("INFO			| " + a_message);	
 			}
 		}
 
