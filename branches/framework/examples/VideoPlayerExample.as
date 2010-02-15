@@ -73,7 +73,9 @@ package
 			{
 				// m_player.play("http://www0.c00928.cdn.qbrick.com/00928/kluster/20080612/SOMMARTORPETLINDA2.flv");
 //				m_player.play("rtmp://fl0.c00928.cdn.qbrick.com/00928/enc3low");
-//				m_player.play("rtmp://fl0.c00451.cdn.qbrick.com/00451/20080610iphoneNYNY_s");
+				m_player.play("http://www0.c00928.cdn.qbrick.com/00928/kluster/20091214/NYH_MEDICIN0630.flv");
+				
+				trace(m_player);
 //
 //				m_rtmpNC.connect("rtmp://fl0.c00451.cdn.qbrick.com/00451/20080619Spel_s");
 //				m_rtmpNC.connect("rtmp://fl0.c00928.cdn.qbrick.com/00928/enc3low");

@@ -53,7 +53,7 @@ package as3ui.video.controlbar
 		{
 			switch (state)
 			{
-				case ButtonState.RELEASED:
+				case ButtonState.OUT:
 					m_highlight.alpha = 0;
 					m_highlight.width = width - 2;
 				break;
