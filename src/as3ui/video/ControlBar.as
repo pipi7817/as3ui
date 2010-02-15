@@ -85,9 +85,9 @@ package as3ui.video
 		
 		public function onChangeState(event:VideoEvent):void
 		{
-			m_play.setEnabled(event.state != VideoState.PLAYING);
-			m_pause.setEnabled(event.state != VideoState.PAUSED && event.state != VideoState.STOPPED );
-			m_stop.setEnabled(event.state != VideoState.STOPPED);
+			m_play.enabled = (event.state != VideoState.PLAYING);
+			m_pause.enabled = (event.state != VideoState.PAUSED && event.state != VideoState.STOPPED );
+			m_stop.enabled = (event.state != VideoState.STOPPED);
 		}
 		
 	}
