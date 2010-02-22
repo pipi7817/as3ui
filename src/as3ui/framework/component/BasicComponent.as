@@ -179,6 +179,9 @@ package as3ui.framework.component
 			return m_componentInfo;
 		}
 		
-		
+		override public function toString():String
+		{
+			return "BasicComponent_" + componentInfo.toString();
+		}	
 	}
 }
